@@ -113,8 +113,8 @@ export default function Home() {
       <div className="panel">
         {stage === "intro" && (
           <section className="section">
-            <span className="brand">My Spiritual Home</span>
-            <h1 className="hero-title">내 신앙은 어떤 집을 닮았을까?</h1>
+            <span className="brand">CBTI</span>
+            <h1 className="hero-title">나는 어떤 크리스천일까?</h1>
             <p className="lead">
               15개의 질문을 통해 나의 신앙 성향을 살펴보고, 잘 맞는 신앙 유형과 추천 교파를 확인해보세요.
             </p>
