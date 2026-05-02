@@ -71,27 +71,40 @@ export async function GET() {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  if (!hasSupabaseConfig()) {
+  try {
+    if (!hasSupabaseConfig()) {
+      return NextResponse.json({
+        configured: false,
+        total: 0,
+        uniqueVisitors: 0,
+        duplicateRate: 0,
+        all: aggregate([]),
+        deduped: aggregate([])
+      });
+    }
+
+    const rows = await fetchSubmissions();
+    const dedupedRows = getDedupedRows(rows);
+    const duplicateRate = rows.length > 0 ? Math.round(((rows.length - dedupedRows.length) / rows.length) * 100) : 0;
+
     return NextResponse.json({
-      configured: false,
-      total: 0,
-      uniqueVisitors: 0,
-      duplicateRate: 0,
-      all: aggregate([]),
-      deduped: aggregate([])
+      configured: true,
+      total: rows.length,
+      uniqueVisitors: dedupedRows.length,
+      duplicateRate,
+      all: aggregate(rows),
+      deduped: aggregate(dedupedRows)
     });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Unknown Supabase error";
+    console.error(message);
+
+    return NextResponse.json(
+      {
+        error: "Unable to load Supabase stats",
+        detail: message
+      },
+      { status: 500 }
+    );
   }
-
-  const rows = await fetchSubmissions();
-  const dedupedRows = getDedupedRows(rows);
-  const duplicateRate = rows.length > 0 ? Math.round(((rows.length - dedupedRows.length) / rows.length) * 100) : 0;
-
-  return NextResponse.json({
-    configured: true,
-    total: rows.length,
-    uniqueVisitors: dedupedRows.length,
-    duplicateRate,
-    all: aggregate(rows),
-    deduped: aggregate(dedupedRows)
-  });
 }

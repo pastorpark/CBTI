@@ -59,7 +59,8 @@ export default function AdminStatsPage() {
     }
 
     if (!response.ok) {
-      setError("통계를 불러오지 못했습니다.");
+      const data = (await response.json().catch(() => null)) as { detail?: string; error?: string } | null;
+      setError(data?.detail ? `통계를 불러오지 못했습니다: ${data.detail}` : "통계를 불러오지 못했습니다.");
       setLoading(false);
       return;
     }
