@@ -5,7 +5,7 @@ export function hasSupabaseConfig() {
 }
 
 function getSupabaseConfig() {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const url = normalizeSupabaseUrl(process.env.NEXT_PUBLIC_SUPABASE_URL);
   const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
   if (!url || !key) {
@@ -13,6 +13,16 @@ function getSupabaseConfig() {
   }
 
   return { url, key };
+}
+
+function normalizeSupabaseUrl(value: string | undefined) {
+  if (!value) return value;
+
+  return value
+    .trim()
+    .replace(/\/+$/, "")
+    .replace(/\/rest\/v1$/i, "")
+    .replace(/\/rest\/v1\/$/i, "");
 }
 
 export async function insertSubmission(record: Record<string, unknown>) {
