@@ -1,0 +1,297 @@
+import type { PersonaKey, PersonaResult, Question } from "@/types/test";
+
+export const personaKeys: PersonaKey[] = [
+  "Orthodox",
+  "Intellectual",
+  "Progressive",
+  "Social",
+  "Liturgical",
+  "Charismatic",
+  "Relational"
+];
+
+export const tieBreakerOrder: PersonaKey[] = [
+  "Orthodox",
+  "Intellectual",
+  "Progressive",
+  "Social",
+  "Liturgical",
+  "Charismatic",
+  "Relational"
+];
+
+export const questions: Question[] = [
+  {
+    id: "q1",
+    title: "주일 아침, 예배당에 처음 들어설 때 당신이 가장 기대하는 것은?",
+    options: [
+      { id: "q1-o1", label: "장엄하고 경건한 성찬식과 분위기", scores: [{ persona: "Liturgical", weight: 1 }] },
+      { id: "q1-o2", label: "가슴을 뛰게 하는 뜨거운 밴드 찬양", scores: [{ persona: "Charismatic", weight: 1 }] },
+      { id: "q1-o3", label: "체계적이고 깊이 있는 목사님의 설교", scores: [{ persona: "Intellectual", weight: 1 }] },
+      { id: "q1-o4", label: "성도들과 웃으며 나누는 따뜻한 인사", scores: [{ persona: "Relational", weight: 1 }] },
+      { id: "q1-o5", label: "한 주간 세상 속에서 실천할 다짐", scores: [{ persona: "Social", weight: 1 }] }
+    ]
+  },
+  {
+    id: "q2",
+    title: "성경을 읽고 묵상할 때, 나의 스타일은?",
+    options: [
+      { id: "q2-o1", label: "원어의 뜻과 역사적 배경까지 깊이 파고들기", scores: [{ persona: "Intellectual", weight: 1 }] },
+      { id: "q2-o2", label: "일점일획도 틀림없는 절대 진리로 굳게 믿기", scores: [{ persona: "Orthodox", weight: 1 }] },
+      { id: "q2-o3", label: "현대 사회의 소외된 이웃을 향한 메시지 찾기", scores: [{ persona: "Social", weight: 1 }] },
+      { id: "q2-o4", label: "지금 내 마음을 울리는 성령님의 감동 느끼기", scores: [{ persona: "Charismatic", weight: 1 }] },
+      { id: "q2-o5", label: "시대의 변화에 맞춰 포용적으로 재해석하기", scores: [{ persona: "Progressive", weight: 1 }] }
+    ]
+  },
+  {
+    id: "q3",
+    title: "내가 생각하는 기독교 신앙의 가장 핵심적인 가치는?",
+    options: [
+      { id: "q3-o1", label: "십자가 대속을 통한 굳건한 영혼 구원", scores: [{ persona: "Orthodox", weight: 1 }] },
+      { id: "q3-o2", label: "부조리한 세상을 바꾸는 하나님 나라 실현", scores: [{ persona: "Social", weight: 1 }] },
+      { id: "q3-o3", label: "2천 년을 변함없이 이어온 거룩한 예식", scores: [{ persona: "Liturgical", weight: 1 }] },
+      { id: "q3-o4", label: "이성과 신앙이 조화를 이루는 합리적 믿음", scores: [{ persona: "Intellectual", weight: 1 }] },
+      { id: "q3-o5", label: "차별과 혐오를 넘어선 조건 없는 환대", scores: [{ persona: "Progressive", weight: 1 }] }
+    ]
+  },
+  {
+    id: "q4",
+    title: "예수님은 나에게 어떤 분으로 가장 깊이 다가오시나요?",
+    options: [
+      { id: "q4-o1", label: "내 죄를 대속하신 유일한 구원자", scores: [{ persona: "Orthodox", weight: 1 }] },
+      { id: "q4-o2", label: "억눌린 약자들을 해방하시는 실천가", scores: [{ persona: "Social", weight: 1 }] },
+      { id: "q4-o3", label: "깊은 진리의 세계로 인도하시는 스승", scores: [{ persona: "Intellectual", weight: 1 }] },
+      { id: "q4-o4", label: "내 삶에 기적과 위로를 베푸시는 치유자", scores: [{ persona: "Charismatic", weight: 1 }] },
+      { id: "q4-o5", label: "언제나 내 곁에서 이야기를 들어주시는 친구", scores: [{ persona: "Relational", weight: 1 }] }
+    ]
+  },
+  {
+    id: "q5",
+    title: "심각한 사회 문제를 볼 때 나의 생각은?",
+    options: [
+      { id: "q5-o1", label: "교회가 앞장서서 잘못된 제도를 바꿔야 해!", scores: [{ persona: "Social", weight: 1 }] },
+      { id: "q5-o2", label: "다양한 입장을 포용하며 열린 대화를 해야 해!", scores: [{ persona: "Progressive", weight: 1 }] },
+      { id: "q5-o3", label: "흔들림 없이 성경적인 가치관을 수호해야 해!", scores: [{ persona: "Orthodox", weight: 1 }] },
+      { id: "q5-o4", label: "이 땅의 회복과 치유를 위해 눈물로 기도해야 해!", scores: [{ persona: "Charismatic", weight: 1 }] },
+      { id: "q5-o5", label: "거창한 구호보다 내 주변 이웃부터 직접 도와야 해!", scores: [{ persona: "Relational", weight: 1 }] }
+    ]
+  },
+  {
+    id: "q6",
+    title: "내가 가장 선호하고 은혜받는 기도 방식은?",
+    options: [
+      { id: "q6-o1", label: "정해진 기도문이나 묵상을 통한 조용한 관상 기도", scores: [{ persona: "Liturgical", weight: 1 }] },
+      { id: "q6-o2", label: "두 손을 들고 뜨겁게 부르짖는 통성/방언 기도", scores: [{ persona: "Charismatic", weight: 1 }] },
+      { id: "q6-o3", label: "논리 정연하게 하나님의 뜻을 구하는 말씀 기도", scores: [{ persona: "Intellectual", weight: 1 }] },
+      { id: "q6-o4", label: "일상의 소소한 고민을 나누고 지인들을 챙기는 기도", scores: [{ persona: "Relational", weight: 1 }] },
+      { id: "q6-o5", label: "고통받는 세상의 정의와 평화를 구하는 탄원 기도", scores: [{ persona: "Social", weight: 1 }] }
+    ]
+  },
+  {
+    id: "q7",
+    title: "교회에서 봉사를 하나 맡아야 한다면, 가장 끌리는 사역은?",
+    options: [
+      { id: "q7-o1", label: "성경 공부반 리더나 교리 교육 교사", scores: [{ persona: "Intellectual", weight: 1 }] },
+      { id: "q7-o2", label: "주일 예배 찬양팀 또는 금요 기도회 인도자", scores: [{ persona: "Charismatic", weight: 1 }] },
+      { id: "q7-o3", label: "소그룹 리더나 새가족 환영 및 식사 봉사", scores: [{ persona: "Relational", weight: 1 }] },
+      { id: "q7-o4", label: "지역 사회 소외계층 돕기 및 NGO 연대 활동", scores: [{ persona: "Social", weight: 1 }] },
+      { id: "q7-o5", label: "예배 예식 준비, 성찬식 도우미, 교회력 관리", scores: [{ persona: "Liturgical", weight: 1 }] }
+    ]
+  },
+  {
+    id: "q8",
+    title: "내가 생각할 때 '이런 교회는 정말 힘들다' 싶은 곳은?",
+    options: [
+      { id: "q8-o1", label: "시대가 변해도 옛날 방식만 고집하는 꽉 막힌 교회", scores: [{ persona: "Progressive", weight: 1 }] },
+      { id: "q8-o2", label: "감정만 앞세우고 말씀과 교리의 깊이가 없는 교회", scores: [{ persona: "Intellectual", weight: 1 }] },
+      { id: "q8-o3", label: "예배의 거룩함이 무너지고 세속적인 이벤트만 남은 교회", scores: [{ persona: "Liturgical", weight: 1 }] },
+      { id: "q8-o4", label: "친목 모임만 있고 복음의 순수성이 흐려진 교회", scores: [{ persona: "Orthodox", weight: 1 }] },
+      { id: "q8-o5", label: "예배만 드리고 흩어져 끈끈한 정과 돌봄이 없는 교회", scores: [{ persona: "Relational", weight: 1 }] }
+    ]
+  },
+  {
+    id: "q9",
+    title: "내가 생각하는 '가장 건강한 믿음'이란?",
+    options: [
+      { id: "q9-o1", label: "세상과 타협하지 않고 정통 교리를 지켜내는 것", scores: [{ persona: "Orthodox", weight: 1 }] },
+      { id: "q9-o2", label: "이성과 과학 앞에서도 합리적으로 설명할 수 있는 것", scores: [{ persona: "Intellectual", weight: 1 }] },
+      { id: "q9-o3", label: "이웃 사랑과 사회 정의를 위한 행동으로 증명되는 것", scores: [{ persona: "Social", weight: 1 }] },
+      { id: "q9-o4", label: "살아계신 하나님을 매일 피부로 뜨겁게 체험하는 것", scores: [{ persona: "Charismatic", weight: 1 }] },
+      { id: "q9-o5", label: "다름을 인정하고 삶의 모순 속에서도 서로 품어주는 것", scores: [{ persona: "Progressive", weight: 1 }] }
+    ]
+  },
+  {
+    id: "q10",
+    title: "역사 속 신앙의 선배들 중, 나의 가슴을 더 뛰게 하는 인물은?",
+    options: [
+      { id: "q10-o1", label: "치밀한 논리로 기독교의 뼈대를 세운 바울이나 칼빈", scores: [{ persona: "Intellectual", weight: 1 }] },
+      { id: "q10-o2", label: "빈민과 인권을 위해 싸운 테레사 수녀나 마틴 루터 킹", scores: [{ persona: "Social", weight: 1 }] },
+      { id: "q10-o3", label: "성령의 불길로 대부흥을 일으킨 수많은 부흥사들", scores: [{ persona: "Charismatic", weight: 1 }] },
+      { id: "q10-o4", label: "거룩한 수도원에서 오랜 침묵을 지킨 사막의 교부들", scores: [{ persona: "Liturgical", weight: 1 }] },
+      { id: "q10-o5", label: "시대의 아픔에 공감하며 목소리를 낸 디트리히 본회퍼", scores: [{ persona: "Progressive", weight: 1 }] }
+    ]
+  },
+  {
+    id: "q11",
+    title: "주일 예배 외에, 나의 신앙을 가장 쑥쑥 자라게 하는 것은?",
+    options: [
+      { id: "q11-o1", label: "체계적인 기독교 세계관 교육이나 신학 서적 독서", scores: [{ persona: "Intellectual", weight: 1 }] },
+      { id: "q11-o2", label: "평일 밤이나 새벽에 성전에서 드리는 뜨거운 기도", scores: [{ persona: "Charismatic", weight: 1 }] },
+      { id: "q11-o3", label: "평일 저녁, 카페나 집에서 모이는 속회/셀 모임의 나눔", scores: [{ persona: "Relational", weight: 1 }] },
+      { id: "q11-o4", label: "기후 위기 극복, 인권 보호 등을 위한 기독교 시민 운동", scores: [{ persona: "Social", weight: 1 }] },
+      { id: "q11-o5", label: "매일 정해진 시간, 일정한 순서대로 드리는 묵상과 기도", scores: [{ persona: "Liturgical", weight: 1 }] }
+    ]
+  },
+  {
+    id: "q12",
+    title: "교회 안에서 의견 충돌이나 갈등이 생겼을 때, 가장 이상적인 해결책은?",
+    options: [
+      { id: "q12-o1", label: "성경 말씀과 정해진 교회법의 원칙대로 단호하게 처리한다.", scores: [{ persona: "Orthodox", weight: 1 }] },
+      { id: "q12-o2", label: "감정을 배제하고 논리적인 토론과 합리적인 대화로 조율한다.", scores: [{ persona: "Intellectual", weight: 1 }] },
+      { id: "q12-o3", label: "서로의 다양성을 인정하고 열린 마음으로 포용하며 화해한다.", scores: [{ persona: "Progressive", weight: 1 }] },
+      { id: "q12-o4", label: "다 함께 모여 금식하며 성령님의 인도하심을 간절히 구한다.", scores: [{ persona: "Charismatic", weight: 1 }] },
+      { id: "q12-o5", label: "일단 밖에서 따로 만나 밥부터 먹으며 관계부터 회복한다.", scores: [{ persona: "Relational", weight: 1 }] }
+    ]
+  },
+  {
+    id: "q13",
+    title: "세상의 문화를 대하는 나의 기본적인 태도는?",
+    options: [
+      { id: "q13-o1", label: "신앙에 방해가 될 수 있으니 철저히 분별하고 거리를 둔다.", scores: [{ persona: "Orthodox", weight: 1 }] },
+      { id: "q13-o2", label: "기독교적 세계관의 잣대로 분석하고 비판적으로 수용한다.", scores: [{ persona: "Intellectual", weight: 1 }] },
+      { id: "q13-o3", label: "그 속에 담긴 시대정신을 이해하고 문화 그 자체로 존중한다.", scores: [{ persona: "Progressive", weight: 1 }] },
+      { id: "q13-o4", label: "문화 자체보다 그 속에서 선한 행동과 가치를 찾아 실천한다.", scores: [{ persona: "Social", weight: 1 }] },
+      { id: "q13-o5", label: "성도들과 함께 즐길 수 있는 좋은 교제와 소통의 도구로 삼는다.", scores: [{ persona: "Relational", weight: 1 }] }
+    ]
+  },
+  {
+    id: "q14",
+    title: "타 종교인이나 비신자를 대할 때, 나의 입장에 가장 가까운 것은?",
+    options: [
+      { id: "q14-o1", label: "오직 예수만이 구원이므로 기회가 될 때마다 명확히 복음을 전한다.", scores: [{ persona: "Orthodox", weight: 1 }] },
+      { id: "q14-o2", label: "합리적인 변증을 통해 기독교 진리의 우수성을 논리적으로 설득한다.", scores: [{ persona: "Intellectual", weight: 1 }] },
+      { id: "q14-o3", label: "그들의 신념을 깊이 존중하며 평화롭게 공존하는 방법을 찾는다.", scores: [{ persona: "Progressive", weight: 1 }] },
+      { id: "q14-o4", label: "종교를 따지기 전에 사회 정의와 평화를 위해 먼저 손잡고 연대한다.", scores: [{ persona: "Social", weight: 1 }] },
+      { id: "q14-o5", label: "논쟁하기보단 먼저 친근한 이웃이 되어 내 삶으로 사랑을 보여준다.", scores: [{ persona: "Relational", weight: 1 }] }
+    ]
+  },
+  {
+    id: "q15",
+    title: "만약 내가 어쩔 수 없이 교회를 옮긴다면, 그 결정적인 이유는?",
+    options: [
+      { id: "q15-o1", label: "강단의 설교가 성경적이지 않고 복음의 본질이 변질되었을 때", scores: [{ persona: "Orthodox", weight: 1 }] },
+      { id: "q15-o2", label: "교회의 운영 방식이 너무 비합리적이고 반지성적일 때", scores: [{ persona: "Intellectual", weight: 1 }] },
+      {
+        id: "q15-o3",
+        label: "교회가 시대의 아픔이나 사회적 약자를 외면하고 차별할 때",
+        scores: [
+          { persona: "Progressive", weight: 1 },
+          { persona: "Social", weight: 1 }
+        ]
+      },
+      { id: "q15-o4", label: "예배에 성령의 임재가 사라지고 은혜의 감격이 식어버렸을 때", scores: [{ persona: "Charismatic", weight: 1 }] },
+      { id: "q15-o5", label: "성도 간의 진실한 사랑과 끈끈한 공동체성이 완전히 메말랐을 때", scores: [{ persona: "Relational", weight: 1 }] }
+    ]
+  }
+];
+
+export const personaResults: Record<PersonaKey, PersonaResult> = {
+  Orthodox: {
+    key: "Orthodox",
+    title: "진리를 사수하는 신앙 수호형 그리스도인",
+    subtitle: "절대 진리와 복음의 본질을 붙드는 사람",
+    keywords: ["성경무오", "복음주의", "정통교리", "절대진리"],
+    tone: "shield",
+    description:
+      "당신은 세속화되는 세상 속에서도 흔들림 없이 성경의 가르침과 복음의 본질을 지켜내는 것을 최우선으로 삼습니다. 타협하지 않는 순수한 신앙과 십자가의 은혜를 깊이 사랑하는 단단한 믿음의 소유자입니다.",
+    denominations: [
+      { name: "대한예수교장로회 (합동, 고신 등)", description: "개혁주의 신학과 성경의 절대적 권위를 강조하는 보수적인 장로교단입니다." },
+      { name: "기독교한국침례회 (보수 진영)", description: "성경 중심주의와 개교회의 독립성을 중시하는 교파입니다." },
+      { name: "대한예수교장로회 (백석 등)", description: "복음주의적 신앙을 굳건히 지키는 장로교단입니다." }
+    ]
+  },
+  Intellectual: {
+    key: "Intellectual",
+    title: "이성을 구하는 지성 탐구형 그리스도인",
+    subtitle: "말씀과 이성의 균형을 탐구하는 사람",
+    keywords: ["말씀연구", "합리적신앙", "논리적", "균형감각"],
+    tone: "book",
+    description:
+      "당신은 맹목적인 믿음보다는 이해를 추구하는 신앙을 갈망합니다. 성경을 역사적, 문맥적으로 깊이 파고들며 논리적이고 체계적인 가르침을 통해 하나님을 알아가는 데서 큰 기쁨을 느낍니다.",
+    denominations: [
+      { name: "대한예수교장로회 (통합)", description: "신학적 균형을 중시하며 학구적이고 체계적인 말씀 훈련이 강한 장로교단입니다." },
+      { name: "기독교대한감리회 (중도 진영)", description: "존 웨슬리의 전통에 따라 이성과 성경, 전통의 조화를 중요하게 생각합니다." },
+      { name: "한국기독교장로회 (기장 - 학구적 성향)", description: "깊이 있는 신학적 탐구와 자유로운 학문적 분위기를 제공합니다." }
+    ]
+  },
+  Progressive: {
+    key: "Progressive",
+    title: "넓은 품을 가진 시대 공감형 그리스도인",
+    subtitle: "다름을 환대하며 오늘의 언어로 신앙을 묻는 사람",
+    keywords: ["포용성", "다양성존중", "시대적맥락", "환대"],
+    tone: "rainbow",
+    description:
+      "당신은 과거의 문자적 율법에 얽매이기보다는, 현대 사회의 맥락 속에서 예수님의 사랑을 어떻게 적용할지 치열하게 고민합니다. 소외된 자들을 향한 열린 마음과 다름을 포용하는 넓은 품을 가졌습니다.",
+    denominations: [
+      { name: "한국기독교장로회 (기장)", description: "시대의 변화에 열려 있고 다양한 신학적 해석을 포용하는 진보적 교파입니다." },
+      { name: "기독교대한감리회 (진보 진영)", description: "사회의 다양한 목소리에 귀 기울이며 유연한 신학적 사고를 지향합니다." },
+      { name: "대한성공회", description: "전통적인 예전을 지키면서도 신학적, 사회적으로 개방적이고 포용적인 교파입니다." }
+    ]
+  },
+  Social: {
+    key: "Social",
+    title: "행동하는 사랑 사회 참여형 그리스도인",
+    subtitle: "신앙을 이웃 사랑과 정의의 실천으로 드러내는 사람",
+    keywords: ["사회정의", "이웃사랑실천", "연대", "행동하는신앙"],
+    tone: "dove",
+    description:
+      "당신은 신앙이 교회 문턱을 넘어 세상을 변화시켜야 한다고 굳게 믿습니다. 빈곤, 인권, 환경 등 사회 문제에 깊이 공감하며 기독교적 가치관을 바탕으로 구조적인 악에 맞서 행동하는 실천가입니다.",
+    denominations: [
+      { name: "한국기독교장로회 (기장)", description: "역사적으로 민주화와 사회 정의, 인권 운동에 앞장서 온 교파입니다." },
+      { name: "구세군 대한본영", description: "영혼 구원과 더불어 적극적인 사회 구호와 봉사 활동을 교회의 핵심 사명으로 삼습니다." },
+      { name: "대한성공회", description: "가난하고 소외된 이웃과의 연대를 중요하게 생각하며 사회 문제에 적극적으로 참여합니다." }
+    ]
+  },
+  Liturgical: {
+    key: "Liturgical",
+    title: "깊은 침묵의 예전 전통형 그리스도인",
+    subtitle: "역사와 성찬과 거룩한 리듬 안에서 쉬는 사람",
+    keywords: ["역사적정통성", "거룩한예식", "성찬", "관상기도"],
+    tone: "candle",
+    description:
+      "당신은 초대교회부터 이어져 온 깊은 역사와 예식을 사랑합니다. 시끌벅적하고 자유로운 분위기보다는 정돈된 순서와 거룩한 성찬, 교회력에 따른 예배에서 깊은 영적 안정감과 경건함을 경험합니다.",
+    denominations: [
+      { name: "대한성공회", description: "가톨릭의 전통적 예전과 개신교의 신학을 아름답게 조화시킨 대표적인 교파입니다." },
+      { name: "기독교한국루터회", description: "종교개혁의 전통을 이으면서도 풍성한 예식과 성찬을 중요하게 지켜갑니다." },
+      { name: "기독교대한감리회 (고교회파 성향)", description: "존 웨슬리의 성공회적 배경을 바탕으로 전통 예식을 강조하는 성향의 교회들입니다." }
+    ]
+  },
+  Charismatic: {
+    key: "Charismatic",
+    title: "가슴이 뜨거운 열정 체험형 그리스도인",
+    subtitle: "성령의 임재와 살아 있는 예배를 갈망하는 사람",
+    keywords: ["성령충만", "뜨거운찬양과기도", "은사", "영적체험"],
+    tone: "flame",
+    description:
+      "당신은 머리로 아는 신학보다 가슴으로 느끼는 살아있는 체험을 갈망합니다. 통성기도, 방언, 뜨거운 찬양과 역동적인 예배를 통해 성령님의 강력한 임재를 매일 새롭게 경험하고자 하는 열정가입니다.",
+    denominations: [
+      { name: "기독교대한하나님의성회 (순복음)", description: "성령 세례와 은사, 뜨거운 기도를 강조하는 오순절 교단입니다." },
+      { name: "기독교대한성결교회", description: "중생, 성결, 신유, 재림의 사중복음을 바탕으로 뜨거운 영적 체험을 사모합니다." },
+      { name: "기독교대한감리회 (부흥운동 성향)", description: "초기 감리교 부흥 운동의 전통을 이어받아 뜨거운 성령의 역사를 사모합니다." }
+    ]
+  },
+  Relational: {
+    key: "Relational",
+    title: "삶을 나누는 관계 중심형 그리스도인",
+    subtitle: "공동체 안에서 사랑과 성장을 경험하는 사람",
+    keywords: ["공동체성", "성도의교제", "소그룹", "가족같은교회"],
+    tone: "cup",
+    description:
+      "당신은 거창한 교리나 화려한 예식보다 성도들이 서로 진실하게 사랑하고 삶을 나누는 공동체성이 교회의 본질이라 믿습니다. 소그룹 모임에서 기쁨과 슬픔을 나누며 함께 성장하는 것을 가장 행복해합니다.",
+    denominations: [
+      { name: "독립교회 / 비교파 복음주의 교회", description: "특정 교단의 교리에 얽매임 없이 유연하고 가족 같은 공동체성을 강조하는 교회들이 많습니다." },
+      { name: "대한예수교장로회 (소그룹/제자훈련 중심 교회)", description: "교단을 불문하고 가정교회나 셀 목회 시스템을 강력하게 구축한 교회들입니다." },
+      { name: "기독교대한침례회", description: "회중 중심의 교회 정치 제도를 통해 성도 개개인의 참여와 끈끈한 교제를 중시합니다." }
+    ]
+  }
+};
