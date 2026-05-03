@@ -9,6 +9,11 @@ type StatsResponse = {
   total: number;
   uniqueVisitors: number;
   duplicateRate: number;
+  visits: {
+    total: number;
+    uniqueVisitors: number;
+    byDay: { date: string; count: number }[];
+  };
   all: StatsBucket;
   deduped: StatsBucket;
 };
@@ -142,6 +147,8 @@ export default function AdminStatsPage() {
         </section>
 
         <section className="stats-grid" style={{ marginTop: 14 }}>
+          <Metric label="전체 접속" value={stats.visits.total} />
+          <Metric label="고유 접속자" value={stats.visits.uniqueVisitors} />
           <Metric label="전체 완료" value={stats.total} />
           <Metric label="중복 제거 방문자" value={stats.uniqueVisitors} />
           <Metric label="중복 의심 비율" value={`${stats.duplicateRate}%`} />

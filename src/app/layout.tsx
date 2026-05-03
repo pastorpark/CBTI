@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 
-const siteUrl = "https://cbit.pastorpark.net";
+const siteUrl = "https://cbti.pastorpark.net";
 const siteName = "나의 신앙 유형 찾기 - CBTI";
 const description = "15개의 질문을 통해 나의 신앙 성향을 살펴보고, 나와 잘 맞는 신앙 유형과 추천 교파를 확인해보세요.";
 

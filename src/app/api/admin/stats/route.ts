@@ -1,9 +1,10 @@
 import { NextResponse } from "next/server";
 import { personaKeys, questions } from "@/data/test";
 import { isAdminAuthenticated } from "@/lib/admin-auth";
-import { fetchSubmissions, hasSupabaseConfig } from "@/lib/supabase-rest";
+import { fetchSubmissions, fetchVisits, hasSupabaseConfig } from "@/lib/supabase-rest";
 
 type SubmissionRow = Awaited<ReturnType<typeof fetchSubmissions>>[number];
+type VisitRow = Awaited<ReturnType<typeof fetchVisits>>[number];
 
 function startOfDay(value: Date) {
   return value.toISOString().slice(0, 10);
@@ -19,6 +20,27 @@ function getDedupedRows(rows: SubmissionRow[]) {
   }
 
   return [...byVisitor.values()];
+}
+
+function getUniqueVisitCount(rows: VisitRow[]) {
+  return new Set(rows.map((row) => row.visitor_hash)).size;
+}
+
+function aggregateVisits(rows: VisitRow[]) {
+  const byDay: Record<string, number> = {};
+
+  for (const row of rows) {
+    const day = startOfDay(new Date(row.created_at));
+    byDay[day] = (byDay[day] || 0) + 1;
+  }
+
+  return {
+    total: rows.length,
+    uniqueVisitors: getUniqueVisitCount(rows),
+    byDay: Object.entries(byDay)
+      .map(([date, count]) => ({ date, count }))
+      .sort((a, b) => a.date.localeCompare(b.date))
+  };
 }
 
 function aggregate(rows: SubmissionRow[]) {
@@ -78,12 +100,17 @@ export async function GET() {
         total: 0,
         uniqueVisitors: 0,
         duplicateRate: 0,
+        visits: aggregateVisits([]),
         all: aggregate([]),
         deduped: aggregate([])
       });
     }
 
     const rows = await fetchSubmissions();
+    const visitRows = await fetchVisits().catch((error) => {
+      console.warn("Unable to load visit stats", error);
+      return [];
+    });
     const dedupedRows = getDedupedRows(rows);
     const duplicateRate = rows.length > 0 ? Math.round(((rows.length - dedupedRows.length) / rows.length) * 100) : 0;
 
@@ -92,6 +119,7 @@ export async function GET() {
       total: rows.length,
       uniqueVisitors: dedupedRows.length,
       duplicateRate,
+      visits: aggregateVisits(visitRows),
       all: aggregate(rows),
       deduped: aggregate(dedupedRows)
     });

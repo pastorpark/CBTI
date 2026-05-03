@@ -310,7 +310,7 @@
 - 공식 이름: `나의 신앙 유형 찾기 - CBTI`
 - 대체 이름: `나는 어떤 신앙인일까?`
 - 사이트 한 줄 설명: `15개의 질문으로 알아보는 나의 신앙 성향 테스트`
-- 기본 URL: `https://cbit.pastorpark.net`
+- 기본 URL: `https://cbti.pastorpark.net`
 - 언어: `ko_KR`
 - 콘텐츠 타입: `website`
 - 주제: `기독교 성향 테스트`, `신앙 유형 테스트`, `교파 추천`, `크리스천 테스트`
@@ -451,4 +451,4 @@
 - `operatingSystem`: `Web`
 - `inLanguage`: `ko-KR`
 - `description`: `15개의 질문을 통해 나의 신앙 성향을 살펴보고, 나와 잘 맞는 신앙 유형과 추천 교파를 확인하는 테스트입니다.`
-- `url`: `https://cbit.pastorpark.net`
+- `url`: `https://cbti.pastorpark.net`

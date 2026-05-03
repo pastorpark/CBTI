@@ -6,6 +6,7 @@ import { getResultUrl } from "@/lib/result-url";
 import { calculateScores, getClosePersonas, getSortedScores, resolvePrimaryPersona } from "@/lib/scoring";
 import { submitResult } from "@/lib/submissions";
 import { getVisitorId } from "@/lib/visitor";
+import { submitVisit } from "@/lib/visits";
 import type { Answer, Question } from "@/types/test";
 
 type Stage = "intro" | "questions" | "loading" | "result";
@@ -22,6 +23,15 @@ export default function Home() {
   const result = personaResults[primary];
   const closePersonas = getClosePersonas(scores, primary);
   const sortedScores = getSortedScores(scores);
+
+  useEffect(() => {
+    submitVisit({
+      visitorId: getVisitorId(),
+      path: window.location.pathname
+    }).catch((error) => {
+      console.warn(error);
+    });
+  }, []);
 
   useEffect(() => {
     if (stage !== "loading") return;
