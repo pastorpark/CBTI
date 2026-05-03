@@ -13,5 +13,5 @@ export function getResultUrl(persona: PersonaKey) {
         ? window.location.origin
         : "";
 
-  return `${baseUrl}/result?type=${encodeURIComponent(persona)}`;
+  return `${baseUrl}/result/${encodeURIComponent(persona)}`;
 }
