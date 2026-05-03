@@ -4,4 +4,8 @@ Allow: /
 User-agent: facebookexternalhit
 Allow: /
 
-Sitemap: https://cbti.pastorpark.net/sitemap.xml
+User-agent: FacebookBot
+Allow: /
+
+User-agent: meta-externalfetcher
+Allow: /
