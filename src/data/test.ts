@@ -20,6 +20,26 @@ export const tieBreakerOrder: PersonaKey[] = [
   "Relational"
 ];
 
+export const personaLabels: Record<PersonaKey, string> = {
+  Orthodox: "정통 수호형",
+  Intellectual: "합리적 지성형",
+  Progressive: "진보적 포용형",
+  Social: "사회 참여형",
+  Liturgical: "예전 전통형",
+  Charismatic: "영적 체험형",
+  Relational: "관계 중심형"
+};
+
+export const personaEnglishLabels: Record<PersonaKey, string> = {
+  Orthodox: "Orthodox Christian",
+  Intellectual: "Intellectual Christian",
+  Progressive: "Progressive Christian",
+  Social: "Social Christian",
+  Liturgical: "Liturgical Christian",
+  Charismatic: "Charismatic Christian",
+  Relational: "Relational Christian"
+};
+
 export const questions: Question[] = [
   {
     id: "q1",
@@ -198,12 +218,15 @@ export const questions: Question[] = [
 export const personaResults: Record<PersonaKey, PersonaResult> = {
   Orthodox: {
     key: "Orthodox",
-    title: "진리를 사수하는 신앙 수호형 그리스도인",
+    title: "정통 신앙을 지키는 정통 수호형 그리스도인",
     subtitle: "절대 진리와 복음의 본질을 붙드는 사람",
     keywords: ["성경무오", "복음주의", "정통교리", "절대진리"],
     tone: "shield",
     description:
-      "당신은 세속화되는 세상 속에서도 흔들림 없이 성경의 가르침과 복음의 본질을 지켜내는 것을 최우선으로 삼습니다. 타협하지 않는 순수한 신앙과 십자가의 은혜를 깊이 사랑하는 단단한 믿음의 소유자입니다.",
+      "당신은 변화하는 세상 속에서도 성경의 가르침과 복음의 본질을 흔들림 없이 지켜내는 것을 중요하게 여깁니다. 정통 교리와 십자가의 은혜를 깊이 사랑하며, 신앙의 기준을 분명히 붙드는 단단한 믿음의 소유자입니다.",
+    spiritualStrength: "복음의 본질을 분별하고 지켜내는 선명함, 흔들리는 상황에서도 신앙의 기준을 붙드는 단단함.",
+    growthRoutine: "교리문답이나 신앙고백서를 차분히 읽기, 말씀 묵상 후 오늘 지킬 신앙의 기준을 한 문장으로 정리하기.",
+    characterImage: "/characters/orthodox.svg",
     denominations: [
       { name: "대한예수교장로회 (합동, 고신 등)", description: "개혁주의 신학과 성경의 절대적 권위를 강조하는 보수적인 장로교단입니다." },
       { name: "기독교한국침례회 (보수 진영)", description: "성경 중심주의와 개교회의 독립성을 중시하는 교파입니다." },
@@ -212,12 +235,15 @@ export const personaResults: Record<PersonaKey, PersonaResult> = {
   },
   Intellectual: {
     key: "Intellectual",
-    title: "이성을 구하는 지성 탐구형 그리스도인",
+    title: "말씀과 이성을 함께 붙드는 합리적 지성형 그리스도인",
     subtitle: "말씀과 이성의 균형을 탐구하는 사람",
     keywords: ["말씀연구", "합리적신앙", "논리적", "균형감각"],
     tone: "book",
     description:
-      "당신은 맹목적인 믿음보다는 이해를 추구하는 신앙을 갈망합니다. 성경을 역사적, 문맥적으로 깊이 파고들며 논리적이고 체계적인 가르침을 통해 하나님을 알아가는 데서 큰 기쁨을 느낍니다.",
+      "당신은 신앙을 깊이 이해하고 납득하며 따라가기를 원합니다. 성경을 역사적, 문맥적으로 살피고 논리적이고 체계적인 가르침을 통해 하나님을 알아가는 데서 큰 기쁨을 느끼는 사람입니다.",
+    spiritualStrength: "말씀을 시대적 배경 속에서 깊이 있게 해석하는 지혜, 감정에 치우치지 않는 균형 잡힌 사고.",
+    growthRoutine: "관심 있는 주제의 신학 서적 읽기, 일방적 강의보다는 질문과 토론이 있는 성경 공부 모임 참여하기.",
+    characterImage: "/characters/intellectual.svg",
     denominations: [
       { name: "대한예수교장로회 (통합)", description: "신학적 균형을 중시하며 학구적이고 체계적인 말씀 훈련이 강한 장로교단입니다." },
       { name: "기독교대한감리회 (중도 진영)", description: "존 웨슬리의 전통에 따라 이성과 성경, 전통의 조화를 중요하게 생각합니다." },
@@ -226,12 +252,15 @@ export const personaResults: Record<PersonaKey, PersonaResult> = {
   },
   Progressive: {
     key: "Progressive",
-    title: "넓은 품을 가진 시대 공감형 그리스도인",
+    title: "다름을 환대하는 진보적 포용형 그리스도인",
     subtitle: "다름을 환대하며 오늘의 언어로 신앙을 묻는 사람",
     keywords: ["포용성", "다양성존중", "시대적맥락", "환대"],
     tone: "rainbow",
     description:
-      "당신은 과거의 문자적 율법에 얽매이기보다는, 현대 사회의 맥락 속에서 예수님의 사랑을 어떻게 적용할지 치열하게 고민합니다. 소외된 자들을 향한 열린 마음과 다름을 포용하는 넓은 품을 가졌습니다.",
+      "당신은 신앙이 오늘의 현실 속에서 어떻게 사랑과 환대로 드러날 수 있는지 깊이 고민합니다. 다양한 삶과 생각을 존중하며, 소외된 이들을 향한 열린 마음과 다름을 품는 넓은 시야를 가진 사람입니다.",
+    spiritualStrength: "다른 목소리 안에서도 하나님의 형상을 발견하는 포용력, 시대의 아픔을 신앙의 질문으로 끌어안는 감수성.",
+    growthRoutine: "다양한 배경의 사람들과 대화하기, 복음서 속 예수님의 환대 장면을 묵상하며 일상에서 실천할 작은 환대 정하기.",
+    characterImage: "/characters/progressive.svg",
     denominations: [
       { name: "한국기독교장로회 (기장)", description: "시대의 변화에 열려 있고 다양한 신학적 해석을 포용하는 진보적 교파입니다." },
       { name: "기독교대한감리회 (진보 진영)", description: "사회의 다양한 목소리에 귀 기울이며 유연한 신학적 사고를 지향합니다." },
@@ -246,6 +275,9 @@ export const personaResults: Record<PersonaKey, PersonaResult> = {
     tone: "dove",
     description:
       "당신은 신앙이 교회 문턱을 넘어 세상을 변화시켜야 한다고 굳게 믿습니다. 빈곤, 인권, 환경 등 사회 문제에 깊이 공감하며 기독교적 가치관을 바탕으로 구조적인 악에 맞서 행동하는 실천가입니다.",
+    spiritualStrength: "고통받는 이웃을 외면하지 않는 민감함, 믿음을 말이 아니라 행동으로 드러내는 실천력.",
+    growthRoutine: "지역 봉사나 시민 참여 활동에 꾸준히 함께하기, 한 주의 기도 제목에 사회적 약자와 공공의 선을 위한 기도를 포함하기.",
+    characterImage: "/characters/social.svg",
     denominations: [
       { name: "한국기독교장로회 (기장)", description: "역사적으로 민주화와 사회 정의, 인권 운동에 앞장서 온 교파입니다." },
       { name: "구세군 대한본영", description: "영혼 구원과 더불어 적극적인 사회 구호와 봉사 활동을 교회의 핵심 사명으로 삼습니다." },
@@ -260,6 +292,9 @@ export const personaResults: Record<PersonaKey, PersonaResult> = {
     tone: "candle",
     description:
       "당신은 초대교회부터 이어져 온 깊은 역사와 예식을 사랑합니다. 시끌벅적하고 자유로운 분위기보다는 정돈된 순서와 거룩한 성찬, 교회력에 따른 예배에서 깊은 영적 안정감과 경건함을 경험합니다.",
+    spiritualStrength: "오래된 신앙의 리듬 안에서 깊이를 발견하는 감각, 침묵과 예식 속에서 하나님께 집중하는 경건함.",
+    growthRoutine: "교회력에 맞춘 묵상과 기도 이어가기, 하루 한 번 정해진 시간에 짧은 침묵 기도나 정해진 기도문으로 마음을 정돈하기.",
+    characterImage: "/characters/liturgical.svg",
     denominations: [
       { name: "대한성공회", description: "가톨릭의 전통적 예전과 개신교의 신학을 아름답게 조화시킨 대표적인 교파입니다." },
       { name: "기독교한국루터회", description: "종교개혁의 전통을 이으면서도 풍성한 예식과 성찬을 중요하게 지켜갑니다." },
@@ -268,12 +303,15 @@ export const personaResults: Record<PersonaKey, PersonaResult> = {
   },
   Charismatic: {
     key: "Charismatic",
-    title: "가슴이 뜨거운 열정 체험형 그리스도인",
+    title: "살아 있는 임재를 갈망하는 영적 체험형 그리스도인",
     subtitle: "성령의 임재와 살아 있는 예배를 갈망하는 사람",
     keywords: ["성령충만", "뜨거운찬양과기도", "은사", "영적체험"],
     tone: "flame",
     description:
-      "당신은 머리로 아는 신학보다 가슴으로 느끼는 살아있는 체험을 갈망합니다. 통성기도, 방언, 뜨거운 찬양과 역동적인 예배를 통해 성령님의 강력한 임재를 매일 새롭게 경험하고자 하는 열정가입니다.",
+      "당신은 머리로 이해하는 신앙을 넘어 삶 속에서 실제로 경험되는 하나님의 임재를 갈망합니다. 뜨거운 찬양과 기도, 은사와 역동적인 예배를 통해 성령님의 인도하심을 새롭게 경험하고자 하는 사람입니다.",
+    spiritualStrength: "하나님의 임재를 사모하는 뜨거운 갈망, 기도와 찬양 속에서 공동체의 영적 분위기를 깨우는 힘.",
+    growthRoutine: "찬양과 기도로 하루를 여는 시간 만들기, 받은 감동을 말씀과 공동체의 분별 안에서 점검하며 기록하기.",
+    characterImage: "/characters/charismatic.svg",
     denominations: [
       { name: "기독교대한하나님의성회 (순복음)", description: "성령 세례와 은사, 뜨거운 기도를 강조하는 오순절 교단입니다." },
       { name: "기독교대한성결교회", description: "중생, 성결, 신유, 재림의 사중복음을 바탕으로 뜨거운 영적 체험을 사모합니다." },
@@ -288,6 +326,9 @@ export const personaResults: Record<PersonaKey, PersonaResult> = {
     tone: "cup",
     description:
       "당신은 거창한 교리나 화려한 예식보다 성도들이 서로 진실하게 사랑하고 삶을 나누는 공동체성이 교회의 본질이라 믿습니다. 소그룹 모임에서 기쁨과 슬픔을 나누며 함께 성장하는 것을 가장 행복해합니다.",
+    spiritualStrength: "사람의 마음을 살피고 곁을 지키는 따뜻함, 관계 안에서 믿음을 자라게 하는 공동체적 감각.",
+    growthRoutine: "소그룹이나 식탁 교제를 정기적으로 이어가기, 한 주에 한 사람에게 안부를 묻고 구체적으로 기도해주기.",
+    characterImage: "/characters/relational.svg",
     denominations: [
       { name: "독립교회 / 비교파 복음주의 교회", description: "특정 교단의 교리에 얽매임 없이 유연하고 가족 같은 공동체성을 강조하는 교회들이 많습니다." },
       { name: "대한예수교장로회 (소그룹/제자훈련 중심 교회)", description: "교단을 불문하고 가정교회나 셀 목회 시스템을 강력하게 구축한 교회들입니다." },

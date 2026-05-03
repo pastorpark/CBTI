@@ -37,6 +37,9 @@ export type PersonaResult = {
   subtitle: string;
   keywords: string[];
   description: string;
+  spiritualStrength: string;
+  growthRoutine: string;
+  characterImage: string;
   denominations: {
     name: string;
     description: string;

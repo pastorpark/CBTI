@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320" role="img" aria-labelledby="title desc">
+  <title id="title">영적 체험형 캐릭터</title>
+  <desc id="desc">불꽃과 찬양의 에너지를 가진 영적 체험형 캐릭터</desc>
+  <rect width="320" height="320" rx="64" fill="#fff3df"/>
+  <circle cx="160" cy="118" r="58" fill="#ffd4b8"/>
+  <path d="M98 120c14-61 101-74 126-8-37-18-83-17-126 8z" fill="#151515"/>
+  <circle cx="138" cy="125" r="7" fill="#050505"/>
+  <circle cx="182" cy="125" r="7" fill="#050505"/>
+  <path d="M138 154c16 16 28 16 44 0" fill="none" stroke="#050505" stroke-width="8" stroke-linecap="round"/>
+  <path d="M74 286c9-58 47-94 86-94s77 36 86 94H74z" fill="#ff5a1f"/>
+  <path d="M244 174c34 39 15 87-26 93-40-6-60-54-26-93 3 23 18 28 26 4 8 24 23 19 26-4z" fill="#ffd84a" stroke="#050505" stroke-width="8" stroke-linejoin="round"/>
+  <path d="M218 205c16 21 7 44 0 52-7-8-16-31 0-52z" fill="#ff5a1f"/>
+  <path d="M93 210c20-12 36-12 56 0M86 236c25-13 45-13 70 0" stroke="#ffffff" stroke-width="10" stroke-linecap="round"/>
+</svg>

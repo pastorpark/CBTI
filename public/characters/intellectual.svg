@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320" role="img" aria-labelledby="title desc">
+  <title id="title">합리적 지성형 캐릭터</title>
+  <desc id="desc">안경을 쓰고 책을 읽는 합리적 지성형 캐릭터</desc>
+  <rect width="320" height="320" rx="64" fill="#eef4ff"/>
+  <circle cx="160" cy="118" r="58" fill="#ffd4b8"/>
+  <path d="M98 112c10-52 113-64 128 7-37-20-89-21-128-7z" fill="#2b201a"/>
+  <circle cx="135" cy="126" r="18" fill="none" stroke="#050505" stroke-width="7"/>
+  <circle cx="185" cy="126" r="18" fill="none" stroke="#050505" stroke-width="7"/>
+  <path d="M153 126h14" stroke="#050505" stroke-width="6" stroke-linecap="round"/>
+  <path d="M143 157c12 8 24 8 36 0" fill="none" stroke="#050505" stroke-width="7" stroke-linecap="round"/>
+  <path d="M76 286c8-58 45-93 84-93s76 35 84 93H76z" fill="#ffd84a"/>
+  <path d="M92 202c36 4 56 18 68 42 12-24 32-38 68-42v75c-36 4-56 15-68 31-12-16-32-27-68-31v-75z" fill="#ffffff" stroke="#050505" stroke-width="9" stroke-linejoin="round"/>
+  <path d="M160 244v58" stroke="#050505" stroke-width="7" stroke-linecap="round"/>
+</svg>

@@ -1,7 +1,7 @@
 "use client";
 
 import { FormEvent, useEffect, useMemo, useState } from "react";
-import { personaResults } from "@/data/test";
+import { personaLabels } from "@/data/test";
 import type { PersonaKey } from "@/types/test";
 
 type StatsResponse = {
@@ -22,16 +22,6 @@ type StatsBucket = {
     title: string;
     options: { optionId: string; label: string; count: number }[];
   }[];
-};
-
-const personaNames: Record<PersonaKey, string> = {
-  Orthodox: "신앙 수호형",
-  Intellectual: "지성 탐구형",
-  Progressive: "시대 공감형",
-  Social: "사회 참여형",
-  Liturgical: "예전 전통형",
-  Charismatic: "열정 체험형",
-  Relational: "관계 중심형"
 };
 
 export default function AdminStatsPage() {
@@ -168,7 +158,7 @@ export default function AdminStatsPage() {
 
                 return (
                   <div className="score-row" key={key}>
-                    <span>{personaNames[personaKey]}</span>
+                    <span>{personaLabels[personaKey]}</span>
                     <div className="score-bar">
                       <span style={{ width: `${Math.max(4, percent)}%` }} />
                     </div>

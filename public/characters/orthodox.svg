@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320" role="img" aria-labelledby="title desc">
+  <title id="title">정통 수호형 캐릭터</title>
+  <desc id="desc">방패와 책을 든 정통 수호형 캐릭터</desc>
+  <rect width="320" height="320" rx="64" fill="#fff1e8"/>
+  <circle cx="160" cy="122" r="58" fill="#ffd4b8"/>
+  <path d="M92 124c15-50 120-50 136 0-19-24-117-24-136 0z" fill="#151515"/>
+  <circle cx="138" cy="126" r="7" fill="#151515"/>
+  <circle cx="182" cy="126" r="7" fill="#151515"/>
+  <path d="M139 154c14 12 28 12 42 0" fill="none" stroke="#151515" stroke-width="8" stroke-linecap="round"/>
+  <path d="M78 286c6-58 43-96 82-96s76 38 82 96H78z" fill="#1f5cff"/>
+  <path d="M105 203l55 34 55-34" fill="none" stroke="#050505" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M222 180l54 18v36c0 34-19 56-54 70-35-14-54-36-54-70v-36l54-18z" fill="#ffffff" stroke="#050505" stroke-width="10" stroke-linejoin="round"/>
+  <path d="M222 202v74M195 230h54" stroke="#ff5a1f" stroke-width="12" stroke-linecap="round"/>
+</svg>

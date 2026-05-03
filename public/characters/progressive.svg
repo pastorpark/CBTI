@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320" role="img" aria-labelledby="title desc">
+  <title id="title">진보적 포용형 캐릭터</title>
+  <desc id="desc">무지개 스카프를 두른 진보적 포용형 캐릭터</desc>
+  <rect width="320" height="320" rx="64" fill="#f4ecff"/>
+  <circle cx="160" cy="118" r="58" fill="#ffd4b8"/>
+  <path d="M101 125c-1-54 45-78 92-60 28 11 38 36 27 62-30-24-76-26-119-2z" fill="#151515"/>
+  <circle cx="138" cy="126" r="7" fill="#050505"/>
+  <circle cx="182" cy="126" r="7" fill="#050505"/>
+  <path d="M139 156c14 14 28 14 42 0" fill="none" stroke="#050505" stroke-width="8" stroke-linecap="round"/>
+  <path d="M76 286c8-58 45-94 84-94s76 36 84 94H76z" fill="#ff5a1f"/>
+  <path d="M100 204c40 25 82 25 120 0" fill="none" stroke="#ff2b2b" stroke-width="12" stroke-linecap="round"/>
+  <path d="M106 220c35 21 73 21 108 0" fill="none" stroke="#ffd84a" stroke-width="12" stroke-linecap="round"/>
+  <path d="M113 236c31 17 63 17 94 0" fill="none" stroke="#1f5cff" stroke-width="12" stroke-linecap="round"/>
+  <circle cx="246" cy="196" r="22" fill="#ffffff" stroke="#050505" stroke-width="8"/>
+  <path d="M235 196h22M246 185v22" stroke="#1f5cff" stroke-width="7" stroke-linecap="round"/>
+</svg>

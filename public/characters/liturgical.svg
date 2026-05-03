@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320" role="img" aria-labelledby="title desc">
+  <title id="title">예전 전통형 캐릭터</title>
+  <desc id="desc">초와 성찬 잔을 든 예전 전통형 캐릭터</desc>
+  <rect width="320" height="320" rx="64" fill="#f5f2ea"/>
+  <circle cx="160" cy="120" r="58" fill="#ffd4b8"/>
+  <path d="M96 122c12-55 114-58 128 0-34-22-92-22-128 0z" fill="#151515"/>
+  <circle cx="138" cy="126" r="7" fill="#050505"/>
+  <circle cx="182" cy="126" r="7" fill="#050505"/>
+  <path d="M142 155c12 9 24 9 36 0" fill="none" stroke="#050505" stroke-width="8" stroke-linecap="round"/>
+  <path d="M76 286c8-58 45-94 84-94s76 36 84 94H76z" fill="#5b3fd6"/>
+  <path d="M123 198h74l-12 88h-50l-12-88z" fill="#ffffff" stroke="#050505" stroke-width="9" stroke-linejoin="round"/>
+  <path d="M120 196h80" stroke="#ffd84a" stroke-width="12" stroke-linecap="round"/>
+  <rect x="82" y="188" width="28" height="82" rx="10" fill="#ffffff" stroke="#050505" stroke-width="8"/>
+  <path d="M96 162c18 19 18 29 0 42-18-13-18-23 0-42z" fill="#ff5a1f" stroke="#050505" stroke-width="7" stroke-linejoin="round"/>
+</svg>

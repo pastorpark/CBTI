@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320" role="img" aria-labelledby="title desc">
+  <title id="title">관계 중심형 캐릭터</title>
+  <desc id="desc">따뜻한 컵과 대화 말풍선을 가진 관계 중심형 캐릭터</desc>
+  <rect width="320" height="320" rx="64" fill="#fff6ea"/>
+  <circle cx="160" cy="120" r="58" fill="#ffd4b8"/>
+  <path d="M98 122c10-54 112-61 126 0-31-21-89-23-126 0z" fill="#2b201a"/>
+  <circle cx="138" cy="126" r="7" fill="#050505"/>
+  <circle cx="182" cy="126" r="7" fill="#050505"/>
+  <path d="M139 154c14 13 28 13 42 0" fill="none" stroke="#050505" stroke-width="8" stroke-linecap="round"/>
+  <path d="M76 286c8-58 45-94 84-94s76 36 84 94H76z" fill="#ffd84a"/>
+  <path d="M92 203h82v52c0 22-18 40-41 40s-41-18-41-40v-52z" fill="#ffffff" stroke="#050505" stroke-width="9"/>
+  <path d="M174 218h12c16 0 24 10 24 22s-8 22-24 22h-12" fill="none" stroke="#050505" stroke-width="9"/>
+  <path d="M223 177h54c14 0 24 10 24 22v12c0 12-10 22-24 22h-24l-26 22 5-22h-9c-14 0-24-10-24-22v-12c0-12 10-22 24-22z" fill="#1f5cff" stroke="#050505" stroke-width="8" stroke-linejoin="round"/>
+  <path d="M235 205h30" stroke="#ffffff" stroke-width="8" stroke-linecap="round"/>
+</svg>
