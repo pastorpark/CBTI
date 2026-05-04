@@ -37,6 +37,12 @@ export default function AdminStatsPage() {
   const [mode, setMode] = useState<"deduped" | "all">("deduped");
 
   const activeStats = useMemo(() => stats?.[mode], [mode, stats]);
+  const personaScaleMax = useMemo(() => {
+    const maxCount = Math.max(0, ...Object.values(activeStats?.byPersona ?? {}));
+    return maxCount > 0 ? Math.ceil(maxCount / 100) * 100 : 100;
+  }, [activeStats]);
+  const recentDayStats = useMemo(() => activeStats?.byDay.slice(-14) ?? [], [activeStats]);
+  const dayScaleMax = useMemo(() => getScaleMax(recentDayStats.map((item) => item.count)), [recentDayStats]);
 
   useEffect(() => {
     loadStats();
@@ -161,13 +167,13 @@ export default function AdminStatsPage() {
             {activeStats &&
               Object.entries(activeStats.byPersona).map(([key, count]) => {
                 const personaKey = key as PersonaKey;
-                const percent = activeStats.total > 0 ? Math.round((count / activeStats.total) * 100) : 0;
+                const percent = (count / personaScaleMax) * 100;
 
                 return (
                   <div className="score-row" key={key}>
                     <span>{personaLabels[personaKey]}</span>
                     <div className="score-bar">
-                      <span style={{ width: `${Math.max(4, percent)}%` }} />
+                      <span style={{ width: `${count > 0 ? Math.max(4, percent) : 0}%` }} />
                     </div>
                     <b>{count}</b>
                   </div>
@@ -179,12 +185,12 @@ export default function AdminStatsPage() {
         <section className="admin-card" style={{ marginTop: 14 }}>
           <h2>일자별 완료 수</h2>
           <div className="denomination-list">
-            {activeStats?.byDay.length ? (
-              activeStats.byDay.slice(-14).map((item) => (
+            {recentDayStats.length ? (
+              recentDayStats.map((item) => (
                 <div className="score-row" key={item.date}>
                   <span>{item.date}</span>
                   <div className="score-bar">
-                    <span style={{ width: `${Math.max(4, (item.count / Math.max(1, activeStats.total)) * 100)}%` }} />
+                    <span style={{ width: `${getBarWidth(item.count, dayScaleMax)}%` }} />
                   </div>
                   <b>{item.count}</b>
                 </div>
@@ -203,12 +209,12 @@ export default function AdminStatsPage() {
                 <strong>Q{index + 1}. {question.title}</strong>
                 <div className="score-list">
                   {question.options.map((option) => {
-                    const percent = activeStats.total > 0 ? Math.round((option.count / activeStats.total) * 100) : 0;
+                    const questionScaleMax = getScaleMax(question.options.map((item) => item.count));
                     return (
                       <div className="score-row" key={option.optionId}>
                         <span>{option.label}</span>
                         <div className="score-bar">
-                          <span style={{ width: `${Math.max(4, percent)}%` }} />
+                          <span style={{ width: `${getBarWidth(option.count, questionScaleMax)}%` }} />
                         </div>
                         <b>{option.count}</b>
                       </div>
@@ -231,4 +237,17 @@ function Metric({ label, value }: { label: string; value: string | number }) {
       <h2>{value}</h2>
     </div>
   );
+}
+
+function getScaleMax(values: number[]) {
+  const maxCount = Math.max(0, ...values);
+  return maxCount > 0 ? Math.ceil(maxCount / 100) * 100 : 100;
+}
+
+function getBarWidth(value: number, scaleMax: number) {
+  if (value <= 0) {
+    return 0;
+  }
+
+  return Math.max(4, (value / scaleMax) * 100);
 }
