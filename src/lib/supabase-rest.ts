@@ -50,12 +50,10 @@ async function fetchPaginated<T>(url: string, key: string, maxRows = 50000) {
   let from = 0;
 
   while (allRows.length < maxRows) {
-    const to = from + batchSize - 1;
-    const response = await fetch(`${url}&limit=${batchSize}`, {
+    const response = await fetch(`${url}&limit=${batchSize}&offset=${from}`, {
       headers: {
         apikey: key,
-        Authorization: `Bearer ${key}`,
-        Range: `${from}-${to}`
+        Authorization: `Bearer ${key}`
       },
       cache: "no-store"
     });
