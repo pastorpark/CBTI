@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import "./globals.css";
 
-const siteUrl = "https://cbti.pastorpark.net";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://cbti.pastorpark.net";
 const siteName = "나의 신앙 유형 찾기 - CBTI";
 const description = "15개의 질문을 통해 나의 신앙 성향을 살펴보고, 나와 잘 맞는 신앙 유형과 추천 교파를 확인해보세요.";
 
@@ -33,6 +33,12 @@ export const metadata: Metadata = {
   },
   alternates: {
     canonical: "/"
+  },
+  verification: {
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || "",
+    other: {
+      "naver-site-verification": process.env.NEXT_PUBLIC_NAVER_SITE_VERIFICATION || ""
+    }
   },
   openGraph: {
     title: siteName,

@@ -28,6 +28,9 @@ export async function generateMetadata({ params }: ResultPageProps): Promise<Met
   return {
     title: label,
     description: `나의 신앙 유형은 ${label}. ${result.subtitle}`,
+    alternates: {
+      canonical: `/result/${type}`
+    },
     openGraph: {
       title: `${label} - 나의 신앙 유형 찾기 CBTI`,
       description: `나의 신앙 유형은 ${label}. ${result.subtitle}`,

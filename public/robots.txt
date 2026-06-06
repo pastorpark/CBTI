@@ -9,3 +9,5 @@ Allow: /
 
 User-agent: meta-externalfetcher
 Allow: /
+
+Sitemap: https://cbti.pastorpark.net/sitemap.xml
