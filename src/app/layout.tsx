@@ -14,6 +14,16 @@ export const metadata: Metadata = {
   },
   description,
   applicationName: siteName,
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/icon.png", type: "image/png", sizes: "32x32" }
+    ],
+    shortcut: "/favicon.ico",
+    apple: [
+      { url: "/apple-icon.png", type: "image/png", sizes: "180x180" }
+    ]
+  },
   keywords: [
     "CBTI",
     "크리스천 테스트",
