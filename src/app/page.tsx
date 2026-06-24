@@ -1,28 +1,44 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { personaEnglishLabels, personaLabels, personaResults, questions } from "@/data/test";
+import {
+  defaultSurveyId,
+  nutritionResults,
+  nutritionTieBreakerOrder,
+  personaEnglishLabels,
+  personaLabels,
+  personaResults,
+  surveys,
+  surveyMap,
+  tieBreakerOrder
+} from "@/data/test";
 import { getResultUrl } from "@/lib/result-url";
-import { calculateScores, getClosePersonas, getSortedScores, resolvePrimaryPersona } from "@/lib/scoring";
+import { calculateScores, getClosePersonas, getSortedResultScores, resolvePrimaryResult } from "@/lib/scoring";
 import { submitResult } from "@/lib/submissions";
 import { getVisitorId } from "@/lib/visitor";
 import { submitVisit } from "@/lib/visits";
-import type { Answer, Question } from "@/types/test";
+import type { Answer, NutritionKey, PersonaKey, Question, ResultKey, SurveyId } from "@/types/test";
 
 type Stage = "intro" | "questions" | "loading" | "result";
 
 export default function Home() {
   const [stage, setStage] = useState<Stage>("intro");
+  const [activeSurveyId, setActiveSurveyId] = useState<SurveyId>(defaultSurveyId);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState<Answer[]>([]);
-  const [sessionQuestions, setSessionQuestions] = useState<Question[]>(() => shuffleQuestions(questions));
+  const [sessionQuestions, setSessionQuestions] = useState<Question[]>(() => shuffleQuestions(surveyMap[defaultSurveyId].questions));
   const submittedRef = useRef(false);
 
-  const scores = useMemo(() => calculateScores(answers), [answers]);
-  const primary = useMemo(() => resolvePrimaryPersona(scores), [scores]);
-  const result = personaResults[primary];
-  const closePersonas = getClosePersonas(scores, primary);
-  const sortedScores = getSortedScores(scores);
+  const activeSurvey = surveyMap[activeSurveyId];
+  const scores = useMemo(() => calculateScores(answers, sessionQuestions, activeSurvey.resultKeys), [activeSurvey.resultKeys, answers, sessionQuestions]);
+  const tieBreakers = activeSurveyId === "additional" ? nutritionTieBreakerOrder : tieBreakerOrder;
+  const primary = useMemo(() => resolvePrimaryResult(scores, activeSurvey.resultKeys, tieBreakers), [activeSurvey.resultKeys, scores, tieBreakers]);
+  const personaPrimary = primary as PersonaKey;
+  const nutritionPrimary = primary as NutritionKey;
+  const personaResult = activeSurveyId === "cbti" ? personaResults[personaPrimary] : null;
+  const nutritionResult = activeSurveyId === "additional" ? nutritionResults[nutritionPrimary] : null;
+  const closePersonas = activeSurveyId === "cbti" ? getClosePersonas(scores as Record<PersonaKey, number>, personaPrimary) : [];
+  const sortedScores = getSortedResultScores(scores, activeSurvey.resultKeys);
 
   useEffect(() => {
     submitVisit({
@@ -44,10 +60,11 @@ export default function Home() {
   }, [stage]);
 
   useEffect(() => {
-    if (stage !== "result" || submittedRef.current || answers.length !== questions.length) return;
+    if (stage !== "result" || submittedRef.current || answers.length !== sessionQuestions.length) return;
 
     submittedRef.current = true;
     submitResult({
+      surveyId: activeSurveyId,
       visitorId: getVisitorId(),
       primaryPersona: primary,
       scores,
@@ -55,12 +72,14 @@ export default function Home() {
     }).catch((error) => {
       console.warn(error);
     });
-  }, [answers, primary, scores, stage]);
+  }, [activeSurveyId, answers, primary, scores, sessionQuestions.length, stage]);
 
-  function start() {
+  function start(surveyId: SurveyId = activeSurveyId) {
+    const survey = surveyMap[surveyId];
+    setActiveSurveyId(surveyId);
     setAnswers([]);
     setCurrentIndex(0);
-    setSessionQuestions(shuffleQuestions(questions));
+    setSessionQuestions(shuffleQuestions(survey.questions));
     submittedRef.current = false;
     setStage("questions");
   }
@@ -96,7 +115,8 @@ export default function Home() {
 
   const question = sessionQuestions[currentIndex];
   const progress = stage === "questions" ? ((currentIndex + 1) / sessionQuestions.length) * 100 : 100;
-  const resultUrl = getResultUrl(primary);
+  const resultUrl = getResultUrl(primary, activeSurveyId);
+  const scoreScaleMax = activeSurveyId === "additional" ? activeSurvey.questions.length : 5;
 
   return (
     <main className="app-shell">
@@ -108,15 +128,19 @@ export default function Home() {
               <span className="brand-full">Christian Belief Type Indicator</span>
             </div>
             <div className="intro-copy">
-              <h1 className="hero-title">나는 어떤 크리스천일까?</h1>
+              <h1 className="hero-title">신앙유형검사</h1>
               <p className="lead">
-                15개의 질문을 통해 나의 신앙 성향을 살펴보고, 잘 맞는 신앙 유형과 추천 교파를 확인해보세요.
+                원하는 설문을 선택해 보세요.
               </p>
             </div>
-            <div className="actions">
-              <button className="button" onClick={start}>
-                테스트 시작하기
-              </button>
+            <div className="survey-picker" aria-label="설문 선택">
+              {surveys.map((survey) => (
+                <button key={survey.id} className="survey-card" onClick={() => start(survey.id)}>
+                  <span className="survey-card-kicker">{survey.questions.length}개 문항</span>
+                  <strong>{survey.title}</strong>
+                  <span>{survey.description}</span>
+                </button>
+              ))}
             </div>
           </section>
         )}
@@ -160,26 +184,26 @@ export default function Home() {
           </section>
         )}
 
-        {stage === "result" && (
+        {stage === "result" && personaResult && (
           <>
             <section className="result-header">
               <div className="result-hero-copy">
                 <span className="result-type-label">
-                  나의 신앙 유형 - {personaEnglishLabels[primary]}
-                  <img className="result-character-icon" src={result.characterImage} alt={`${personaLabels[primary]} 캐릭터`} />
+                  나의 신앙 유형 - {personaEnglishLabels[personaPrimary]}
+                  <img className="result-character-icon" src={personaResult.characterImage} alt={`${personaLabels[personaPrimary]} 캐릭터`} />
                 </span>
-                <h1 className="hero-title result-title">{result.title}</h1>
-                <p className="lead">{result.subtitle}</p>
+                <h1 className="hero-title result-title">{personaResult.title}</h1>
+                <p className="lead">{personaResult.subtitle}</p>
               </div>
               <div className="keyword-row">
-                {result.keywords.map((keyword) => (
+                {personaResult.keywords.map((keyword) => (
                   <span className="keyword" key={keyword}>#{keyword}</span>
                 ))}
               </div>
             </section>
             <section className="section">
               <div className="result-section">
-                <p className="lead">{result.description}</p>
+                <p className="lead">{personaResult.description}</p>
                 {closePersonas.length > 0 && (
                   <p className="small">
                     함께 돋보인 성향: {closePersonas.map((key) => personaLabels[key]).join(", ")}
@@ -190,18 +214,18 @@ export default function Home() {
                 <div className="insight-grid">
                   <article className="insight-card">
                     <h2>✨ 빛나는 나의 영적 강점</h2>
-                    <p>{result.spiritualStrength}</p>
+                    <p>{personaResult.spiritualStrength}</p>
                   </article>
                   <article className="insight-card">
                     <h2>🌱 영적 성장을 위한 추천 루틴</h2>
-                    <p>{result.growthRoutine}</p>
+                    <p>{personaResult.growthRoutine}</p>
                   </article>
                 </div>
               </div>
               <div className="result-section">
                 <h2>이런 교파가 잘 맞을지도</h2>
                 <div className="denomination-list">
-                  {result.denominations.map((item, index) => (
+                  {personaResult.denominations.map((item, index) => (
                     <div className="list-item" key={item.name}>
                       <strong>{index + 1}. {item.name}</strong>
                       <span className="small">{item.description}</span>
@@ -217,9 +241,9 @@ export default function Home() {
                 <div className="score-list">
                   {sortedScores.map(({ key, score }) => (
                     <div className="score-row" key={key}>
-                      <span>{personaLabels[key]}</span>
+                      <span>{activeSurvey.resultLabels[key]}</span>
                       <div className="score-bar">
-                        <span style={{ width: `${Math.max(4, (score / 5) * 100)}%` }} />
+                        <span style={{ width: `${Math.max(4, (score / scoreScaleMax) * 100)}%` }} />
                       </div>
                       <b>{score}</b>
                     </div>
@@ -237,7 +261,73 @@ export default function Home() {
                 </div>
               </section>
               <div className="actions">
-                <button className="button secondary" onClick={start}>다시 테스트 하기</button>
+                <button className="button secondary" onClick={() => start(activeSurvey.id)}>다시 테스트 하기</button>
+              </div>
+            </section>
+          </>
+        )}
+
+        {stage === "result" && nutritionResult && (
+          <>
+            <section className="result-header nutrition-result-header">
+              <div className="result-hero-copy">
+                <span className="result-type-label">나의 영적 영양상태 - {nutritionResult.key}</span>
+                <h1 className="hero-title result-title">{nutritionResult.title}</h1>
+                <p className="lead">{nutritionResult.status}</p>
+              </div>
+              <div className="keyword-row">
+                {nutritionResult.keywords.map((keyword) => (
+                  <span className="keyword" key={keyword}>#{keyword}</span>
+                ))}
+              </div>
+            </section>
+            <section className="section">
+              <div className="result-section">
+                <p className="lead">{nutritionResult.description}</p>
+                {sortedScores[1] && sortedScores[1].score === sortedScores[0].score && (
+                  <p className="small">
+                    {activeSurvey.resultLabels[sortedScores[1].key]} 영양소도 함께 부족하네요!
+                  </p>
+                )}
+              </div>
+              <div className="result-section">
+                <div className="insight-grid">
+                  <article className="insight-card">
+                    <h2>맞춤 처방</h2>
+                    <p>{nutritionResult.recommendation}</p>
+                  </article>
+                  <article className="insight-card">
+                    <h2>뉴스레터 초대</h2>
+                    <p>{nutritionResult.cta}</p>
+                  </article>
+                </div>
+              </div>
+              <div className="result-section">
+                <h2>나의 영적 영양 스탯</h2>
+                <div className="score-list">
+                  {sortedScores.map(({ key, score }) => (
+                    <div className="score-row" key={key}>
+                      <span>{activeSurvey.resultLabels[key]}</span>
+                      <div className="score-bar">
+                        <span style={{ width: `${Math.max(4, (score / scoreScaleMax) * 100)}%` }} />
+                      </div>
+                      <b>{score}</b>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <section className="share-panel">
+                <div className="share-box">
+                  <h2>결과 공유하기</h2>
+                  <p>지금 나에게 필요한 영적 영양소를 친구들과 공유해보세요</p>
+                  <div className="share-row">
+                    <input id="result-url" className="share-input" readOnly value={resultUrl} />
+                    <button className="button compact" onClick={copyResultUrl}>복사하기</button>
+                  </div>
+                </div>
+              </section>
+              <div className="actions">
+                <button className="button secondary" onClick={() => start(activeSurvey.id)}>다시 테스트 하기</button>
               </div>
             </section>
           </>

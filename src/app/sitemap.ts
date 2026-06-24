@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { personaKeys } from "@/data/test";
+import { nutritionKeys, personaKeys } from "@/data/test";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://cbti.pastorpark.net";
@@ -20,5 +20,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.8,
   }));
 
-  return [...mainSitemap, ...resultSitemaps];
+  const nutritionResultSitemaps = nutritionKeys.map((key) => ({
+    url: `${siteUrl}/result/additional/${key}`,
+    lastModified: new Date(),
+    changeFrequency: "monthly" as const,
+    priority: 0.8,
+  }));
+
+  return [...mainSitemap, ...resultSitemaps, ...nutritionResultSitemaps];
 }

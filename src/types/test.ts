@@ -7,8 +7,12 @@ export type PersonaKey =
   | "Charismatic"
   | "Relational";
 
+export type NutritionKey = "CARB" | "PROTEIN" | "VITAMIN" | "MINERAL" | "PROBIOTICS";
+
+export type ResultKey = PersonaKey | NutritionKey;
+
 export type WeightedScore = {
-  persona: PersonaKey;
+  persona: ResultKey;
   weight: number;
 };
 
@@ -29,6 +33,18 @@ export type Answer = {
   optionId: string;
 };
 
+export type SurveyId = "cbti" | "additional";
+
+export type Survey = {
+  id: SurveyId;
+  title: string;
+  description: string;
+  questions: Question[];
+  resultKeys: ResultKey[];
+  resultLabels: Record<string, string>;
+};
+
+export type ResultScores = Record<string, number>;
 export type PersonaScores = Record<PersonaKey, number>;
 
 export type PersonaResult = {
@@ -45,4 +61,14 @@ export type PersonaResult = {
     description: string;
   }[];
   tone: string;
+};
+
+export type NutritionResult = {
+  key: NutritionKey;
+  title: string;
+  status: string;
+  description: string;
+  recommendation: string;
+  cta: string;
+  keywords: string[];
 };

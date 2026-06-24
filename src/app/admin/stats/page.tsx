@@ -1,26 +1,33 @@
 "use client";
 
 import { FormEvent, useEffect, useMemo, useState } from "react";
-import { personaLabels } from "@/data/test";
-import type { PersonaKey } from "@/types/test";
+import { defaultSurveyId } from "@/data/test";
+import type { SurveyId } from "@/types/test";
 
 type StatsResponse = {
   configured: boolean;
   total: number;
   uniqueVisitors: number;
   duplicateRate: number;
+  surveys: {
+    id: SurveyId;
+    title: string;
+    description: string;
+    questionCount: number;
+    resultLabels: Record<string, string>;
+  }[];
   visits: {
     total: number;
     uniqueVisitors: number;
     byDay: { date: string; count: number }[];
   };
-  all: StatsBucket;
-  deduped: StatsBucket;
+  all: Record<SurveyId, StatsBucket>;
+  deduped: Record<SurveyId, StatsBucket>;
 };
 
 type StatsBucket = {
   total: number;
-  byPersona: Record<PersonaKey, number>;
+  byPersona: Record<string, number>;
   byDay: { date: string; count: number }[];
   byQuestion: {
     id: string;
@@ -35,8 +42,10 @@ export default function AdminStatsPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
   const [mode, setMode] = useState<"deduped" | "all">("deduped");
+  const [activeSurveyId, setActiveSurveyId] = useState<SurveyId>(defaultSurveyId);
 
-  const activeStats = useMemo(() => stats?.[mode], [mode, stats]);
+  const activeStats = useMemo(() => stats?.[mode][activeSurveyId], [activeSurveyId, mode, stats]);
+  const activeSurvey = useMemo(() => stats?.surveys.find((survey) => survey.id === activeSurveyId), [activeSurveyId, stats]);
   const personaScaleMax = useMemo(() => {
     const maxCount = Math.max(0, ...Object.values(activeStats?.byPersona ?? {}));
     return maxCount > 0 ? Math.ceil(maxCount / 100) * 100 : 100;
@@ -152,13 +161,27 @@ export default function AdminStatsPage() {
           </div>
         </section>
 
+        <section className="survey-admin-grid" style={{ marginTop: 14 }} aria-label="설문 선택">
+          {stats.surveys.map((survey) => (
+            <button
+              key={survey.id}
+              className={`survey-card admin-survey-card ${activeSurveyId === survey.id ? "active" : ""}`}
+              onClick={() => setActiveSurveyId(survey.id)}
+            >
+              <span className="survey-card-kicker">{survey.questionCount}개 문항</span>
+              <strong>{survey.title}</strong>
+              <span>{survey.description}</span>
+            </button>
+          ))}
+        </section>
+
         <section className="stats-grid" style={{ marginTop: 14 }}>
           <Metric label="전체 접속" value={stats.visits.total} />
           <Metric label="고유 접속자" value={stats.visits.uniqueVisitors} />
           <Metric label="전체 완료" value={stats.total} />
           <Metric label="중복 제거 방문자" value={stats.uniqueVisitors} />
           <Metric label="중복 의심 비율" value={`${stats.duplicateRate}%`} />
-          <Metric label="현재 기준 완료" value={activeStats?.total ?? 0} />
+          <Metric label="선택 설문 완료" value={activeStats?.total ?? 0} />
         </section>
 
         <section className="admin-card" style={{ marginTop: 14 }}>
@@ -166,12 +189,11 @@ export default function AdminStatsPage() {
           <div className="score-list">
             {activeStats &&
               Object.entries(activeStats.byPersona).map(([key, count]) => {
-                const personaKey = key as PersonaKey;
                 const percent = (count / personaScaleMax) * 100;
 
                 return (
                   <div className="score-row" key={key}>
-                    <span>{personaLabels[personaKey]}</span>
+                    <span>{activeSurvey?.resultLabels[key] ?? key}</span>
                     <div className="score-bar">
                       <span style={{ width: `${count > 0 ? Math.max(4, percent) : 0}%` }} />
                     </div>

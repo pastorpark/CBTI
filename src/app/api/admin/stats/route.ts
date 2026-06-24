@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
-import { personaKeys, questions } from "@/data/test";
+import { defaultSurveyId, surveyMap, surveys } from "@/data/test";
 import { isAdminAuthenticated } from "@/lib/admin-auth";
 import { fetchSubmissions, fetchVisits, hasSupabaseConfig } from "@/lib/supabase-rest";
+import type { Survey, SurveyId } from "@/types/test";
 
 type SubmissionRow = Awaited<ReturnType<typeof fetchSubmissions>>[number];
 type VisitRow = Awaited<ReturnType<typeof fetchVisits>>[number];
@@ -10,12 +11,17 @@ function startOfDay(value: Date) {
   return value.toISOString().slice(0, 10);
 }
 
+function normalizeSurveyId(value: string | null | undefined): SurveyId {
+  return value && value in surveyMap ? (value as SurveyId) : defaultSurveyId;
+}
+
 function getDedupedRows(rows: SubmissionRow[]) {
   const byVisitor = new Map<string, SubmissionRow>();
 
   for (const row of rows) {
-    if (!byVisitor.has(row.visitor_hash)) {
-      byVisitor.set(row.visitor_hash, row);
+    const key = `${normalizeSurveyId(row.survey_id)}:${row.visitor_hash}`;
+    if (!byVisitor.has(key)) {
+      byVisitor.set(key, row);
     }
   }
 
@@ -43,11 +49,11 @@ function aggregateVisits(rows: VisitRow[]) {
   };
 }
 
-function aggregate(rows: SubmissionRow[]) {
-  const byPersona = Object.fromEntries(personaKeys.map((key) => [key, 0]));
+function aggregate(rows: SubmissionRow[], survey: Survey) {
+  const byPersona = Object.fromEntries(survey.resultKeys.map((key) => [key, 0]));
   const byDay: Record<string, number> = {};
   const byQuestion = Object.fromEntries(
-    questions.map((question) => [
+    survey.questions.map((question) => [
       question.id,
       {
         title: question.title,
@@ -88,6 +94,25 @@ function aggregate(rows: SubmissionRow[]) {
   };
 }
 
+function aggregateBySurvey(rows: SubmissionRow[]) {
+  return Object.fromEntries(
+    surveys.map((survey) => {
+      const surveyRows = rows.filter((row) => normalizeSurveyId(row.survey_id) === survey.id);
+      return [survey.id, aggregate(surveyRows, survey)];
+    })
+  );
+}
+
+function getSurveySummaries() {
+  return surveys.map((survey) => ({
+    id: survey.id,
+    title: survey.title,
+    description: survey.description,
+    questionCount: survey.questions.length,
+    resultLabels: survey.resultLabels
+  }));
+}
+
 export async function GET() {
   if (!(await isAdminAuthenticated())) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -97,12 +122,13 @@ export async function GET() {
     if (!hasSupabaseConfig()) {
       return NextResponse.json({
         configured: false,
+        surveys: getSurveySummaries(),
         total: 0,
         uniqueVisitors: 0,
         duplicateRate: 0,
         visits: aggregateVisits([]),
-        all: aggregate([]),
-        deduped: aggregate([])
+        all: aggregateBySurvey([]),
+        deduped: aggregateBySurvey([])
       });
     }
 
@@ -116,12 +142,13 @@ export async function GET() {
 
     return NextResponse.json({
       configured: true,
+      surveys: getSurveySummaries(),
       total: rows.length,
       uniqueVisitors: dedupedRows.length,
       duplicateRate,
       visits: aggregateVisits(visitRows),
-      all: aggregate(rows),
-      deduped: aggregate(dedupedRows)
+      all: aggregateBySurvey(rows),
+      deduped: aggregateBySurvey(dedupedRows)
     });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Unknown Supabase error";

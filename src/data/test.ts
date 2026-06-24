@@ -1,4 +1,4 @@
-import type { PersonaKey, PersonaResult, Question } from "@/types/test";
+import type { NutritionKey, NutritionResult, PersonaKey, PersonaResult, Question, Survey, SurveyId } from "@/types/test";
 
 export const personaKeys: PersonaKey[] = [
   "Orthodox",
@@ -38,6 +38,18 @@ export const personaEnglishLabels: Record<PersonaKey, string> = {
   Liturgical: "Liturgical Christian",
   Charismatic: "Charismatic Christian",
   Relational: "Relational Christian"
+};
+
+export const nutritionKeys: NutritionKey[] = ["CARB", "PROTEIN", "VITAMIN", "MINERAL", "PROBIOTICS"];
+
+export const nutritionTieBreakerOrder: NutritionKey[] = ["CARB", "PROTEIN", "VITAMIN", "MINERAL", "PROBIOTICS"];
+
+export const nutritionLabels: Record<NutritionKey, string> = {
+  CARB: "건강한 탄수화물",
+  PROTEIN: "따뜻한 단백질",
+  VITAMIN: "사회적 비타민",
+  MINERAL: "일상 미네랄",
+  PROBIOTICS: "영적 유산균"
 };
 
 export const questions: Question[] = [
@@ -214,6 +226,199 @@ export const questions: Question[] = [
     ]
   }
 ];
+
+export const additionalQuestions: Question[] = [
+  {
+    id: "additional-q1",
+    title: "주일 설교를 듣고 왠지 모르게 마음이 답답해질 때, 그 이유는 주로 무엇인가요?",
+    options: [
+      { id: "additional-q1-o1", label: "\"이 본문을 저렇게 해석한다고?\" 지적, 논리적 갈증이 채워지지 않아서.", scores: [{ persona: "CARB", weight: 1 }] },
+      { id: "additional-q1-o2", label: "이 답답함을 솔직하게 털어놓고 공감받을 안전한 사람이 없어서.", scores: [{ persona: "PROTEIN", weight: 1 }] },
+      { id: "additional-q1-o3", label: "세상의 고통과는 너무 동떨어진, 교회 안의 이야기만 해서.", scores: [{ persona: "VITAMIN", weight: 1 }] },
+      { id: "additional-q1-o4", label: "끊임없이 이어지는 봉사와 사역 스케줄 때문에 내 영혼이 쉴 틈이 없어서.", scores: [{ persona: "MINERAL", weight: 1 }] },
+      { id: "additional-q1-o5", label: "덮어놓고 믿으라는 식의 강요나 배타적인 표현에 마음의 상처를 받아서.", scores: [{ persona: "PROBIOTICS", weight: 1 }] }
+    ]
+  },
+  {
+    id: "additional-q2",
+    title: "교회 소그룹 모임에서 가장 숨 막히고 피하고 싶은 순간은?",
+    options: [
+      { id: "additional-q2-o1", label: "깊이 있는 나눔 없이 뻔한 정답이나 교리만 앵무새처럼 반복할 때", scores: [{ persona: "CARB", weight: 1 }] },
+      { id: "additional-q2-o2", label: "내 진짜 솔직한 고민을 꺼냈는데 누군가 정죄하거나 가르치려 들 때", scores: [{ persona: "PROTEIN", weight: 1 }] },
+      { id: "additional-q2-o3", label: "세상과 직장 생활의 고충은 외면한 채, 우리끼리의 영적인 이야기만 할 때", scores: [{ persona: "VITAMIN", weight: 1 }] },
+      { id: "additional-q2-o4", label: "모임이 끝난 후에도 계속되는 사역 지시나 억지 친목으로 피곤하게 할 때", scores: [{ persona: "MINERAL", weight: 1 }] },
+      { id: "additional-q2-o5", label: "목회자나 리더의 말에 무조건적인 순종을 강요하며 개인의 생각을 억압할 때", scores: [{ persona: "PROBIOTICS", weight: 1 }] }
+    ]
+  },
+  {
+    id: "additional-q3",
+    title: "기독교나 교회와 관련된 논란이 되는 사회 뉴스를 볼 때, 나의 주된 반응은?",
+    options: [
+      { id: "additional-q3-o1", label: "현상의 원인이 무엇인지 역사적/신학적으로 깊이 있게 분석한 글을 찾아 읽는다.", scores: [{ persona: "CARB", weight: 1 }] },
+      { id: "additional-q3-o2", label: "혼자 끙끙 앓기보다, 이 뉴스에 대해 말이 통하는 지인들과 안타까움을 나눈다.", scores: [{ persona: "PROTEIN", weight: 1 }] },
+      { id: "additional-q3-o3", label: "비판에서 끝나지 않고, 서명 운동이나 단체 후원 등 내가 할 수 있는 행동을 찾는다.", scores: [{ persona: "VITAMIN", weight: 1 }] },
+      { id: "additional-q3-o4", label: "정보의 홍수 속에서 피로감을 느끼며, 잠시 뉴스를 끄고 내 마음을 지키는 시간을 갖는다.", scores: [{ persona: "MINERAL", weight: 1 }] },
+      { id: "additional-q3-o5", label: "혐오를 정당화하는 기독교의 모습에 분노하며, 낡은 체질이 완전히 바뀌어야 한다고 생각한다.", scores: [{ persona: "PROBIOTICS", weight: 1 }] }
+    ]
+  },
+  {
+    id: "additional-q4",
+    title: "일상 속에서 나의 신앙을 지켜가기 위해, 지금 나에게 가장 필요한 시간은?",
+    options: [
+      { id: "additional-q4-o1", label: "혼자 읽기 어려웠던 신앙/인문학 책을 사람들과 꼼꼼히 파고드는 시간", scores: [{ persona: "CARB", weight: 1 }] },
+      { id: "additional-q4-o2", label: "정답을 강요하지 않는 사람들과 일상과 고민을 나누는 따뜻한 대화 시간", scores: [{ persona: "PROTEIN", weight: 1 }] },
+      { id: "additional-q4-o3", label: "환경, 인권 등 세상의 문제에 기독교적 가치관으로 참여하고 연대하는 시간", scores: [{ persona: "VITAMIN", weight: 1 }] },
+      { id: "additional-q4-o4", label: "거창한 모임보다는 조용히 일기를 쓰며 텅 빈 내면을 채우는 묵상의 시간", scores: [{ persona: "MINERAL", weight: 1 }] },
+      { id: "additional-q4-o5", label: "과거의 강압적인 신앙의 틀을 깨고, 건강한 관점으로 내 신앙을 재구성하는 시간", scores: [{ persona: "PROBIOTICS", weight: 1 }] }
+    ]
+  },
+  {
+    id: "additional-q5",
+    title: "유튜브나 팟캐스트 등 기독교 콘텐츠를 찾아볼 때, 주로 클릭하게 되는 주제는?",
+    options: [
+      { id: "additional-q5-o1", label: "평소 이해가 안 갔던 성경 구절이나 교리에 대한 명쾌한 신학적 해설", scores: [{ persona: "CARB", weight: 1 }] },
+      { id: "additional-q5-o2", label: "나와 비슷한 고민과 방황을 겪고 있는 사람들의 진솔한 신앙 에세이와 대화", scores: [{ persona: "PROTEIN", weight: 1 }] },
+      { id: "additional-q5-o3", label: "기후위기, 노동, 인권 등 현대 사회 문제에 응답하는 기독교의 실천적 메시지", scores: [{ persona: "VITAMIN", weight: 1 }] },
+      { id: "additional-q5-o4", label: "복잡한 생각 없이 마음을 평안하게 해주는 잔잔한 묵상 음악이나 일상 브이로그", scores: [{ persona: "MINERAL", weight: 1 }] },
+      { id: "additional-q5-o5", label: "기독교 내의 부조리를 꼬집고 낡은 신앙 관습을 날카롭게 비판하는 사이다 영상", scores: [{ persona: "PROBIOTICS", weight: 1 }] }
+    ]
+  },
+  {
+    id: "additional-q6",
+    title: "신앙생활에 회의감을 느끼고 방황하는 친구에게, 내가 해주고 싶은 말은?",
+    options: [
+      { id: "additional-q6-o1", label: "\"나도 의문이 많았어. 우리 같이 이 주제를 다룬 책을 찾아보고 공부해 볼까?\"", scores: [{ persona: "CARB", weight: 1 }] },
+      { id: "additional-q6-o2", label: "\"많이 힘들었겠다. 당장 답을 찾지 않아도 좋으니, 일단 만나서 편하게 다 털어놔 봐.\"", scores: [{ persona: "PROTEIN", weight: 1 }] },
+      { id: "additional-q6-o3", label: "\"교회가 세상에 공감하지 못하는 모습에 지쳤구나. 우리 교회 밖에서 의미 있는 실천을 해보자.\"", scores: [{ persona: "VITAMIN", weight: 1 }] },
+      { id: "additional-q6-o4", label: "\"지금은 무리해서 뭘 하려고 하지 마. 교회 봉사 다 내려놓고 우선 네 마음부터 푹 쉬게 해줘.\"", scores: [{ persona: "MINERAL", weight: 1 }] },
+      { id: "additional-q6-o5", label: "\"네가 느끼는 의심은 잘못된 게 아니야. 우리 아픈 상처를 비워내고 건강한 신앙을 다시 찾아보자.\"", scores: [{ persona: "PROBIOTICS", weight: 1 }] }
+    ]
+  },
+  {
+    id: "additional-q7",
+    title: "내가 생각하는 현재 내 삶에 가장 필요한 '은혜'의 모습은?",
+    options: [
+      { id: "additional-q7-o1", label: "흩어져 있던 지식들이 연결되며, 진리를 깨닫는 지적인 희열이 찾아오는 것", scores: [{ persona: "CARB", weight: 1 }] },
+      { id: "additional-q7-o2", label: "나의 연약함을 탓하지 않고, 따뜻하게 안아주는 사람들을 통해 위로를 얻는 것", scores: [{ persona: "PROTEIN", weight: 1 }] },
+      { id: "additional-q7-o3", label: "세상의 불의에 맞설 용기를 얻고, 작은 실천이라도 시작할 수 있는 힘이 생기는 것", scores: [{ persona: "VITAMIN", weight: 1 }] },
+      { id: "additional-q7-o4", label: "무언가를 애써 증명하지 않아도, 일상의 평범함 속에서 하나님을 잔잔히 느끼는 것", scores: [{ persona: "MINERAL", weight: 1 }] },
+      { id: "additional-q7-o5", label: "오랫동안 나를 짓눌렀던 폭력적인 신앙의 죄책감에서 벗어나 참된 자유를 누리는 것", scores: [{ persona: "PROBIOTICS", weight: 1 }] }
+    ]
+  },
+  {
+    id: "additional-q8",
+    title: "평일 저녁, 내 취향에 꼭 맞는 모임에 초대받았다. 어떤 모임에 참석하고 싶은가?",
+    options: [
+      { id: "additional-q8-o1", label: "한 권의 책을 깊이 읽고 치열하게 토론하며 지적 확장을 경험하는 독서 모임", scores: [{ persona: "CARB", weight: 1 }] },
+      { id: "additional-q8-o2", label: "안전한 가이드라인 안에서 서로의 삶을 편견 없이 경청하는 대화 살롱", scores: [{ persona: "PROTEIN", weight: 1 }] },
+      { id: "additional-q8-o3", label: "사회 문제를 기독교적 시각으로 분석하고 대안을 모색하는 공공신학 세미나", scores: [{ persona: "VITAMIN", weight: 1 }] },
+      { id: "additional-q8-o4", label: "억지스러운 나눔 없이 고요히 내 마음을 돌아보는 침묵과 글쓰기 워크샵", scores: [{ persona: "MINERAL", weight: 1 }] },
+      { id: "additional-q8-o5", label: "교회 문화에서 받은 상처를 공유하고 건강한 대안을 찾는 신앙 디톡스 모임", scores: [{ persona: "PROBIOTICS", weight: 1 }] }
+    ]
+  },
+  {
+    id: "additional-q9",
+    title: "만약 내가 새로운 신앙 공동체를 찾는다면, 가장 중요하게 보는 1순위 조건은?",
+    options: [
+      { id: "additional-q9-o1", label: "성경과 신학을 깊이 있고 상식적인 수준에서 탐구하는 학구적 분위기가 있는가?", scores: [{ persona: "CARB", weight: 1 }] },
+      { id: "additional-q9-o2", label: "나의 있는 모습 그대로를 환대하고, 어떤 질문이든 안전하게 대화할 수 있는가?", scores: [{ persona: "PROTEIN", weight: 1 }] },
+      { id: "additional-q9-o3", label: "공공의 선을 추구하며 세상의 아픔과 약자들의 목소리에 적극적으로 연대하는가?", scores: [{ persona: "VITAMIN", weight: 1 }] },
+      { id: "additional-q9-o4", label: "숨 막히는 헌신과 사역 강요 없이, 개인의 일상과 영적인 쉼을 존중해 주는가?", scores: [{ persona: "MINERAL", weight: 1 }] },
+      { id: "additional-q9-o5", label: "맹목적인 복종을 강요하지 않고, 기존 교회의 상처를 건강하게 치유할 수 있는가?", scores: [{ persona: "PROBIOTICS", weight: 1 }] }
+    ]
+  },
+  {
+    id: "additional-q10",
+    title: "신앙적 방황과 갈증 속에서도, 내가 끝내 '기독교 신앙'을 포기할 수 없는 이유는?",
+    options: [
+      { id: "additional-q10-o1", label: "성경이 품고 있는 진리와 지혜가 여전히 내 삶을 해석하는 가장 강력한 틀이기 때문에", scores: [{ persona: "CARB", weight: 1 }] },
+      { id: "additional-q10-o2", label: "혼자서는 살 수 없는 세상에서, 진실한 사랑을 나누는 공동체의 가능성을 믿기에", scores: [{ persona: "PROTEIN", weight: 1 }] },
+      { id: "additional-q10-o3", label: "예수님이 보여주신 십자가의 사랑만이 이기적이고 차별적인 세상을 바꿀 수 있는 대안이라 믿기에", scores: [{ persona: "VITAMIN", weight: 1 }] },
+      { id: "additional-q10-o4", label: "거창하지 않더라도 내 일상의 매 순간을 지탱해 주는 분이 하나님이심을 경험했기에", scores: [{ persona: "MINERAL", weight: 1 }] },
+      { id: "additional-q10-o5", label: "껍데기와 상처를 걷어내고 나면, 그 안에 진짜 복음의 자유와 생명이 있음을 알기에", scores: [{ persona: "PROBIOTICS", weight: 1 }] }
+    ]
+  }
+];
+
+export const nutritionResults: Record<NutritionKey, NutritionResult> = {
+  CARB: {
+    key: "CARB",
+    title: "질문하는 뇌를 위한 🍞 [건강한 탄수화물] 결핍형",
+    status: "덮어놓고 믿으라는 말은 이제 그만! 내 신앙엔 씹고 소화할 텍스트가 필요해.",
+    description:
+      "주일 설교를 들어도 지적인 갈증이 채워지지 않으시나요? 가짜 포만감을 주는 정크푸드 같은 신앙에서 벗어나, 꼬리에 꼬리를 무는 질문을 던지며 꼭꼭 씹어 넘길 수 있는 건강한 지적 탄수화물이 필요합니다.",
+    recommendation: "청어람 북클럽, 신학/인문학 강좌",
+    cta: "매주 목요일, 당신의 지적 허기를 채워줄 청어람 뉴스레터를 받아보세요!",
+    keywords: ["질문", "텍스트", "신학", "북클럽"]
+  },
+  PROTEIN: {
+    key: "PROTEIN",
+    title: "마음을 기댈 곳 없는 🥩 [따뜻한 단백질] 부족형",
+    status: "아는 교회 사람은 많은데, 진짜 내 신앙의 고민을 털어놓을 안전한 사람은 없네...",
+    description:
+      "정답을 가르치려 들거나 섣불리 평가하는 사람들에게 지치셨군요. 당신에게는 의심과 방황을 있는 그대로 안전하게 들어주고, 서로의 삶과 신앙을 지탱해 주는 근육 같은 따뜻한 단백질, 곧 공동체가 절실합니다.",
+    recommendation: "청어람 안전한 대화 모임, 살롱",
+    cta: "평가 없이 안전하게 연결되는 느슨한 연대, 청어람 뉴스레터로 초대합니다.",
+    keywords: ["안전한대화", "공동체", "경청", "살롱"]
+  },
+  VITAMIN: {
+    key: "VITAMIN",
+    title: "세상과 소통하는 🍋 [사회적 비타민] 고갈형",
+    status: "교회 안의 언어와 세상의 언어가 너무 달라. 기독교는 왜 세상의 아픔에 침묵할까?",
+    description:
+      "세상과 동떨어진 채 우리끼리의 천국만 이야기하는 교회 문화에 무기력함을 느끼시나요? 꽉 막힌 교회 안의 공기를 환기하고, 세상 속에서 신앙을 실천할 수 있는 상큼하고 톡 쏘는 사회적 비타민이 필요합니다.",
+    recommendation: "공공신학 포럼, 사회 이슈 연대 세미나",
+    cta: "세상의 아픔에 응답하는 기독교의 목소리, 청어람 뉴스레터에서 만나보세요.",
+    keywords: ["공공신학", "사회이슈", "연대", "실천"]
+  },
+  MINERAL: {
+    key: "MINERAL",
+    title: "메말라버린 영혼, 💧 [일상 미네랄] 탈수형",
+    status: "봉사, 사역, 모임... 신앙생활이 마치 무보수 노동 같아요. 잠시 쉬고 싶어요.",
+    description:
+      "끊임없는 사역과 헌신의 요구에 지쳐 영적 번아웃이 오셨군요. 무언가를 자꾸 해내야 한다는 압박에서 벗어나, 일상 속에서 조용히 내 내면을 돌아보고 영혼을 촉촉하게 적시는 미네랄 워터 같은 쉼이 필요합니다.",
+    recommendation: "일상 영성 훈련, 신앙 글쓰기 워크샵, 묵상 모임",
+    cta: "숨 가쁜 일상 속, 나를 돌보는 고요한 읽을거리 청어람 뉴스레터를 배달해 드려요.",
+    keywords: ["쉼", "번아웃", "일상영성", "글쓰기"]
+  },
+  PROBIOTICS: {
+    key: "PROBIOTICS",
+    title: "묵은 상처를 씻어낼 💊 [영적 유산균] 필요형",
+    status: "폭력적인 신앙 강요에 체했어요. 내 신앙을 다시 건강하게 리셋하고 싶어요.",
+    description:
+      "배타적이고 낡은 신앙 문화 속에서 남모를 깊은 상처를 받으셨군요. 소화되지 않고 얹혀있는 상처와 낡은 교리들을 건강하게 배출해 내고, 내면의 영적 장내 환경을 평화롭게 다시 만들어줄 유산균, 곧 디톡스가 필요합니다.",
+    recommendation: "가나안 성도를 위한 모임, 신앙 재구성 세미나",
+    cta: "폭력적이지 않은 다정한 언어로 신앙을 묻는 시간, 청어람 뉴스레터를 구독해 보세요.",
+    keywords: ["신앙재구성", "디톡스", "회복", "자유"]
+  }
+};
+
+export const defaultSurveyId: SurveyId = "cbti";
+
+export const surveys: Survey[] = [
+  {
+    id: "cbti",
+    title: "CBTI",
+    description: "15개의 질문으로 나의 신앙 성향과 추천 교파를 확인합니다.",
+    questions,
+    resultKeys: personaKeys,
+    resultLabels: personaLabels
+  },
+  {
+    id: "additional",
+    title: "영적 영양상태 진단 테스트",
+    description: "10개의 질문으로 지금 내 신앙에 필요한 영적 영양소를 진단합니다.",
+    questions: additionalQuestions,
+    resultKeys: nutritionKeys,
+    resultLabels: nutritionLabels
+  }
+];
+
+export const surveyMap = Object.fromEntries(surveys.map((survey) => [survey.id, survey])) as Record<SurveyId, Survey>;
+
+export function getSurveyById(id: string | null | undefined) {
+  return surveyMap[(id || defaultSurveyId) as SurveyId] || surveyMap[defaultSurveyId];
+}
 
 export const personaResults: Record<PersonaKey, PersonaResult> = {
   Orthodox: {

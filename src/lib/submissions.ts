@@ -1,9 +1,10 @@
-import type { Answer, PersonaKey, PersonaScores } from "@/types/test";
+import type { Answer, ResultKey, ResultScores, SurveyId } from "@/types/test";
 
 export type SubmissionPayload = {
+  surveyId: SurveyId;
   visitorId: string;
-  primaryPersona: PersonaKey;
-  scores: PersonaScores;
+  primaryPersona: ResultKey;
+  scores: ResultScores;
   answers: Answer[];
 };
 

@@ -1,10 +1,11 @@
-import type { PersonaKey } from "@/types/test";
+import { defaultSurveyId } from "@/data/test";
+import type { ResultKey, SurveyId } from "@/types/test";
 
 function normalizeBaseUrl(value: string) {
   return value.replace(/\/$/, "");
 }
 
-export function getResultUrl(persona: PersonaKey) {
+export function getResultUrl(result: ResultKey, surveyId: SurveyId = defaultSurveyId) {
   const configuredUrl = process.env.NEXT_PUBLIC_SITE_URL;
   const baseUrl =
     configuredUrl && configuredUrl.length > 0
@@ -13,5 +14,9 @@ export function getResultUrl(persona: PersonaKey) {
         ? window.location.origin
         : "";
 
-  return `${baseUrl}/result/${encodeURIComponent(persona)}`;
+  if (surveyId === defaultSurveyId) {
+    return `${baseUrl}/result/${encodeURIComponent(result)}`;
+  }
+
+  return `${baseUrl}/result/${encodeURIComponent(surveyId)}/${encodeURIComponent(result)}`;
 }

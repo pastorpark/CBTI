@@ -28,7 +28,7 @@ function normalizeSupabaseUrl(value: string | undefined) {
 
 export async function insertSubmission(record: Record<string, unknown>) {
   const { url, key } = getSupabaseConfig();
-  const response = await fetch(`${url}/rest/v1/${submissionsTableName}`, {
+  const postRecord = (payload: Record<string, unknown>) => fetch(`${url}/rest/v1/${submissionsTableName}`, {
     method: "POST",
     headers: {
       apikey: key,
@@ -36,11 +36,21 @@ export async function insertSubmission(record: Record<string, unknown>) {
       "Content-Type": "application/json",
       Prefer: "return=minimal"
     },
-    body: JSON.stringify(record)
+    body: JSON.stringify(payload)
   });
+  const response = await postRecord(record);
 
   if (!response.ok) {
-    throw new Error(await response.text());
+    const errorText = await response.text();
+
+    if ("survey_id" in record && errorText.includes("survey_id")) {
+      const { survey_id: _surveyId, ...legacyRecord } = record;
+      const legacyResponse = await postRecord(legacyRecord);
+      if (legacyResponse.ok) return;
+      throw new Error(await legacyResponse.text());
+    }
+
+    throw new Error(errorText);
   }
 }
 
@@ -76,16 +86,28 @@ async function fetchPaginated<T>(url: string, key: string, maxRows = 50000) {
 
 export async function fetchSubmissions() {
   const { url, key } = getSupabaseConfig();
-  const endpoint = `${url}/rest/v1/${submissionsTableName}?select=id,visitor_hash,primary_persona,scores,answers,created_at&order=created_at.desc`;
+  const endpoint = `${url}/rest/v1/${submissionsTableName}?select=id,survey_id,visitor_hash,primary_persona,scores,answers,created_at&order=created_at.desc`;
 
-  return fetchPaginated<{
+  type SubmissionRow = {
     id: string;
+    survey_id?: string | null;
     visitor_hash: string;
     primary_persona: string;
     scores: Record<string, number>;
     answers: { questionId: string; optionId: string }[];
     created_at: string;
-  }>(endpoint, key, 10000); // 제한을 10,000건으로 확장
+  };
+
+  try {
+    return await fetchPaginated<SubmissionRow>(endpoint, key, 10000); // 제한을 10,000건으로 확장
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "";
+    if (!message.includes("survey_id")) throw error;
+
+    const legacyEndpoint = `${url}/rest/v1/${submissionsTableName}?select=id,visitor_hash,primary_persona,scores,answers,created_at&order=created_at.desc`;
+    const rows = await fetchPaginated<Omit<SubmissionRow, "survey_id">>(legacyEndpoint, key, 10000);
+    return rows.map((row) => ({ ...row, survey_id: null }));
+  }
 }
 
 export async function insertVisit(record: Record<string, unknown>) {
