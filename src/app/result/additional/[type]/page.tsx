@@ -30,7 +30,7 @@ export async function generateMetadata({ params }: NutritionResultPageProps): Pr
 
   return {
     title: result.title,
-    description: `나의 영적 영양상태는 ${nutritionLabels[type]} 결핍. ${result.status}`,
+    description: `나의 영적 영양상태는 ${nutritionLabels[type]} 보충 필요. ${result.status}`,
     alternates: {
       canonical: `/result/additional/${type}`
     },
@@ -68,7 +68,7 @@ export default async function NutritionResultPage({ params }: NutritionResultPag
 
   const result = nutritionResults[type];
   const scores = createEmptyResultScores(nutritionKeys);
-  scores[type] = 10;
+  scores[type] = 6;
 
   return (
     <main className="app-shell">
@@ -108,7 +108,7 @@ export default async function NutritionResultPage({ params }: NutritionResultPag
                 <div className="score-row" key={key}>
                   <span>{nutritionLabels[key as NutritionKey]}</span>
                   <div className="score-bar">
-                    <span style={{ width: `${score * 10}%` }} />
+                    <span style={{ width: `${(score / 6) * 100}%` }} />
                   </div>
                   <b>{score}</b>
                 </div>

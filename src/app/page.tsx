@@ -26,7 +26,7 @@ export default function Home() {
   const [activeSurveyId, setActiveSurveyId] = useState<SurveyId>(defaultSurveyId);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState<Answer[]>([]);
-  const [sessionQuestions, setSessionQuestions] = useState<Question[]>(() => shuffleQuestions(surveyMap[defaultSurveyId].questions));
+  const [sessionQuestions, setSessionQuestions] = useState<Question[]>(() => prepareQuestions(defaultSurveyId));
   const submittedRef = useRef(false);
 
   const activeSurvey = surveyMap[activeSurveyId];
@@ -79,7 +79,7 @@ export default function Home() {
     setActiveSurveyId(surveyId);
     setAnswers([]);
     setCurrentIndex(0);
-    setSessionQuestions(shuffleQuestions(survey.questions));
+    setSessionQuestions(prepareQuestions(surveyId));
     submittedRef.current = false;
     setStage("questions");
   }
@@ -107,7 +107,7 @@ export default function Home() {
   }
 
   async function copyResultUrl() {
-    const url = getResultUrl(primary);
+    const url = getResultUrl(primary, activeSurveyId);
 
     await navigator.clipboard.writeText(url);
     alert("결과 링크를 복사했어요.");
@@ -116,7 +116,7 @@ export default function Home() {
   const question = sessionQuestions[currentIndex];
   const progress = stage === "questions" ? ((currentIndex + 1) / sessionQuestions.length) * 100 : 100;
   const resultUrl = getResultUrl(primary, activeSurveyId);
-  const scoreScaleMax = activeSurveyId === "additional" ? activeSurvey.questions.length : 5;
+  const scoreScaleMax = activeSurveyId === "additional" ? 6 : 5;
 
   return (
     <main className="app-shell">
@@ -335,6 +335,16 @@ export default function Home() {
       </div>
     </main>
   );
+}
+
+function prepareQuestions(surveyId: SurveyId) {
+  const sourceQuestions = surveyMap[surveyId].questions;
+
+  if (surveyId === "additional") {
+    return sourceQuestions;
+  }
+
+  return shuffleQuestions(sourceQuestions);
 }
 
 function shuffleQuestions(sourceQuestions: Question[]) {
