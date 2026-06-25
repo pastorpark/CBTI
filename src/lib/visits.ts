@@ -1,4 +1,7 @@
+import type { SiteVariantId } from "@/types/test";
+
 export type VisitPayload = {
+  variantId: SiteVariantId;
   visitorId: string;
   path: string;
 };

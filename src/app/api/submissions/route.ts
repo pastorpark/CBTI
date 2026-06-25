@@ -2,10 +2,15 @@ import { NextResponse } from "next/server";
 import { defaultSurveyId, getSurveyById, surveyMap } from "@/data/test";
 import { sha256Hmac } from "@/lib/crypto";
 import { hasSupabaseConfig, insertSubmission } from "@/lib/supabase-rest";
-import type { Answer, ResultScores, SurveyId } from "@/types/test";
+import type { Answer, ResultScores, SiteVariantId, SurveyId } from "@/types/test";
+import { defaultSiteVariantId, getStoredSurveyId } from "@/variants";
 
 function isValidSurveyId(value: unknown): value is SurveyId {
   return typeof value === "string" && value in surveyMap;
+}
+
+function isValidVariantId(value: unknown): value is SiteVariantId {
+  return value === "pastor" || value === "ivf";
 }
 
 function isValidAnswers(value: unknown, surveyId: SurveyId): value is Answer[] {
@@ -38,12 +43,14 @@ export async function POST(request: Request) {
   try {
     const body = (await request.json()) as {
       surveyId?: unknown;
+      variantId?: unknown;
       visitorId?: unknown;
       primaryPersona?: unknown;
       scores?: unknown;
       answers?: unknown;
     };
     const surveyId = isValidSurveyId(body.surveyId) ? body.surveyId : defaultSurveyId;
+    const variantId = isValidVariantId(body.variantId) ? body.variantId : defaultSiteVariantId;
 
     if (
       typeof body.visitorId !== "string" ||
@@ -65,7 +72,7 @@ export async function POST(request: Request) {
     const userAgentHash = userAgent ? await sha256Hmac(userAgent, salt) : null;
 
     await insertSubmission({
-      survey_id: surveyId,
+      survey_id: getStoredSurveyId(variantId, surveyId),
       visitor_hash: visitorHash,
       primary_persona: body.primaryPersona,
       scores: body.scores,

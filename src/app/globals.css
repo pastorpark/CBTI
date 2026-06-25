@@ -86,6 +86,64 @@ p {
   border-radius: 170px 170px 0 0;
 }
 
+.variant-ivf {
+  --background: #ffffff;
+  --surface: #ffffff;
+  --ink: #102015;
+  --muted: #5d6b62;
+  --line: #dbe7df;
+  --orange: #16a34a;
+  --orange-soft: #dcfce7;
+  --orange-dark: #15803d;
+  --yellow: #86efac;
+  --blue: #047857;
+  --soft: #f3faf5;
+  --shadow: 0 18px 50px rgba(16, 32, 21, 0.08);
+}
+
+body:has(.variant-ivf),
+body[data-variant="ivf"] {
+  background: #ffffff;
+  background-size: auto;
+}
+
+.variant-ivf.app-shell {
+  background: #ffffff;
+}
+
+.variant-ivf.app-shell::before,
+.variant-ivf.app-shell::after,
+.variant-ivf .panel::before,
+.variant-ivf .panel::after {
+  display: none;
+}
+
+.variant-ivf .panel {
+  border-color: rgba(22, 163, 74, 0.18);
+  box-shadow: var(--shadow);
+}
+
+.variant-ivf .progress-fill {
+  background: linear-gradient(90deg, #16a34a, #22c55e, #047857);
+}
+
+.variant-ivf .survey-card:hover,
+.variant-ivf .survey-card.active,
+.variant-ivf .option:hover {
+  box-shadow: 0 10px 24px rgba(22, 163, 74, 0.18);
+}
+
+.variant-ivf .button,
+.variant-ivf .button:hover {
+  color: #ffffff;
+  box-shadow: 0 10px 26px rgba(22, 163, 74, 0.22);
+}
+
+.variant-ivf .button.secondary,
+.variant-ivf .button.ghost {
+  color: var(--ink);
+}
+
 .panel {
   position: relative;
   z-index: 1;

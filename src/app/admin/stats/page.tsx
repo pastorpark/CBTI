@@ -2,13 +2,19 @@
 
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import { defaultSurveyId } from "@/data/test";
-import type { SurveyId } from "@/types/test";
+import type { SiteVariantId, SurveyId } from "@/types/test";
+import { defaultSiteVariantId } from "@/variants";
 
 type StatsResponse = {
   configured: boolean;
   total: number;
   uniqueVisitors: number;
   duplicateRate: number;
+  variants: {
+    id: SiteVariantId;
+    label: string;
+    description: string;
+  }[];
   surveys: {
     id: SurveyId;
     title: string;
@@ -21,8 +27,13 @@ type StatsResponse = {
     uniqueVisitors: number;
     byDay: { date: string; count: number }[];
   };
-  all: Record<SurveyId, StatsBucket>;
-  deduped: Record<SurveyId, StatsBucket>;
+  visitsByVariant: Record<SiteVariantId, {
+    total: number;
+    uniqueVisitors: number;
+    byDay: { date: string; count: number }[];
+  }>;
+  all: Record<SiteVariantId, Record<SurveyId, StatsBucket>>;
+  deduped: Record<SiteVariantId, Record<SurveyId, StatsBucket>>;
 };
 
 type StatsBucket = {
@@ -42,9 +53,11 @@ export default function AdminStatsPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
   const [mode, setMode] = useState<"deduped" | "all">("deduped");
+  const [activeVariantId, setActiveVariantId] = useState<SiteVariantId>(defaultSiteVariantId);
   const [activeSurveyId, setActiveSurveyId] = useState<SurveyId>(defaultSurveyId);
 
-  const activeStats = useMemo(() => stats?.[mode][activeSurveyId], [activeSurveyId, mode, stats]);
+  const activeStats = useMemo(() => stats?.[mode][activeVariantId][activeSurveyId], [activeSurveyId, activeVariantId, mode, stats]);
+  const activeVisitStats = useMemo(() => stats?.visitsByVariant[activeVariantId], [activeVariantId, stats]);
   const activeSurvey = useMemo(() => stats?.surveys.find((survey) => survey.id === activeSurveyId), [activeSurveyId, stats]);
   const personaScaleMax = useMemo(() => {
     const maxCount = Math.max(0, ...Object.values(activeStats?.byPersona ?? {}));
@@ -161,6 +174,20 @@ export default function AdminStatsPage() {
           </div>
         </section>
 
+        <section className="survey-admin-grid" style={{ marginTop: 14 }} aria-label="버전 선택">
+          {stats.variants.map((variant) => (
+            <button
+              key={variant.id}
+              className={`survey-card admin-survey-card ${activeVariantId === variant.id ? "active" : ""}`}
+              onClick={() => setActiveVariantId(variant.id)}
+            >
+              <span className="survey-card-kicker">버전</span>
+              <strong>{variant.label}</strong>
+              <span>{variant.description}</span>
+            </button>
+          ))}
+        </section>
+
         <section className="survey-admin-grid" style={{ marginTop: 14 }} aria-label="설문 선택">
           {stats.surveys.map((survey) => (
             <button
@@ -181,6 +208,7 @@ export default function AdminStatsPage() {
           <Metric label="전체 완료" value={stats.total} />
           <Metric label="중복 제거 방문자" value={stats.uniqueVisitors} />
           <Metric label="중복 의심 비율" value={`${stats.duplicateRate}%`} />
+          <Metric label="선택 버전 접속" value={activeVisitStats?.total ?? 0} />
           <Metric label="선택 설문 완료" value={activeStats?.total ?? 0} />
         </section>
 

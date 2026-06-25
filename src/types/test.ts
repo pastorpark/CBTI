@@ -34,6 +34,7 @@ export type Answer = {
 };
 
 export type SurveyId = "cbti" | "additional";
+export type SiteVariantId = "pastor" | "ivf";
 
 export type Survey = {
   id: SurveyId;

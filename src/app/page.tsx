@@ -17,12 +17,15 @@ import { calculateScores, getClosePersonas, getSortedResultScores, resolvePrimar
 import { submitResult } from "@/lib/submissions";
 import { getVisitorId } from "@/lib/visitor";
 import { submitVisit } from "@/lib/visits";
-import type { Answer, NutritionKey, PersonaKey, Question, ResultKey, SurveyId } from "@/types/test";
+import { resolveSiteVariantId } from "@/variants";
+import { defaultSiteVariantId } from "@/variants";
+import type { Answer, NutritionKey, PersonaKey, Question, ResultKey, SiteVariantId, SurveyId } from "@/types/test";
 
 type Stage = "intro" | "questions" | "loading" | "result";
 
 export default function Home() {
   const [stage, setStage] = useState<Stage>("intro");
+  const [activeVariantId, setActiveVariantId] = useState<SiteVariantId>(defaultSiteVariantId);
   const [activeSurveyId, setActiveSurveyId] = useState<SurveyId>(defaultSurveyId);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState<Answer[]>([]);
@@ -41,7 +44,12 @@ export default function Home() {
   const sortedScores = getSortedResultScores(scores, activeSurvey.resultKeys);
 
   useEffect(() => {
+    const variantId = resolveSiteVariantId(window.location.host);
+    setActiveVariantId(variantId);
+    document.body.dataset.variant = variantId;
+
     submitVisit({
+      variantId,
       visitorId: getVisitorId(),
       path: window.location.pathname
     }).catch((error) => {
@@ -64,6 +72,7 @@ export default function Home() {
 
     submittedRef.current = true;
     submitResult({
+      variantId: activeVariantId,
       surveyId: activeSurveyId,
       visitorId: getVisitorId(),
       primaryPersona: primary,
@@ -119,7 +128,7 @@ export default function Home() {
   const scoreScaleMax = activeSurveyId === "additional" ? 6 : 5;
 
   return (
-    <main className="app-shell">
+    <main className={`app-shell variant-${activeVariantId}`}>
       <div className="panel">
         {stage === "intro" && (
           <section className="section intro-section">

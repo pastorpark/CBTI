@@ -1,6 +1,7 @@
-import type { Answer, ResultKey, ResultScores, SurveyId } from "@/types/test";
+import type { Answer, ResultKey, ResultScores, SiteVariantId, SurveyId } from "@/types/test";
 
 export type SubmissionPayload = {
+  variantId: SiteVariantId;
   surveyId: SurveyId;
   visitorId: string;
   primaryPersona: ResultKey;

@@ -2,7 +2,8 @@ import { NextResponse } from "next/server";
 import { defaultSurveyId, surveyMap, surveys } from "@/data/test";
 import { isAdminAuthenticated } from "@/lib/admin-auth";
 import { fetchSubmissions, fetchVisits, hasSupabaseConfig } from "@/lib/supabase-rest";
-import type { Survey, SurveyId } from "@/types/test";
+import type { SiteVariantId, Survey, SurveyId } from "@/types/test";
+import { parseStoredSurveyId, parseStoredVisitPath, siteVariants } from "@/variants";
 
 type SubmissionRow = Awaited<ReturnType<typeof fetchSubmissions>>[number];
 type VisitRow = Awaited<ReturnType<typeof fetchVisits>>[number];
@@ -11,15 +12,17 @@ function startOfDay(value: Date) {
   return value.toISOString().slice(0, 10);
 }
 
-function normalizeSurveyId(value: string | null | undefined): SurveyId {
-  return value && value in surveyMap ? (value as SurveyId) : defaultSurveyId;
+function normalizeStoredSurvey(value: string | null | undefined) {
+  const parsed = parseStoredSurveyId(value);
+  return parsed.surveyId in surveyMap ? parsed : { variantId: parsed.variantId, surveyId: defaultSurveyId };
 }
 
 function getDedupedRows(rows: SubmissionRow[]) {
   const byVisitor = new Map<string, SubmissionRow>();
 
   for (const row of rows) {
-    const key = `${normalizeSurveyId(row.survey_id)}:${row.visitor_hash}`;
+    const { variantId, surveyId } = normalizeStoredSurvey(row.survey_id);
+    const key = `${variantId}:${surveyId}:${row.visitor_hash}`;
     if (!byVisitor.has(key)) {
       byVisitor.set(key, row);
     }
@@ -47,6 +50,15 @@ function aggregateVisits(rows: VisitRow[]) {
       .map(([date, count]) => ({ date, count }))
       .sort((a, b) => a.date.localeCompare(b.date))
   };
+}
+
+function aggregateVisitsByVariant(rows: VisitRow[]) {
+  return Object.fromEntries(
+    siteVariants.map((variant) => {
+      const variantRows = rows.filter((row) => parseStoredVisitPath(row.path).variantId === variant.id);
+      return [variant.id, aggregateVisits(variantRows)];
+    })
+  ) as Record<SiteVariantId, ReturnType<typeof aggregateVisits>>;
 }
 
 function aggregate(rows: SubmissionRow[], survey: Survey) {
@@ -94,13 +106,23 @@ function aggregate(rows: SubmissionRow[], survey: Survey) {
   };
 }
 
-function aggregateBySurvey(rows: SubmissionRow[]) {
+function aggregateBySurvey(rows: SubmissionRow[], variantId: SiteVariantId) {
   return Object.fromEntries(
     surveys.map((survey) => {
-      const surveyRows = rows.filter((row) => normalizeSurveyId(row.survey_id) === survey.id);
+      const surveyRows = rows.filter((row) => {
+        const parsed = normalizeStoredSurvey(row.survey_id);
+        return parsed.variantId === variantId && parsed.surveyId === survey.id;
+      });
       return [survey.id, aggregate(surveyRows, survey)];
     })
-  );
+  ) as Record<SurveyId, ReturnType<typeof aggregate>>;
+}
+
+function aggregateByVariant(rows: SubmissionRow[]) {
+  return Object.fromEntries(siteVariants.map((variant) => [variant.id, aggregateBySurvey(rows, variant.id)])) as Record<
+    SiteVariantId,
+    Record<SurveyId, ReturnType<typeof aggregate>>
+  >;
 }
 
 function getSurveySummaries() {
@@ -122,13 +144,15 @@ export async function GET() {
     if (!hasSupabaseConfig()) {
       return NextResponse.json({
         configured: false,
+        variants: siteVariants,
         surveys: getSurveySummaries(),
         total: 0,
         uniqueVisitors: 0,
         duplicateRate: 0,
         visits: aggregateVisits([]),
-        all: aggregateBySurvey([]),
-        deduped: aggregateBySurvey([])
+        visitsByVariant: aggregateVisitsByVariant([]),
+        all: aggregateByVariant([]),
+        deduped: aggregateByVariant([])
       });
     }
 
@@ -142,13 +166,15 @@ export async function GET() {
 
     return NextResponse.json({
       configured: true,
+      variants: siteVariants,
       surveys: getSurveySummaries(),
       total: rows.length,
       uniqueVisitors: dedupedRows.length,
       duplicateRate,
       visits: aggregateVisits(visitRows),
-      all: aggregateBySurvey(rows),
-      deduped: aggregateBySurvey(dedupedRows)
+      visitsByVariant: aggregateVisitsByVariant(visitRows),
+      all: aggregateByVariant(rows),
+      deduped: aggregateByVariant(dedupedRows)
     });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Unknown Supabase error";
