@@ -5,4 +5,8 @@ export type SiteVariant = {
   label: string;
   description: string;
   hostnames: string[];
+  brand: string;
+  brandFull: string;
+  introTitle: string;
+  introLead: string;
 };

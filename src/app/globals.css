@@ -144,6 +144,21 @@ body[data-variant="ivf"] {
   color: var(--ink);
 }
 
+.variant-ivf .ivf-intro-section {
+  justify-content: center;
+}
+
+.variant-ivf .ivf-survey-picker {
+  grid-template-rows: none;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  height: auto;
+  min-height: 0;
+}
+
+.variant-ivf .ivf-survey-card {
+  min-height: 180px;
+}
+
 .panel {
   position: relative;
   z-index: 1;
@@ -842,5 +857,13 @@ body[data-variant="ivf"] {
   .score-row {
     grid-template-columns: 1fr;
     gap: 7px;
+  }
+
+  .variant-ivf .ivf-survey-picker {
+    grid-template-columns: 1fr;
+  }
+
+  .variant-ivf .ivf-survey-card {
+    min-height: 132px;
   }
 }

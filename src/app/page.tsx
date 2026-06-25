@@ -17,8 +17,9 @@ import { calculateScores, getClosePersonas, getSortedResultScores, resolvePrimar
 import { submitResult } from "@/lib/submissions";
 import { getVisitorId } from "@/lib/visitor";
 import { submitVisit } from "@/lib/visits";
-import { resolveSiteVariantId } from "@/variants";
-import { defaultSiteVariantId } from "@/variants";
+import { defaultSiteVariantId, resolveSiteVariantId } from "@/variants";
+import { IvfIntroView } from "@/variants/ivf/IntroView";
+import { PastorIntroView } from "@/variants/pastor/IntroView";
 import type { Answer, NutritionKey, PersonaKey, Question, ResultKey, SiteVariantId, SurveyId } from "@/types/test";
 
 type Stage = "intro" | "questions" | "loading" | "result";
@@ -126,32 +127,13 @@ export default function Home() {
   const progress = stage === "questions" ? ((currentIndex + 1) / sessionQuestions.length) * 100 : 100;
   const resultUrl = getResultUrl(primary, activeSurveyId);
   const scoreScaleMax = activeSurveyId === "additional" ? 6 : 5;
+  const IntroView = activeVariantId === "ivf" ? IvfIntroView : PastorIntroView;
 
   return (
     <main className={`app-shell variant-${activeVariantId}`}>
       <div className="panel">
         {stage === "intro" && (
-          <section className="section intro-section">
-            <div className="intro-brand">
-              <span className="brand">CBTI</span>
-              <span className="brand-full">Christian Belief Type Indicator</span>
-            </div>
-            <div className="intro-copy">
-              <h1 className="hero-title">신앙유형검사</h1>
-              <p className="lead">
-                원하는 설문을 선택해 보세요.
-              </p>
-            </div>
-            <div className="survey-picker" aria-label="설문 선택">
-              {surveys.map((survey) => (
-                <button key={survey.id} className="survey-card" onClick={() => start(survey.id)}>
-                  <span className="survey-card-kicker">{survey.questions.length}개 문항</span>
-                  <strong>{survey.title}</strong>
-                  <span>{survey.description}</span>
-                </button>
-              ))}
-            </div>
-          </section>
+          <IntroView surveys={surveys} onStart={start} />
         )}
 
         {stage === "questions" && (
