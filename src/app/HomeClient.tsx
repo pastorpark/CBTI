@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import { NutritionRadarChart } from "@/components/NutritionRadarChart";
 import {
   defaultSurveyId,
   nutritionResults,
@@ -301,18 +302,8 @@ export function HomeClient({ initialVariantId }: HomeClientProps) {
                 </div>
               </div>
               <div className="result-section">
-                <h2>나의 영적 영양 스탯</h2>
-                <div className="score-list">
-                  {sortedScores.map(({ key, score }) => (
-                    <div className="score-row" key={key}>
-                      <span>{activeSurvey.resultLabels[key]}</span>
-                      <div className="score-bar">
-                        <span style={{ width: `${Math.max(4, (score / scoreScaleMax) * 100)}%` }} />
-                      </div>
-                      <b>{score}</b>
-                    </div>
-                  ))}
-                </div>
+                <h2>내게 필요한 영양소</h2>
+                <NutritionRadarChart keys={nutritionTieBreakerOrder} labels={activeSurvey.resultLabels as Record<NutritionKey, string>} scores={scores} maxScore={scoreScaleMax} />
               </div>
               <section className="share-panel">
                 <div className="share-box">

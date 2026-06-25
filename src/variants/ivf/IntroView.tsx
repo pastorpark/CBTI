@@ -6,9 +6,6 @@ export function IvfIntroView({ surveys, onStart }: IntroViewProps) {
 
   return (
     <section className="section intro-section">
-      <figure className="ivf-hero-deco" aria-hidden="true">
-        <img src="/ivf/clay-hero.png" alt="" />
-      </figure>
       <div className="intro-brand">
         <span className="brand">{ivfVariant.brand}</span>
         <span className="brand-full">{ivfVariant.brandFull}</span>
@@ -17,6 +14,9 @@ export function IvfIntroView({ surveys, onStart }: IntroViewProps) {
         <h1 className="hero-title">{ivfVariant.introTitle}</h1>
         <p className="lead">{ivfVariant.introLead}</p>
       </div>
+      <figure className="ivf-eoramc-figure" aria-label="청어람ARMC">
+        <img src="/ivf/eoramc.png" alt="청어람ARMC" />
+      </figure>
       <div className="survey-picker" aria-label="설문 선택">
         {orderedSurveys.map((survey) => (
           <button key={survey.id} className="survey-card" onClick={() => onStart(survey.id)}>

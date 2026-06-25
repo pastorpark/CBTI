@@ -1,9 +1,10 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { headers } from "next/headers";
+import { NutritionRadarChart } from "@/components/NutritionRadarChart";
 import { nutritionKeys, nutritionLabels, nutritionResults } from "@/data/test";
 import { getResultHeaderStyle } from "@/lib/result-colors";
-import { createEmptyResultScores, getSortedResultScores } from "@/lib/scoring";
+import { createEmptyResultScores } from "@/lib/scoring";
 import type { NutritionKey } from "@/types/test";
 import { resolveSiteVariantId } from "@/variants";
 
@@ -94,18 +95,8 @@ export default async function NutritionResultPage({ params }: NutritionResultPag
             <p className="lead">{result.description}</p>
           </div>
           <div className="result-section">
-            <h2>대표 영양소</h2>
-            <div className="score-list">
-              {getSortedResultScores(scores, nutritionKeys).slice(0, 1).map(({ key, score }) => (
-                <div className="score-row" key={key}>
-                  <span>{nutritionLabels[key as NutritionKey]}</span>
-                  <div className="score-bar">
-                    <span style={{ width: `${(score / 6) * 100}%` }} />
-                  </div>
-                  <b>{score}</b>
-                </div>
-              ))}
-            </div>
+            <h2>내게 필요한 영양소</h2>
+            <NutritionRadarChart keys={nutritionKeys} labels={nutritionLabels} scores={scores} maxScore={6} />
           </div>
           <div className="result-section">
             <div className="insight-grid">
