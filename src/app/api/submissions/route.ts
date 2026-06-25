@@ -10,7 +10,7 @@ function isValidSurveyId(value: unknown): value is SurveyId {
 }
 
 function normalizeSurveyId(value: unknown): SurveyId {
-  if (value === "additional") return "carb";
+  if (value === "additional" || value === "carb") return "nutri";
   return isValidSurveyId(value) ? value : defaultSurveyId;
 }
 

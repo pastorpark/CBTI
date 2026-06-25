@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { headers } from "next/headers";
 import { personaEnglishLabels, personaKeys, personaLabels, personaResults } from "@/data/test";
+import { getResultHeaderStyle } from "@/lib/result-colors";
 import { createEmptyScores, getSortedScores, isPersonaKey } from "@/lib/scoring";
 import { resolveSiteVariantId } from "@/variants";
 
@@ -82,13 +83,13 @@ export default async function ResultPage({ params }: ResultPageProps) {
   return (
     <main className={`app-shell variant-${variantId}`}>
       <div className="panel">
-        <section className="result-header">
+        <section className="result-header" style={getResultHeaderStyle(type)}>
           <div className="result-hero-copy">
             <span className="result-type-label">
               나의 신앙 유형 - {personaEnglishLabels[type]}
-              <img className="result-character-icon" src={result.characterImage} alt={`${personaLabels[type]} 캐릭터`} />
+
             </span>
-            <h1 className="hero-title result-title">{result.title}</h1>
+            <h1 className="hero-title result-title"><img className="result-character-icon" src={result.characterImage} alt={`${personaLabels[type]} 캐릭터`} />{result.title}</h1>
             <p className="lead">{result.subtitle}</p>
           </div>
           <div className="keyword-row">
@@ -97,7 +98,7 @@ export default async function ResultPage({ params }: ResultPageProps) {
             ))}
           </div>
         </section>
-        <section className="section">
+        <section className="section result-body">
           <div className="result-section">
             <p className="lead">{result.description}</p>
           </div>

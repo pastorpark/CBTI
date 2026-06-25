@@ -12,6 +12,7 @@ import {
   surveyMap,
   tieBreakerOrder
 } from "@/data/test";
+import { getResultHeaderStyle } from "@/lib/result-colors";
 import { getResultUrl } from "@/lib/result-url";
 import { calculateScores, getClosePersonas, getSortedResultScores, resolvePrimaryResult } from "@/lib/scoring";
 import { submitResult } from "@/lib/submissions";
@@ -38,12 +39,12 @@ export function HomeClient({ initialVariantId }: HomeClientProps) {
 
   const activeSurvey = surveyMap[activeSurveyId];
   const scores = useMemo(() => calculateScores(answers, sessionQuestions, activeSurvey.resultKeys), [activeSurvey.resultKeys, answers, sessionQuestions]);
-  const tieBreakers = activeSurveyId === "carb" ? nutritionTieBreakerOrder : tieBreakerOrder;
+  const tieBreakers = activeSurveyId === "nutri" ? nutritionTieBreakerOrder : tieBreakerOrder;
   const primary = useMemo(() => resolvePrimaryResult(scores, activeSurvey.resultKeys, tieBreakers), [activeSurvey.resultKeys, scores, tieBreakers]);
   const personaPrimary = primary as PersonaKey;
   const nutritionPrimary = primary as NutritionKey;
   const personaResult = activeSurveyId === "cbti" ? personaResults[personaPrimary] : null;
-  const nutritionResult = activeSurveyId === "carb" ? nutritionResults[nutritionPrimary] : null;
+  const nutritionResult = activeSurveyId === "nutri" ? nutritionResults[nutritionPrimary] : null;
   const closePersonas = activeSurveyId === "cbti" ? getClosePersonas(scores as Record<PersonaKey, number>, personaPrimary) : [];
   const sortedScores = getSortedResultScores(scores, activeSurvey.resultKeys);
 
@@ -92,7 +93,7 @@ export function HomeClient({ initialVariantId }: HomeClientProps) {
     setActiveSurveyId(surveyId);
     setAnswers([]);
     setCurrentIndex(0);
-    setSessionQuestions(shuffleQuestions(survey.questions, { shuffleOptions: surveyId !== "carb" }));
+    setSessionQuestions(shuffleQuestions(survey.questions, { shuffleOptions: surveyId !== "nutri" }));
     submittedRef.current = false;
     setStage("questions");
   }
@@ -129,7 +130,7 @@ export function HomeClient({ initialVariantId }: HomeClientProps) {
   const question = sessionQuestions[currentIndex];
   const progress = stage === "questions" ? ((currentIndex + 1) / sessionQuestions.length) * 100 : 100;
   const resultUrl = getResultUrl(primary, activeSurveyId);
-  const scoreScaleMax = activeSurveyId === "carb" ? 6 : 5;
+  const scoreScaleMax = activeSurveyId === "nutri" ? 6 : 5;
   const IntroView = getIntroView(activeVariantId);
 
   return (
@@ -141,12 +142,12 @@ export function HomeClient({ initialVariantId }: HomeClientProps) {
 
         {stage === "questions" && (
           <section className="section question-section">
-            {activeSurveyId === "carb" && (
+            {activeSurveyId === "nutri" && (
               <p className="question-eyebrow">지금 나를 위해 필요한 것은?</p>
             )}
             <h2 className="question-title">{question.title}</h2>
             <div className="question-bottom">
-              <div className={`option-list ${activeSurveyId === "carb" ? "nutrition-option-list" : ""}`}>
+              <div className={`option-list ${activeSurveyId === "nutri" ? "nutrition-option-list" : ""}`}>
                 {question.options.map((option) => (
                   <button key={option.id} className="option" onClick={() => selectOption(option.id)}>
                     {option.label}
@@ -183,7 +184,7 @@ export function HomeClient({ initialVariantId }: HomeClientProps) {
 
         {stage === "result" && personaResult && (
           <>
-            <section className="result-header">
+            <section className="result-header" style={getResultHeaderStyle(personaPrimary)}>
               <div className="result-hero-copy">
                 <span className="result-type-label">
                   나의 신앙 유형 - {personaEnglishLabels[personaPrimary]}
@@ -198,7 +199,7 @@ export function HomeClient({ initialVariantId }: HomeClientProps) {
                 ))}
               </div>
             </section>
-            <section className="section">
+            <section className="section result-body">
               <div className="result-section">
                 <p className="lead">{personaResult.description}</p>
                 {closePersonas.length > 0 && (
@@ -266,7 +267,7 @@ export function HomeClient({ initialVariantId }: HomeClientProps) {
 
         {stage === "result" && nutritionResult && (
           <>
-            <section className="result-header nutrition-result-header">
+            <section className="result-header nutrition-result-header" style={getResultHeaderStyle(nutritionPrimary)}>
               <div className="result-hero-copy">
                 <span className="result-type-label">나의 영적 영양상태 - {nutritionResult.key}</span>
                 <h1 className="hero-title result-title">{nutritionResult.title}</h1>
@@ -278,7 +279,7 @@ export function HomeClient({ initialVariantId }: HomeClientProps) {
                 ))}
               </div>
             </section>
-            <section className="section">
+            <section className="section result-body">
               <div className="result-section">
                 <p className="lead">{nutritionResult.description}</p>
                 {sortedScores[1] && sortedScores[1].score === sortedScores[0].score && (

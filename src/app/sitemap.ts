@@ -21,7 +21,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }));
 
   const nutritionResultSitemaps = nutritionKeys.map((key) => ({
-    url: `${siteUrl}/result/carb/${key}`,
+    url: `${siteUrl}/result/nutri/${key}`,
     lastModified: new Date(),
     changeFrequency: "monthly" as const,
     priority: 0.8,

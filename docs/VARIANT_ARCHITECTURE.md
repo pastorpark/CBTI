@@ -40,11 +40,11 @@ NEXT_PUBLIC_IVF_HOSTS=ivf.example.com
 
 ```txt
 pastor:cbti
-pastor:carb
+pastor:nutri
 ivf:cbti
-ivf:carb
+ivf:nutri
 ```
 
-기존에 저장된 `cbti`, `additional` 데이터는 관리자 통계에서 자동으로 `pastor` 버전으로 분류한다. 기존 `additional` 값은 새 `carb` 설문으로 정규화한다.
+기존에 저장된 `cbti`, `additional` 데이터는 관리자 통계에서 자동으로 `pastor` 버전으로 분류한다. 기존 `additional` 값은 새 `nutri` 설문으로 정규화한다.
 
 방문 기록은 `site_visits.path`에 `/pastor`, `/ivf` prefix를 붙여 저장하고, 관리자 화면에서 버전별 접속 통계를 구분한다.

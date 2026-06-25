@@ -235,89 +235,89 @@ function createNutritionOptions(questionId: string, persona: NutritionKey) {
   ];
 }
 
-export const carbQuestions: Question[] = [
+export const nutriQuestions: Question[] = [
   {
-    id: "carb-q1",
+    id: "nutri-q1",
     title: "설교를 들을 때 \"왜 그럴까?\" 질문하고 논리적으로 파고들기",
-    options: createNutritionOptions("carb-q1", "CARB")
+    options: createNutritionOptions("nutri-q1", "CARB")
   },
   {
-    id: "carb-q2",
+    id: "nutri-q2",
     title: "신앙적 궁금증을 풀어줄 조금 묵직한 신학/인문학 책 읽기",
-    options: createNutritionOptions("carb-q2", "CARB")
+    options: createNutritionOptions("nutri-q2", "CARB")
   },
   {
-    id: "carb-q3",
+    id: "nutri-q3",
     title: "'무조건 믿어라'는 말 대신 이성적이고 합리적인 설명 듣기",
-    options: createNutritionOptions("carb-q3", "CARB")
+    options: createNutritionOptions("nutri-q3", "CARB")
   },
   {
-    id: "carb-q4",
+    id: "nutri-q4",
     title: "정답을 강요하지 않고 내 고민을 있는 그대로 들어주는 모임",
-    options: createNutritionOptions("carb-q4", "PROTEIN")
+    options: createNutritionOptions("nutri-q4", "PROTEIN")
   },
   {
-    id: "carb-q5",
+    id: "nutri-q5",
     title: "딱딱한 성경 공부보다 각자의 일상과 감정을 솔직하게 나누는 대화",
-    options: createNutritionOptions("carb-q5", "PROTEIN")
+    options: createNutritionOptions("nutri-q5", "PROTEIN")
   },
   {
-    id: "carb-q6",
+    id: "nutri-q6",
     title: "완벽한 척하지 않아도 되는 다정하고 느슨한 사람들과의 연대",
-    options: createNutritionOptions("carb-q6", "PROTEIN")
+    options: createNutritionOptions("nutri-q6", "PROTEIN")
   },
   {
-    id: "carb-q7",
+    id: "nutri-q7",
     title: "기후 위기, 차별 등 현실 사회 문제에 교회가 적극적으로 목소리 내기",
-    options: createNutritionOptions("carb-q7", "VITAMIN")
+    options: createNutritionOptions("nutri-q7", "VITAMIN")
   },
   {
-    id: "carb-q8",
+    id: "nutri-q8",
     title: "'우리끼리의 은혜'를 넘어 세상과 이웃을 위해 직접 행동하기",
-    options: createNutritionOptions("carb-q8", "VITAMIN")
+    options: createNutritionOptions("nutri-q8", "VITAMIN")
   },
   {
-    id: "carb-q9",
+    id: "nutri-q9",
     title: "아픈 사회 뉴스를 볼 때 기독교적 가치관으로 소리 내고 돕기",
-    options: createNutritionOptions("carb-q9", "VITAMIN")
+    options: createNutritionOptions("nutri-q9", "VITAMIN")
   },
   {
-    id: "carb-q10",
+    id: "nutri-q10",
     title: "의무적인 교회 사역이나 봉사를 잠시 내려놓고 푹 쉬는 시간",
-    options: createNutritionOptions("carb-q10", "MINERAL")
+    options: createNutritionOptions("nutri-q10", "MINERAL")
   },
   {
-    id: "carb-q11",
+    id: "nutri-q11",
     title: "시끌벅적한 모임 대신 혼자 일기를 쓰거나 산책하며 묵상하기",
-    options: createNutritionOptions("carb-q11", "MINERAL")
+    options: createNutritionOptions("nutri-q11", "MINERAL")
   },
   {
-    id: "carb-q12",
+    id: "nutri-q12",
     title: "거창한 종교적 열심보다 무리하지 않고 내 마음의 평안 지키기",
-    options: createNutritionOptions("carb-q12", "MINERAL")
+    options: createNutritionOptions("nutri-q12", "MINERAL")
   },
   {
-    id: "carb-q13",
+    id: "nutri-q13",
     title: "억압적이고 답답했던 예전 교회의 문화를 솔직하게 꼬집고 비판하기",
-    options: createNutritionOptions("carb-q13", "PROBIOTICS")
+    options: createNutritionOptions("nutri-q13", "PROBIOTICS")
   },
   {
-    id: "carb-q14",
+    id: "nutri-q14",
     title: "낡은 신앙의 틀을 깨고 내 신앙을 처음부터 완전히 새롭게 세워보기",
-    options: createNutritionOptions("carb-q14", "PROBIOTICS")
+    options: createNutritionOptions("nutri-q14", "PROBIOTICS")
   },
   {
-    id: "carb-q15",
+    id: "nutri-q15",
     title: "맹목적인 신앙이 주던 죄책감을 내려놓고 상처받은 마음 치유하기",
-    options: createNutritionOptions("carb-q15", "PROBIOTICS")
+    options: createNutritionOptions("nutri-q15", "PROBIOTICS")
   }
 ];
 
 export const nutritionResults: Record<NutritionKey, NutritionResult> = {
   CARB: {
     key: "CARB",
-    title: "질문하는 뇌를 위해 🍞 [지적 탄수화물]을 보충하세요",
-    status: "덮어놓고 믿으라는 말은 이제 그만! 내 신앙엔 씹고 소화할 텍스트가 필요해.",
+    title: "🍞 지적 탄수화물",
+    status: "질문하는 당신의 뇌를 위해 덮어놓고 믿으라는 말은 이제 그만! 내 신앙엔 더 날카로운 이성과 텍스트가 필요해!",
     description:
       "주일 설교를 들으며 생겨나는 궁금증은 지적으로 성장하고 있다는 아주 좋은 신호입니다! 가짜 포만감을 주는 정크푸드 같은 신앙에서 벗어나, 꼬리에 꼬리를 무는 질문을 던지며 꼭꼭 씹어 넘길 수 있는 배움의 시간이 필요합니다. 당신의 일상에 지적 탄수화물을 더해보세요.",
     recommendation: "청어람 북클럽, 신학/인문학 강좌",
@@ -326,8 +326,8 @@ export const nutritionResults: Record<NutritionKey, NutritionResult> = {
   },
   PROTEIN: {
     key: "PROTEIN",
-    title: "마음을 기댈 수 있는 🥩 [관계의 단백질]이 필요합니다",
-    status: "아는 교회 사람은 많은데, 진짜 내 신앙의 고민을 털어놓을 안전한 사람은 없네...",
+    title: "🥩 관계의 단백질",
+    status: "아는 교회 사람은 많은데, 진짜 내 신앙의 고민을 털어놓고 기댈만한 안전한 사람은 없네...",
     description:
       "혼자 고민하는 시간도 의미 있지만, 안전한 사람들과 함께 나눌 때 우리의 신앙은 더욱 단단해집니다. 당신에게는 정답을 가르치려 들지 않고, 의심과 방황을 있는 그대로 들어주며 서로를 지탱해 주는 공동체가 필요합니다. 당신의 일상에 관계의 단백질을 더해보세요.",
     recommendation: "청어람 안전한 대화 모임, 살롱 청어람",
@@ -336,8 +336,8 @@ export const nutritionResults: Record<NutritionKey, NutritionResult> = {
   },
   VITAMIN: {
     key: "VITAMIN",
-    title: "세상과 소통하는 🍋 [연대의 비타민]을 보충하세요",
-    status: "교회 안의 언어와 세상의 언어가 너무 달라. 기독교는 왜 세상의 아픔에 침묵할까?",
+    title: "🍋 연대의 비타민",
+    status: "교회 안의 언어와 세상의 언어가 너무 달라. 기독교는 왜 세상의 아픔에 침묵할까? 당신에게 필요한 것은 세상과의 소통과 연대!",
     description:
       "세상의 아픔에 공감하는 당신의 넓은 시야는 아주 귀중한 은사입니다! 꽉 막힌 교회 안의 공기를 환기하고, 세상 속에서 신앙을 실천할 수 있는 상큼하고 톡 쏘는 에너지가 필요합니다. 더 나은 세상을 위해 당신의 일상에 연대의 비타민을 더해보세요.",
     recommendation: "공공신학 포럼, 사회 이슈 연대 세미나",
@@ -346,8 +346,8 @@ export const nutritionResults: Record<NutritionKey, NutritionResult> = {
   },
   MINERAL: {
     key: "MINERAL",
-    title: "내면을 촉촉하게 채울 💧 [안식의 미네랄]이 필요합니다",
-    status: "봉사, 사역, 모임... 신앙생활이 마치 무보수 노동 같아요. 잠시 쉬고 싶어요.",
+    title: "💧 안식의 미네랄",
+    status: "봉사, 사역, 모임... 열정적인 내 신앙생활이 마치 무보수 노동 같이 느껴져요. 내면을 촉촉하게 채울 미네랄 팩 붙이고 잠시 쉬고 싶어요.",
     description:
       "그동안 교회를 위해 참 애쓰셨습니다. 이제는 스스로의 영혼을 다정하게 돌볼 때입니다! 무언가를 자꾸 해내야 한다는 압박에서 벗어나, 일상 속에서 조용히 내면을 돌아보고 쉼을 누리는 시간이 필요합니다. 메마른 당신의 일상에 안식의 미네랄을 더해보세요.",
     recommendation: "일상 영성 훈련, 신앙 글쓰기 워크샵, 묵상 모임",
@@ -356,8 +356,8 @@ export const nutritionResults: Record<NutritionKey, NutritionResult> = {
   },
   PROBIOTICS: {
     key: "PROBIOTICS",
-    title: "건강한 신앙으로의 리셋, 💊 [치유의 유산균]을 보충하세요",
-    status: "폭력적인 신앙 강요에 체했어요. 내 신앙을 다시 건강하게 리셋하고 싶어요.",
+    title: "💊 치유의 유산균",
+    status: "폭력적인 신앙 강요에 체했어요. 장을 튼튼하게 할 유산균으로 신앙의 질문들을 소화하고 내 신앙체질을 건강하게 바꾸고 싶어요.",
     description:
       "기존의 방식에 의문을 품고 새로운 길을 모색하려는 당신의 용기를 응원합니다! 상처를 줬던 낡은 교리들을 건강하게 배출해 내고, 내면의 영적 장내 환경을 평화롭게 다시 만들어줄 디톡스의 시간이 필요합니다. 당신의 일상에 치유의 유산균을 더해보세요.",
     recommendation: "가나안 성도를 위한 모임, 신앙 재구성 세미나",
@@ -378,10 +378,10 @@ export const surveys: Survey[] = [
     resultLabels: personaLabels
   },
   {
-    id: "carb",
+    id: "nutri",
     title: "영적 영양상태 분석",
     description: "지금 나의 영적 상태는 어떤 영양소가 필요할까요?",
-    questions: carbQuestions,
+    questions: nutriQuestions,
     resultKeys: nutritionKeys,
     resultLabels: nutritionLabels
   }
@@ -390,14 +390,14 @@ export const surveys: Survey[] = [
 export const surveyMap = Object.fromEntries(surveys.map((survey) => [survey.id, survey])) as Record<SurveyId, Survey>;
 
 export function getSurveyById(id: string | null | undefined) {
-  const normalizedId = id === "additional" ? "carb" : id;
+  const normalizedId = id === "additional" || id === "carb" ? "nutri" : id;
   return surveyMap[(normalizedId || defaultSurveyId) as SurveyId] || surveyMap[defaultSurveyId];
 }
 
 export const personaResults: Record<PersonaKey, PersonaResult> = {
   Orthodox: {
     key: "Orthodox",
-    title: "정통 신앙을 지키는 정통 수호형 그리스도인",
+    title: "정통 수호형 그리스도인",
     subtitle: "절대 진리와 복음의 본질을 붙드는 사람",
     keywords: ["성경무오", "복음주의", "정통교리", "절대진리"],
     tone: "shield",
@@ -414,7 +414,7 @@ export const personaResults: Record<PersonaKey, PersonaResult> = {
   },
   Intellectual: {
     key: "Intellectual",
-    title: "말씀과 이성을 함께 붙드는 합리적 지성형 그리스도인",
+    title: "합리적 지성형 그리스도인",
     subtitle: "말씀과 이성의 균형을 탐구하는 사람",
     keywords: ["말씀연구", "합리적신앙", "논리적", "균형감각"],
     tone: "book",
@@ -431,7 +431,7 @@ export const personaResults: Record<PersonaKey, PersonaResult> = {
   },
   Progressive: {
     key: "Progressive",
-    title: "다름을 환대하는 진보적 포용형 그리스도인",
+    title: "진보적 포용형 그리스도인",
     subtitle: "다름을 환대하며 오늘의 언어로 신앙을 묻는 사람",
     keywords: ["포용성", "다양성존중", "시대적맥락", "환대"],
     tone: "rainbow",
@@ -448,7 +448,7 @@ export const personaResults: Record<PersonaKey, PersonaResult> = {
   },
   Social: {
     key: "Social",
-    title: "행동하는 사랑 사회 참여형 그리스도인",
+    title: "사회 참여형 그리스도인",
     subtitle: "신앙을 이웃 사랑과 정의의 실천으로 드러내는 사람",
     keywords: ["사회정의", "이웃사랑실천", "연대", "행동하는신앙"],
     tone: "dove",
@@ -465,8 +465,8 @@ export const personaResults: Record<PersonaKey, PersonaResult> = {
   },
   Liturgical: {
     key: "Liturgical",
-    title: "깊은 침묵의 예전 전통형 그리스도인",
-    subtitle: "역사와 성찬과 거룩한 리듬 안에서 쉬는 사람",
+    title: "예전 전통형 그리스도인",
+    subtitle: "전통의 리듬과 거룩한 예전 안에서 쉬는 사람",
     keywords: ["역사적정통성", "거룩한예식", "성찬", "관상기도"],
     tone: "candle",
     description:
@@ -482,7 +482,7 @@ export const personaResults: Record<PersonaKey, PersonaResult> = {
   },
   Charismatic: {
     key: "Charismatic",
-    title: "살아 있는 임재를 갈망하는 영적 체험형 그리스도인",
+    title: "영적 체험형 그리스도인",
     subtitle: "성령의 임재와 살아 있는 예배를 갈망하는 사람",
     keywords: ["성령충만", "뜨거운찬양과기도", "은사", "영적체험"],
     tone: "flame",
@@ -499,7 +499,7 @@ export const personaResults: Record<PersonaKey, PersonaResult> = {
   },
   Relational: {
     key: "Relational",
-    title: "삶을 나누는 관계 중심형 그리스도인",
+    title: "관계 중심형 그리스도인",
     subtitle: "공동체 안에서 사랑과 성장을 경험하는 사람",
     keywords: ["공동체성", "성도의교제", "소그룹", "가족같은교회"],
     tone: "cup",

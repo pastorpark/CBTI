@@ -33,7 +33,7 @@ export type Answer = {
   optionId: string;
 };
 
-export type SurveyId = "cbti" | "carb";
+export type SurveyId = "cbti" | "nutri";
 export type SiteVariantId = "pastor" | "ivf";
 
 export type Survey = {
