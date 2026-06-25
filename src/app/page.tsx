@@ -26,7 +26,7 @@ export default function Home() {
   const [activeSurveyId, setActiveSurveyId] = useState<SurveyId>(defaultSurveyId);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState<Answer[]>([]);
-  const [sessionQuestions, setSessionQuestions] = useState<Question[]>(() => prepareQuestions(defaultSurveyId));
+  const [sessionQuestions, setSessionQuestions] = useState<Question[]>(() => shuffleQuestions(surveyMap[defaultSurveyId].questions));
   const submittedRef = useRef(false);
 
   const activeSurvey = surveyMap[activeSurveyId];
@@ -79,7 +79,7 @@ export default function Home() {
     setActiveSurveyId(surveyId);
     setAnswers([]);
     setCurrentIndex(0);
-    setSessionQuestions(prepareQuestions(surveyId));
+    setSessionQuestions(shuffleQuestions(survey.questions, { shuffleOptions: surveyId !== "additional" }));
     submittedRef.current = false;
     setStage("questions");
   }
@@ -337,20 +337,10 @@ export default function Home() {
   );
 }
 
-function prepareQuestions(surveyId: SurveyId) {
-  const sourceQuestions = surveyMap[surveyId].questions;
-
-  if (surveyId === "additional") {
-    return sourceQuestions;
-  }
-
-  return shuffleQuestions(sourceQuestions);
-}
-
-function shuffleQuestions(sourceQuestions: Question[]) {
+function shuffleQuestions(sourceQuestions: Question[], { shuffleOptions = true } = {}) {
   return shuffleArray(sourceQuestions).map((question) => ({
     ...question,
-    options: shuffleArray(question.options)
+    options: shuffleOptions ? shuffleArray(question.options) : question.options
   }));
 }
 
