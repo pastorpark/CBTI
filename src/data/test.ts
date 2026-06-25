@@ -227,141 +227,89 @@ export const questions: Question[] = [
   }
 ];
 
+function createNutritionOptions(questionId: string, persona: NutritionKey) {
+  return [
+    { id: `${questionId}-yes`, label: "💊 필요해", scores: [{ persona, weight: 2 }] },
+    { id: `${questionId}-normal`, label: "🤔 그냥 그래", scores: [{ persona, weight: 1 }] },
+    { id: `${questionId}-no`, label: "🌿 별로 필요없어", scores: [] }
+  ];
+}
+
 export const additionalQuestions: Question[] = [
   {
     id: "additional-q1",
-    title: "설교나 성경 공부 중 논리적으로 납득이 되지 않을 때, \"왜 그럴까?\"라는 질문을 스스로 자주 던지는 편이다.",
-    options: [
-      { id: "additional-q1-yes", label: "예", scores: [{ persona: "CARB", weight: 2 }] },
-      { id: "additional-q1-normal", label: "보통", scores: [{ persona: "CARB", weight: 1 }] },
-      { id: "additional-q1-no", label: "아니오", scores: [] }
-    ]
+    title: "설교를 들을 때 \"왜 그럴까?\" 질문하고 논리적으로 파고들기",
+    options: createNutritionOptions("additional-q1", "CARB")
   },
   {
     id: "additional-q2",
-    title: "신앙적인 궁금증이 생기면 관련된 신학 서적이나 깊이 있는 인문학 글을 찾아 읽고 싶어진다.",
-    options: [
-      { id: "additional-q2-yes", label: "예", scores: [{ persona: "CARB", weight: 2 }] },
-      { id: "additional-q2-normal", label: "보통", scores: [{ persona: "CARB", weight: 1 }] },
-      { id: "additional-q2-no", label: "아니오", scores: [] }
-    ]
+    title: "신앙적 궁금증을 풀어줄 조금 묵직한 신학/인문학 책 읽기",
+    options: createNutritionOptions("additional-q2", "CARB")
   },
   {
     id: "additional-q3",
-    title: "'무조건 믿어라'는 말보다는 이성과 신앙이 조화를 이루는 합리적인 설명이 내게는 훨씬 중요하다.",
-    options: [
-      { id: "additional-q3-yes", label: "예", scores: [{ persona: "CARB", weight: 2 }] },
-      { id: "additional-q3-normal", label: "보통", scores: [{ persona: "CARB", weight: 1 }] },
-      { id: "additional-q3-no", label: "아니오", scores: [] }
-    ]
+    title: "'무조건 믿어라'는 말 대신 이성적이고 합리적인 설명 듣기",
+    options: createNutritionOptions("additional-q3", "CARB")
   },
   {
     id: "additional-q4",
-    title: "판단이나 정죄 없이 나의 솔직한 신앙적 고민과 방황을 털어놓을 수 있는 안전한 사람(모임)이 간절하다.",
-    options: [
-      { id: "additional-q4-yes", label: "예", scores: [{ persona: "PROTEIN", weight: 2 }] },
-      { id: "additional-q4-normal", label: "보통", scores: [{ persona: "PROTEIN", weight: 1 }] },
-      { id: "additional-q4-no", label: "아니오", scores: [] }
-    ]
+    title: "정답을 강요하지 않고 내 고민을 있는 그대로 들어주는 모임",
+    options: createNutritionOptions("additional-q4", "PROTEIN")
   },
   {
     id: "additional-q5",
-    title: "성경 지식을 일방적으로 배우기보다, 각자의 삶을 투명하게 나누며 서로를 지지하는 대화의 시간이 더 좋다.",
-    options: [
-      { id: "additional-q5-yes", label: "예", scores: [{ persona: "PROTEIN", weight: 2 }] },
-      { id: "additional-q5-normal", label: "보통", scores: [{ persona: "PROTEIN", weight: 1 }] },
-      { id: "additional-q5-no", label: "아니오", scores: [] }
-    ]
+    title: "딱딱한 성경 공부보다 각자의 일상과 감정을 솔직하게 나누는 대화",
+    options: createNutritionOptions("additional-q5", "PROTEIN")
   },
   {
     id: "additional-q6",
-    title: "혼자 예배드리는 것보다 결이 맞는 사람들과 함께 느슨하더라도 다정한 연대를 맺으며 신앙생활을 하고 싶다.",
-    options: [
-      { id: "additional-q6-yes", label: "예", scores: [{ persona: "PROTEIN", weight: 2 }] },
-      { id: "additional-q6-normal", label: "보통", scores: [{ persona: "PROTEIN", weight: 1 }] },
-      { id: "additional-q6-no", label: "아니오", scores: [] }
-    ]
+    title: "완벽한 척하지 않아도 되는 다정하고 느슨한 사람들과의 연대",
+    options: createNutritionOptions("additional-q6", "PROTEIN")
   },
   {
     id: "additional-q7",
-    title: "기후 위기, 차별, 노동 등 현실의 사회 문제에 기독교와 교회가 적극적으로 목소리를 내고 행동해야 한다고 생각한다.",
-    options: [
-      { id: "additional-q7-yes", label: "예", scores: [{ persona: "VITAMIN", weight: 2 }] },
-      { id: "additional-q7-normal", label: "보통", scores: [{ persona: "VITAMIN", weight: 1 }] },
-      { id: "additional-q7-no", label: "아니오", scores: [] }
-    ]
+    title: "기후 위기, 차별 등 현실 사회 문제에 교회가 적극적으로 목소리 내기",
+    options: createNutritionOptions("additional-q7", "VITAMIN")
   },
   {
     id: "additional-q8",
-    title: "교회 안에서만 통용되는 '우리끼리의 은혜'보다, 이웃과 세상을 향한 구체적인 실천이 더 중요하게 느껴진다.",
-    options: [
-      { id: "additional-q8-yes", label: "예", scores: [{ persona: "VITAMIN", weight: 2 }] },
-      { id: "additional-q8-normal", label: "보통", scores: [{ persona: "VITAMIN", weight: 1 }] },
-      { id: "additional-q8-no", label: "아니오", scores: [] }
-    ]
+    title: "'우리끼리의 은혜'를 넘어 세상과 이웃을 위해 직접 행동하기",
+    options: createNutritionOptions("additional-q8", "VITAMIN")
   },
   {
     id: "additional-q9",
-    title: "세상의 아픔과 뉴스를 접할 때면, 기독교적 가치관으로 적극적으로 연대하고 돕고 싶은 마음이 강하게 든다.",
-    options: [
-      { id: "additional-q9-yes", label: "예", scores: [{ persona: "VITAMIN", weight: 2 }] },
-      { id: "additional-q9-normal", label: "보통", scores: [{ persona: "VITAMIN", weight: 1 }] },
-      { id: "additional-q9-no", label: "아니오", scores: [] }
-    ]
+    title: "아픈 사회 뉴스를 볼 때 기독교적 가치관으로 소리 내고 돕기",
+    options: createNutritionOptions("additional-q9", "VITAMIN")
   },
   {
     id: "additional-q10",
-    title: "사역이나 봉사 같은 의무적인 교회 활동에 지쳐, 당분간은 조용히 내 영혼을 돌보며 쉬고 싶다는 생각이 든다.",
-    options: [
-      { id: "additional-q10-yes", label: "예", scores: [{ persona: "MINERAL", weight: 2 }] },
-      { id: "additional-q10-normal", label: "보통", scores: [{ persona: "MINERAL", weight: 1 }] },
-      { id: "additional-q10-no", label: "아니오", scores: [] }
-    ]
+    title: "의무적인 교회 사역이나 봉사를 잠시 내려놓고 푹 쉬는 시간",
+    options: createNutritionOptions("additional-q10", "MINERAL")
   },
   {
     id: "additional-q11",
-    title: "시끌벅적한 모임보다는, 일상 속에서 일기를 쓰거나 조용히 산책하며 하나님을 묵상하는 시간이 내게 가장 큰 힘이 된다.",
-    options: [
-      { id: "additional-q11-yes", label: "예", scores: [{ persona: "MINERAL", weight: 2 }] },
-      { id: "additional-q11-normal", label: "보통", scores: [{ persona: "MINERAL", weight: 1 }] },
-      { id: "additional-q11-no", label: "아니오", scores: [] }
-    ]
+    title: "시끌벅적한 모임 대신 혼자 일기를 쓰거나 산책하며 묵상하기",
+    options: createNutritionOptions("additional-q11", "MINERAL")
   },
   {
     id: "additional-q12",
-    title: "거창한 종교적 성취보다 무리하지 않고 나의 내면을 정돈하며 일상의 평안을 유지하는 것이 요즘 내게 가장 필요하다.",
-    options: [
-      { id: "additional-q12-yes", label: "예", scores: [{ persona: "MINERAL", weight: 2 }] },
-      { id: "additional-q12-normal", label: "보통", scores: [{ persona: "MINERAL", weight: 1 }] },
-      { id: "additional-q12-no", label: "아니오", scores: [] }
-    ]
+    title: "거창한 종교적 열심보다 무리하지 않고 내 마음의 평안 지키기",
+    options: createNutritionOptions("additional-q12", "MINERAL")
   },
   {
     id: "additional-q13",
-    title: "과거 교회에서 겪은 배타적이고 억압적인 문화 때문에 상처를 받아, 기존의 신앙 관습에 거부감이 들 때가 있다.",
-    options: [
-      { id: "additional-q13-yes", label: "예", scores: [{ persona: "PROBIOTICS", weight: 2 }] },
-      { id: "additional-q13-normal", label: "보통", scores: [{ persona: "PROBIOTICS", weight: 1 }] },
-      { id: "additional-q13-no", label: "아니오", scores: [] }
-    ]
+    title: "억압적이고 답답했던 예전 교회의 문화를 솔직하게 꼬집고 비판하기",
+    options: createNutritionOptions("additional-q13", "PROBIOTICS")
   },
   {
     id: "additional-q14",
-    title: "낡은 신앙의 틀과 맹목적인 복종 강요를 벗어던지고, 건강하고 새로운 시각으로 내 신앙을 처음부터 다시 세워보고 싶다.",
-    options: [
-      { id: "additional-q14-yes", label: "예", scores: [{ persona: "PROBIOTICS", weight: 2 }] },
-      { id: "additional-q14-normal", label: "보통", scores: [{ persona: "PROBIOTICS", weight: 1 }] },
-      { id: "additional-q14-no", label: "아니오", scores: [] }
-    ]
+    title: "낡은 신앙의 틀을 깨고 내 신앙을 처음부터 완전히 새롭게 세워보기",
+    options: createNutritionOptions("additional-q14", "PROBIOTICS")
   },
   {
     id: "additional-q15",
-    title: "나의 의심과 상처를 외면하지 않고 있는 그대로 인정하며, 얽매였던 죄책감으로부터 자유로워지는 시간이 필요하다.",
-    options: [
-      { id: "additional-q15-yes", label: "예", scores: [{ persona: "PROBIOTICS", weight: 2 }] },
-      { id: "additional-q15-normal", label: "보통", scores: [{ persona: "PROBIOTICS", weight: 1 }] },
-      { id: "additional-q15-no", label: "아니오", scores: [] }
-    ]
+    title: "맹목적인 신앙이 주던 죄책감을 내려놓고 상처받은 마음 치유하기",
+    options: createNutritionOptions("additional-q15", "PROBIOTICS")
   }
 ];
 

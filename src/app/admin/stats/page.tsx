@@ -20,6 +20,7 @@ type StatsResponse = {
     title: string;
     description: string;
     questionCount: number;
+    questionTime: number;
     resultLabels: Record<string, string>;
   }[];
   visits: {
@@ -195,7 +196,7 @@ export default function AdminStatsPage() {
               className={`survey-card admin-survey-card ${activeSurveyId === survey.id ? "active" : ""}`}
               onClick={() => setActiveSurveyId(survey.id)}
             >
-              <span className="survey-card-kicker">{survey.questionCount}개 문항</span>
+              <span className="survey-card-kicker">{survey.questionCount}개 문항/{survey.questionTime}분</span>
               <strong>{survey.title}</strong>
               <span>{survey.description}</span>
             </button>

@@ -20,7 +20,7 @@ export function PastorIntroView({ surveys, onStart }: PastorIntroViewProps) {
       <div className="survey-picker" aria-label="설문 선택">
         {surveys.map((survey) => (
           <button key={survey.id} className="survey-card" onClick={() => onStart(survey.id)}>
-            <span className="survey-card-kicker">{survey.questions.length}개 문항</span>
+            <span className="survey-card-kicker">{survey.id === "additional" ? "15개 문항/1분" : "15개 문항/5분"}</span>
             <strong>{survey.title}</strong>
             <span>{survey.description}</span>
           </button>

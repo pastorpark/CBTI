@@ -1,8 +1,10 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 import { nutritionKeys, nutritionLabels, nutritionResults } from "@/data/test";
 import { createEmptyResultScores, getSortedResultScores } from "@/lib/scoring";
 import type { NutritionKey } from "@/types/test";
+import { resolveSiteVariantId } from "@/variants";
 
 type NutritionResultPageProps = {
   params: Promise<{ type: string }>;
@@ -50,10 +52,11 @@ export async function generateMetadata({ params }: NutritionResultPageProps): Pr
 
 export default async function NutritionResultPage({ params }: NutritionResultPageProps) {
   const { type } = await params;
+  const variantId = resolveSiteVariantId((await headers()).get("host"));
 
   if (!isNutritionKey(type)) {
     return (
-      <main className="app-shell">
+      <main className={`app-shell variant-${variantId}`}>
         <section className="panel section">
           <span className="brand">Nutrition</span>
           <h1>결과를 찾을 수 없어요</h1>
@@ -71,7 +74,7 @@ export default async function NutritionResultPage({ params }: NutritionResultPag
   scores[type] = 6;
 
   return (
-    <main className="app-shell">
+    <main className={`app-shell variant-${variantId}`}>
       <div className="panel">
         <section className="result-header nutrition-result-header">
           <div className="result-hero-copy">

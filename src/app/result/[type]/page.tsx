@@ -1,7 +1,9 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 import { personaEnglishLabels, personaKeys, personaLabels, personaResults } from "@/data/test";
 import { createEmptyScores, getSortedScores, isPersonaKey } from "@/lib/scoring";
+import { resolveSiteVariantId } from "@/variants";
 
 type ResultPageProps = {
   params: Promise<{ type: string }>;
@@ -56,10 +58,11 @@ export async function generateMetadata({ params }: ResultPageProps): Promise<Met
 
 export default async function ResultPage({ params }: ResultPageProps) {
   const { type } = await params;
+  const variantId = resolveSiteVariantId((await headers()).get("host"));
 
   if (!isPersonaKey(type)) {
     return (
-      <main className="app-shell">
+      <main className={`app-shell variant-${variantId}`}>
         <section className="panel section">
           <span className="brand">CBTI</span>
           <h1>결과를 찾을 수 없어요 😢</h1>
@@ -77,7 +80,7 @@ export default async function ResultPage({ params }: ResultPageProps) {
   scores[type] = 5;
 
   return (
-    <main className="app-shell">
+    <main className={`app-shell variant-${variantId}`}>
       <div className="panel">
         <section className="result-header">
           <div className="result-hero-copy">

@@ -1,10 +1,16 @@
 import type { Metadata } from "next";
 import { GoogleAnalytics } from "@next/third-parties/google";
+import { Poor_Story } from "next/font/google";
 import "./globals.css";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://cbti.pastorpark.net";
 const siteName = "나의 신앙 유형 찾기 - CBTI";
 const description = "15개의 질문을 통해 나의 신앙 성향을 살펴보고, 나와 잘 맞는 신앙 유형과 추천 교파를 확인해보세요.";
+const poorStory = Poor_Story({
+  weight: "400",
+  subsets: ["latin"],
+  variable: "--font-poor-story"
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -92,7 +98,7 @@ export default function RootLayout({
 
   return (
     <html lang="ko">
-      <body>
+      <body className={poorStory.variable}>
         {children}
         <script
           type="application/ld+json"
