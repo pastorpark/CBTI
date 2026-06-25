@@ -7,6 +7,8 @@ type IvfIntroViewProps = {
 };
 
 export function IvfIntroView({ surveys, onStart }: IvfIntroViewProps) {
+  const orderedSurveys = [...surveys].sort((survey) => (survey.id === "cbti" ? 1 : -1));
+
   return (
     <section className="section intro-section">
       <figure className="ivf-hero-deco" aria-hidden="true">
@@ -21,7 +23,7 @@ export function IvfIntroView({ surveys, onStart }: IvfIntroViewProps) {
         <p className="lead">{ivfVariant.introLead}</p>
       </div>
       <div className="survey-picker" aria-label="설문 선택">
-        {surveys.map((survey) => (
+        {orderedSurveys.map((survey) => (
           <button key={survey.id} className="survey-card" onClick={() => onStart(survey.id)}>
             <span className="survey-card-kicker">{survey.id === "additional" ? "15개 문항/1분" : "15개 문항/5분"}</span>
             <strong>{survey.title}</strong>

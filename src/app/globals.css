@@ -313,7 +313,7 @@ body[data-variant="ivf"] {
   min-height: 200px;
   border: 0;
   border-radius: 24px;
-  padding: 28px;
+  padding: 43px 28px;
   background: var(--ivf-green-dark);
   color: #ffffff;
   text-align: left;
@@ -330,7 +330,7 @@ body[data-variant="ivf"] {
 }
 
 .variant-ivf .survey-card:hover {
-  background: var(--ivf-green);
+  background: var(--ivf-green-dark);
   box-shadow: none;
   transform: translateY(-1px);
 }
@@ -1362,7 +1362,7 @@ body[data-variant="ivf"] {
   .variant-ivf .survey-card {
     min-height: 130px;
     border-radius: 20px;
-    padding: 20px;
+    padding: 35px 20px;
   }
 
   .variant-ivf .survey-card strong {
