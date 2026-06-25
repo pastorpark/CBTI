@@ -7,5 +7,5 @@ type ResultPageProps = {
 export default async function ResultRedirectPage({ searchParams }: ResultPageProps) {
   const params = await searchParams;
   const type = params.type ?? "";
-  redirect(`/result/${type}`);
+  redirect(`/result/cbti/${type}`);
 }

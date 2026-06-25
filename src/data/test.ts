@@ -235,81 +235,81 @@ function createNutritionOptions(questionId: string, persona: NutritionKey) {
   ];
 }
 
-export const additionalQuestions: Question[] = [
+export const carbQuestions: Question[] = [
   {
-    id: "additional-q1",
+    id: "carb-q1",
     title: "설교를 들을 때 \"왜 그럴까?\" 질문하고 논리적으로 파고들기",
-    options: createNutritionOptions("additional-q1", "CARB")
+    options: createNutritionOptions("carb-q1", "CARB")
   },
   {
-    id: "additional-q2",
+    id: "carb-q2",
     title: "신앙적 궁금증을 풀어줄 조금 묵직한 신학/인문학 책 읽기",
-    options: createNutritionOptions("additional-q2", "CARB")
+    options: createNutritionOptions("carb-q2", "CARB")
   },
   {
-    id: "additional-q3",
+    id: "carb-q3",
     title: "'무조건 믿어라'는 말 대신 이성적이고 합리적인 설명 듣기",
-    options: createNutritionOptions("additional-q3", "CARB")
+    options: createNutritionOptions("carb-q3", "CARB")
   },
   {
-    id: "additional-q4",
+    id: "carb-q4",
     title: "정답을 강요하지 않고 내 고민을 있는 그대로 들어주는 모임",
-    options: createNutritionOptions("additional-q4", "PROTEIN")
+    options: createNutritionOptions("carb-q4", "PROTEIN")
   },
   {
-    id: "additional-q5",
+    id: "carb-q5",
     title: "딱딱한 성경 공부보다 각자의 일상과 감정을 솔직하게 나누는 대화",
-    options: createNutritionOptions("additional-q5", "PROTEIN")
+    options: createNutritionOptions("carb-q5", "PROTEIN")
   },
   {
-    id: "additional-q6",
+    id: "carb-q6",
     title: "완벽한 척하지 않아도 되는 다정하고 느슨한 사람들과의 연대",
-    options: createNutritionOptions("additional-q6", "PROTEIN")
+    options: createNutritionOptions("carb-q6", "PROTEIN")
   },
   {
-    id: "additional-q7",
+    id: "carb-q7",
     title: "기후 위기, 차별 등 현실 사회 문제에 교회가 적극적으로 목소리 내기",
-    options: createNutritionOptions("additional-q7", "VITAMIN")
+    options: createNutritionOptions("carb-q7", "VITAMIN")
   },
   {
-    id: "additional-q8",
+    id: "carb-q8",
     title: "'우리끼리의 은혜'를 넘어 세상과 이웃을 위해 직접 행동하기",
-    options: createNutritionOptions("additional-q8", "VITAMIN")
+    options: createNutritionOptions("carb-q8", "VITAMIN")
   },
   {
-    id: "additional-q9",
+    id: "carb-q9",
     title: "아픈 사회 뉴스를 볼 때 기독교적 가치관으로 소리 내고 돕기",
-    options: createNutritionOptions("additional-q9", "VITAMIN")
+    options: createNutritionOptions("carb-q9", "VITAMIN")
   },
   {
-    id: "additional-q10",
+    id: "carb-q10",
     title: "의무적인 교회 사역이나 봉사를 잠시 내려놓고 푹 쉬는 시간",
-    options: createNutritionOptions("additional-q10", "MINERAL")
+    options: createNutritionOptions("carb-q10", "MINERAL")
   },
   {
-    id: "additional-q11",
+    id: "carb-q11",
     title: "시끌벅적한 모임 대신 혼자 일기를 쓰거나 산책하며 묵상하기",
-    options: createNutritionOptions("additional-q11", "MINERAL")
+    options: createNutritionOptions("carb-q11", "MINERAL")
   },
   {
-    id: "additional-q12",
+    id: "carb-q12",
     title: "거창한 종교적 열심보다 무리하지 않고 내 마음의 평안 지키기",
-    options: createNutritionOptions("additional-q12", "MINERAL")
+    options: createNutritionOptions("carb-q12", "MINERAL")
   },
   {
-    id: "additional-q13",
+    id: "carb-q13",
     title: "억압적이고 답답했던 예전 교회의 문화를 솔직하게 꼬집고 비판하기",
-    options: createNutritionOptions("additional-q13", "PROBIOTICS")
+    options: createNutritionOptions("carb-q13", "PROBIOTICS")
   },
   {
-    id: "additional-q14",
+    id: "carb-q14",
     title: "낡은 신앙의 틀을 깨고 내 신앙을 처음부터 완전히 새롭게 세워보기",
-    options: createNutritionOptions("additional-q14", "PROBIOTICS")
+    options: createNutritionOptions("carb-q14", "PROBIOTICS")
   },
   {
-    id: "additional-q15",
+    id: "carb-q15",
     title: "맹목적인 신앙이 주던 죄책감을 내려놓고 상처받은 마음 치유하기",
-    options: createNutritionOptions("additional-q15", "PROBIOTICS")
+    options: createNutritionOptions("carb-q15", "PROBIOTICS")
   }
 ];
 
@@ -372,16 +372,16 @@ export const surveys: Survey[] = [
   {
     id: "cbti",
     title: "CBTI",
-    description: "15개의 질문으로 나의 신앙 성향과 추천 교파를 확인합니다.",
+    description: "상세한 질문과 답변을 통해 나의 신앙 성향을 확인하고 추천 교파까지 분석합니다.",
     questions,
     resultKeys: personaKeys,
     resultLabels: personaLabels
   },
   {
-    id: "additional",
-    title: "영적 영양상태 진단 테스트",
-    description: "15개의 질문으로 지금 내 신앙에 필요한 영적 영양소를 진단합니다.",
-    questions: additionalQuestions,
+    id: "carb",
+    title: "영적 영양상태 분석",
+    description: "지금 나의 영적 상태는 어떤 영양소가 필요할까요?",
+    questions: carbQuestions,
     resultKeys: nutritionKeys,
     resultLabels: nutritionLabels
   }
@@ -390,7 +390,8 @@ export const surveys: Survey[] = [
 export const surveyMap = Object.fromEntries(surveys.map((survey) => [survey.id, survey])) as Record<SurveyId, Survey>;
 
 export function getSurveyById(id: string | null | undefined) {
-  return surveyMap[(id || defaultSurveyId) as SurveyId] || surveyMap[defaultSurveyId];
+  const normalizedId = id === "additional" ? "carb" : id;
+  return surveyMap[(normalizedId || defaultSurveyId) as SurveyId] || surveyMap[defaultSurveyId];
 }
 
 export const personaResults: Record<PersonaKey, PersonaResult> = {

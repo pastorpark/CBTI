@@ -14,9 +14,5 @@ export function getResultUrl(result: ResultKey, surveyId: SurveyId = defaultSurv
         ? window.location.origin
         : "";
 
-  if (surveyId === defaultSurveyId) {
-    return `${baseUrl}/result/${encodeURIComponent(result)}`;
-  }
-
   return `${baseUrl}/result/${encodeURIComponent(surveyId)}/${encodeURIComponent(result)}`;
 }

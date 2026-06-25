@@ -32,14 +32,14 @@ export async function generateMetadata({ params }: NutritionResultPageProps): Pr
 
   return {
     title: result.title,
-    description: `나는 지금 ${nutritionLabels[type]} 보충 필요. ${result.status}`,
+    description: `나의 영적 영양상태는 ${nutritionLabels[type]} 보충 필요. ${result.status}`,
     alternates: {
-      canonical: `/result/additional/${type}`
+      canonical: `/result/carb/${type}`
     },
     openGraph: {
       title: `${nutritionLabels[type]} - 영적 영양상태 진단 테스트`,
       description: result.status,
-      url: `/result/additional/${type}`,
+      url: `/result/carb/${type}`,
       type: "website"
     },
     twitter: {
@@ -99,7 +99,7 @@ export default async function NutritionResultPage({ params }: NutritionResultPag
                 <p>{result.recommendation}</p>
               </article>
               <article className="insight-card">
-                <h2>초대</h2>
+                <h2>뉴스레터 초대</h2>
                 <p>{result.cta}</p>
               </article>
             </div>

@@ -18,8 +18,7 @@ import { submitResult } from "@/lib/submissions";
 import { getVisitorId } from "@/lib/visitor";
 import { submitVisit } from "@/lib/visits";
 import { resolveSiteVariantId } from "@/variants";
-import { IvfIntroView } from "@/variants/ivf/IntroView";
-import { PastorIntroView } from "@/variants/pastor/IntroView";
+import { getIntroView } from "@/variants/intro";
 import type { Answer, NutritionKey, PersonaKey, Question, ResultKey, SiteVariantId, SurveyId } from "@/types/test";
 
 type Stage = "intro" | "questions" | "loading" | "result";
@@ -39,12 +38,12 @@ export function HomeClient({ initialVariantId }: HomeClientProps) {
 
   const activeSurvey = surveyMap[activeSurveyId];
   const scores = useMemo(() => calculateScores(answers, sessionQuestions, activeSurvey.resultKeys), [activeSurvey.resultKeys, answers, sessionQuestions]);
-  const tieBreakers = activeSurveyId === "additional" ? nutritionTieBreakerOrder : tieBreakerOrder;
+  const tieBreakers = activeSurveyId === "carb" ? nutritionTieBreakerOrder : tieBreakerOrder;
   const primary = useMemo(() => resolvePrimaryResult(scores, activeSurvey.resultKeys, tieBreakers), [activeSurvey.resultKeys, scores, tieBreakers]);
   const personaPrimary = primary as PersonaKey;
   const nutritionPrimary = primary as NutritionKey;
   const personaResult = activeSurveyId === "cbti" ? personaResults[personaPrimary] : null;
-  const nutritionResult = activeSurveyId === "additional" ? nutritionResults[nutritionPrimary] : null;
+  const nutritionResult = activeSurveyId === "carb" ? nutritionResults[nutritionPrimary] : null;
   const closePersonas = activeSurveyId === "cbti" ? getClosePersonas(scores as Record<PersonaKey, number>, personaPrimary) : [];
   const sortedScores = getSortedResultScores(scores, activeSurvey.resultKeys);
 
@@ -93,7 +92,7 @@ export function HomeClient({ initialVariantId }: HomeClientProps) {
     setActiveSurveyId(surveyId);
     setAnswers([]);
     setCurrentIndex(0);
-    setSessionQuestions(shuffleQuestions(survey.questions, { shuffleOptions: surveyId !== "additional" }));
+    setSessionQuestions(shuffleQuestions(survey.questions, { shuffleOptions: surveyId !== "carb" }));
     submittedRef.current = false;
     setStage("questions");
   }
@@ -130,8 +129,8 @@ export function HomeClient({ initialVariantId }: HomeClientProps) {
   const question = sessionQuestions[currentIndex];
   const progress = stage === "questions" ? ((currentIndex + 1) / sessionQuestions.length) * 100 : 100;
   const resultUrl = getResultUrl(primary, activeSurveyId);
-  const scoreScaleMax = activeSurveyId === "additional" ? 6 : 5;
-  const IntroView = activeVariantId === "ivf" ? IvfIntroView : PastorIntroView;
+  const scoreScaleMax = activeSurveyId === "carb" ? 6 : 5;
+  const IntroView = getIntroView(activeVariantId);
 
   return (
     <main className={`app-shell variant-${activeVariantId}`}>
@@ -142,12 +141,12 @@ export function HomeClient({ initialVariantId }: HomeClientProps) {
 
         {stage === "questions" && (
           <section className="section question-section">
-            {activeSurveyId === "additional" && (
+            {activeSurveyId === "carb" && (
               <p className="question-eyebrow">지금 나를 위해 필요한 것은?</p>
             )}
             <h2 className="question-title">{question.title}</h2>
             <div className="question-bottom">
-              <div className={`option-list ${activeSurveyId === "additional" ? "nutrition-option-list" : ""}`}>
+              <div className={`option-list ${activeSurveyId === "carb" ? "nutrition-option-list" : ""}`}>
                 {question.options.map((option) => (
                   <button key={option.id} className="option" onClick={() => selectOption(option.id)}>
                     {option.label}

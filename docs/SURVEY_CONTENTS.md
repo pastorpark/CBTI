@@ -1,7 +1,7 @@
 # CBTI 설문 내용 통합 정리
 
 > 작성일: 2026-06-25
-> 기준 소스: `src/data/test.ts`, `src/app/result/[type]/page.tsx`, `src/app/result/additional/[type]/page.tsx`
+> 기준 소스: `src/data/test.ts`, `src/app/result/cbti/[type]/page.tsx`, `src/app/result/carb/[type]/page.tsx`
 
 ---
 
@@ -13,7 +13,7 @@
 | 설문 ID | 설문명 | 설명 |
 |---------|--------|------|
 | `cbti` | **CBTI** | 15개의 질문으로 나의 신앙 성향과 추천 교파를 확인합니다. |
-| `additional` | **영적 영양상태 진단 테스트** | 15개의 질문으로 지금 내 신앙에 필요한 영적 영양소를 진단합니다. |
+| `carb` | **영적 영양상태 진단 테스트** | 15개의 질문으로 지금 내 신앙에 필요한 영적 영양소를 진단합니다. |
 
 ---
 
@@ -475,7 +475,7 @@
 | `src/data/test.ts` | 설문 데이터, 결과 데이터, 유형/영양소 정의 |
 | `src/types/test.ts` | 타입 정의 |
 | `src/lib/scoring.ts` | 점수 계산 로직 |
-| `src/app/result/[type]/page.tsx` | CBTI 결과 페이지 |
-| `src/app/result/additional/[type]/page.tsx` | 영적 영양상태 결과 페이지 |
+| `src/app/result/cbti/[type]/page.tsx` | CBTI 결과 페이지 |
+| `src/app/result/carb/[type]/page.tsx` | 영적 영양상태 결과 페이지 |
 | `public/characters/*.svg` | 캐릭터 이미지 (CBTI) |
 | `public/og/*.png` | OG 이미지 |

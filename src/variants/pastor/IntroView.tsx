@@ -1,12 +1,7 @@
-import type { Survey, SurveyId } from "@/types/test";
 import { pastorVariant } from "@/variants/pastor/config";
+import type { IntroViewProps } from "@/variants/types";
 
-type PastorIntroViewProps = {
-  surveys: Survey[];
-  onStart: (surveyId: SurveyId) => void;
-};
-
-export function PastorIntroView({ surveys, onStart }: PastorIntroViewProps) {
+export function PastorIntroView({ surveys, onStart }: IntroViewProps) {
   return (
     <section className="section intro-section">
       <div className="intro-brand">
@@ -20,7 +15,7 @@ export function PastorIntroView({ surveys, onStart }: PastorIntroViewProps) {
       <div className="survey-picker" aria-label="설문 선택">
         {surveys.map((survey) => (
           <button key={survey.id} className="survey-card" onClick={() => onStart(survey.id)}>
-            <span className="survey-card-kicker">{survey.id === "additional" ? "15개 문항/1분" : "15개 문항/5분"}</span>
+            <span className="survey-card-kicker">{survey.id === "carb" ? "15개 문항/1분" : "15개 문항/5분"}</span>
             <strong>{survey.title}</strong>
             <span>{survey.description}</span>
           </button>

@@ -1,4 +1,4 @@
-import type { SiteVariantId } from "@/types/test";
+import type { SiteVariantId, Survey, SurveyId } from "@/types/test";
 
 export type SiteVariant = {
   id: SiteVariantId;
@@ -9,4 +9,9 @@ export type SiteVariant = {
   brandFull: string;
   introTitle: string;
   introLead: string;
+};
+
+export type IntroViewProps = {
+  surveys: Survey[];
+  onStart: (surveyId: SurveyId) => void;
 };

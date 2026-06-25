@@ -43,15 +43,16 @@ export function getStoredSurveyId(variantId: SiteVariantId, surveyId: SurveyId) 
 
 export function parseStoredSurveyId(value: string | null | undefined): { variantId: SiteVariantId; surveyId: SurveyId } {
   if (value?.includes(":")) {
-    const [variantId, surveyId] = value.split(":") as [SiteVariantId, SurveyId];
+    const [variantId, rawSurveyId] = value.split(":") as [SiteVariantId, string];
+    const surveyId = rawSurveyId === "additional" ? "carb" : rawSurveyId;
 
-    if ((variantId === "pastor" || variantId === "ivf") && (surveyId === "cbti" || surveyId === "additional")) {
+    if ((variantId === "pastor" || variantId === "ivf") && (surveyId === "cbti" || surveyId === "carb")) {
       return { variantId, surveyId };
     }
   }
 
-  if (value === "cbti" || value === "additional") {
-    return { variantId: defaultSiteVariantId, surveyId: value };
+  if (value === "cbti" || value === "carb" || value === "additional") {
+    return { variantId: defaultSiteVariantId, surveyId: value === "additional" ? "carb" : value };
   }
 
   return { variantId: defaultSiteVariantId, surveyId: "cbti" };

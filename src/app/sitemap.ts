@@ -14,14 +14,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
   ];
 
   const resultSitemaps = personaKeys.map((key) => ({
-    url: `${siteUrl}/result/${key}`,
+    url: `${siteUrl}/result/cbti/${key}`,
     lastModified: new Date(),
     changeFrequency: "monthly" as const,
     priority: 0.8,
   }));
 
   const nutritionResultSitemaps = nutritionKeys.map((key) => ({
-    url: `${siteUrl}/result/additional/${key}`,
+    url: `${siteUrl}/result/carb/${key}`,
     lastModified: new Date(),
     changeFrequency: "monthly" as const,
     priority: 0.8,

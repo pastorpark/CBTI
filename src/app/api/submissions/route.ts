@@ -9,6 +9,11 @@ function isValidSurveyId(value: unknown): value is SurveyId {
   return typeof value === "string" && value in surveyMap;
 }
 
+function normalizeSurveyId(value: unknown): SurveyId {
+  if (value === "additional") return "carb";
+  return isValidSurveyId(value) ? value : defaultSurveyId;
+}
+
 function isValidVariantId(value: unknown): value is SiteVariantId {
   return value === "pastor" || value === "ivf";
 }
@@ -49,7 +54,7 @@ export async function POST(request: Request) {
       scores?: unknown;
       answers?: unknown;
     };
-    const surveyId = isValidSurveyId(body.surveyId) ? body.surveyId : defaultSurveyId;
+    const surveyId = normalizeSurveyId(body.surveyId);
     const variantId = isValidVariantId(body.variantId) ? body.variantId : defaultSiteVariantId;
 
     if (
