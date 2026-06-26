@@ -58,19 +58,12 @@ export function NutritionRadarChart({ keys, labels, scores, maxScore = 6 }: Nutr
 
           return (
             <text className="nutrition-radar-label" key={key} x={point.x} y={point.y}>
-              {labels[key]}
+              <tspan x={point.x} dy="-0.35em">{labels[key]}</tspan>
+              <tspan className="nutrition-radar-label-score" x={point.x} dy="1.25em">{scores[key] || 0}</tspan>
             </text>
           );
         })}
       </svg>
-      <div className="nutrition-radar-legend">
-        {keys.map((key) => (
-          <div className="nutrition-radar-legend-item" key={key}>
-            <span>{labels[key]}</span>
-            <b>{scores[key] || 0}</b>
-          </div>
-        ))}
-      </div>
     </div>
   );
 }

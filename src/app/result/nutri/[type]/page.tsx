@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { headers } from "next/headers";
 import { NutritionRadarChart } from "@/components/NutritionRadarChart";
+import { StibeeSubscribeForm } from "@/components/StibeeSubscribeForm";
 import { nutritionKeys, nutritionLabels, nutritionResults } from "@/data/test";
 import { getResultHeaderStyle } from "@/lib/result-colors";
 import { createEmptyResultScores } from "@/lib/scoring";
@@ -82,7 +83,6 @@ export default async function NutritionResultPage({ params }: NutritionResultPag
           <div className="result-hero-copy">
             <span className="result-type-label">나에게 필요한 영양소는 - {result.key}</span>
             <h1 className="hero-title result-title">{result.title}</h1>
-            <p className="lead">{result.status}</p>
           </div>
           <div className="keyword-row">
             {result.keywords.map((keyword) => (
@@ -91,22 +91,25 @@ export default async function NutritionResultPage({ params }: NutritionResultPag
           </div>
         </section>
         <section className="section result-body">
-          <div className="result-section">
-            <p className="lead">{result.description}</p>
-          </div>
-          <div className="result-section">
-            <h2>내게 필요한 영양소</h2>
+          <div className="result-section result-description-section">
+            <span className="result-status-tag">내게 필요한 영양소</span>
             <NutritionRadarChart keys={nutritionKeys} labels={nutritionLabels} scores={scores} maxScore={6} />
+            <hr className="result-status-divider" />
+            <span className="result-status-tag">당신의 상태</span>
+            <p className="lead">{result.status}</p>
+            <hr className="result-status-divider" />
+            <span className="result-status-tag">청어람의 조언</span>
+            <p className="lead">{result.description}</p>
+            <hr className="result-status-divider" />
+            <span className="result-status-tag">맞춤 처방</span>
+            <p className="lead">{result.recommendation}</p>
           </div>
           <div className="result-section">
             <div className="insight-grid">
               <article className="insight-card">
-                <h2>당신을 위한 청어람의 맞춤 처방</h2>
-                <p>{result.recommendation}</p>
-              </article>
-              <article className="insight-card">
                 <h2>뉴스레터 초대</h2>
                 <p>{result.cta}</p>
+                <StibeeSubscribeForm />
               </article>
             </div>
           </div>

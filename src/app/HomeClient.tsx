@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { NutritionRadarChart } from "@/components/NutritionRadarChart";
+import { StibeeSubscribeForm } from "@/components/StibeeSubscribeForm";
 import {
   defaultSurveyId,
   nutritionResults,
@@ -272,7 +273,6 @@ export function HomeClient({ initialVariantId }: HomeClientProps) {
               <div className="result-hero-copy">
                 <span className="result-type-label">나의 영적 영양상태 - {nutritionResult.key}</span>
                 <h1 className="hero-title result-title">{nutritionResult.title}</h1>
-                <p className="lead">{nutritionResult.status}</p>
               </div>
               <div className="keyword-row">
                 {nutritionResult.keywords.map((keyword) => (
@@ -281,29 +281,32 @@ export function HomeClient({ initialVariantId }: HomeClientProps) {
               </div>
             </section>
             <section className="section result-body">
-              <div className="result-section">
-                <p className="lead">{nutritionResult.description}</p>
+              <div className="result-section result-description-section">
+                <span className="result-status-tag">내게 필요한 영양소</span>
+                <NutritionRadarChart keys={nutritionTieBreakerOrder} labels={activeSurvey.resultLabels as Record<NutritionKey, string>} scores={scores} maxScore={scoreScaleMax} />
                 {sortedScores[1] && sortedScores[1].score === sortedScores[0].score && (
                   <p className="small">
                     {activeSurvey.resultLabels[sortedScores[1].key]} 영양소도 함께 부족하네요!
                   </p>
                 )}
+                <hr className="result-status-divider" />
+                <span className="result-status-tag">당신의 상태</span>
+                <p className="lead">{nutritionResult.status}</p>
+                <hr className="result-status-divider" />
+                <span className="result-status-tag">청어람의 조언</span>
+                <p className="lead">{nutritionResult.description}</p>
+                <hr className="result-status-divider" />
+                <span className="result-status-tag">맞춤 처방</span>
+                <p className="lead">{nutritionResult.recommendation}</p>
               </div>
               <div className="result-section">
                 <div className="insight-grid">
                   <article className="insight-card">
-                    <h2>맞춤 처방</h2>
-                    <p>{nutritionResult.recommendation}</p>
-                  </article>
-                  <article className="insight-card">
                     <h2>뉴스레터 초대</h2>
                     <p>{nutritionResult.cta}</p>
+                    <StibeeSubscribeForm />
                   </article>
                 </div>
-              </div>
-              <div className="result-section">
-                <h2>내게 필요한 영양소</h2>
-                <NutritionRadarChart keys={nutritionTieBreakerOrder} labels={activeSurvey.resultLabels as Record<NutritionKey, string>} scores={scores} maxScore={scoreScaleMax} />
               </div>
               <section className="share-panel">
                 <div className="share-box">
