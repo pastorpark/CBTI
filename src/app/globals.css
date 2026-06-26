@@ -473,6 +473,29 @@ body[data-variant="ivf"] {
   margin-top: 18px;
 }
 
+.variant-ivf .result-body .lead,
+.variant-ivf .result-body .insight-card p,
+.variant-ivf .result-body .stibee-subscribe .stb_form_policy label {
+  color: #001e2b;
+}
+
+.variant-ivf .result-body .result-status-tag {
+  border-color: rgba(0, 30, 43, 0.16);
+  background: #dff7e8;
+  color: #004735;
+}
+
+.variant-ivf .result-body .nutrition-radar-label,
+.variant-ivf .result-body .nutrition-radar-legend-item span {
+  fill: #001e2b;
+  color: #001e2b;
+}
+
+.variant-ivf .result-body .nutrition-radar-legend-item b,
+.variant-ivf .result-body .stibee-subscribe .stb_form_set_label {
+  color: #001e2b;
+}
+
 .variant-ivf .question-title {
   margin: 4px 0 30px;
   font-size: clamp(30px, 5vw, 48px);
@@ -549,8 +572,61 @@ body[data-variant="ivf"] {
   display: none;
 }
 
-.variant-ivf .nutrition-result-header {
+.variant-ivf .nutrition-result-header,
+.variant-ivf .cbti-result-header {
+  padding: 58px 28px 44px;
   background: var(--result-color, var(--ivf-green-dark));
+}
+
+.variant-ivf .nutrition-result-header .result-hero-copy,
+.variant-ivf .nutrition-result-header .keyword-row,
+.variant-ivf .cbti-result-header .result-hero-copy,
+.variant-ivf .cbti-result-header .keyword-row {
+  max-width: none;
+}
+
+.variant-ivf .nutrition-result-header .result-type-label,
+.variant-ivf .cbti-result-header .result-type-label {
+  font-size: clamp(22px, 3vw, 34px);
+  font-weight: 500;
+}
+
+.variant-ivf .nutrition-result-header .result-title,
+.variant-ivf .cbti-result-header .result-title {
+  margin-top: 34px;
+  font-size: clamp(48px, 6.8vw, 82px);
+}
+
+.variant-ivf .nutrition-result-header .keyword-row,
+.variant-ivf .cbti-result-header .keyword-row {
+  gap: 14px;
+  margin-top: 58px;
+}
+
+.variant-ivf .nutrition-result-header .keyword,
+.variant-ivf .cbti-result-header .keyword {
+  border-radius: 999px;
+  padding: 5px 12px;
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 900;
+  line-height: 1.2;
+}
+
+.variant-ivf .cbti-result-header .result-character-icon {
+  display: none;
+}
+
+.variant-ivf .nutrition-result-art {
+  position: absolute;
+  top: 28px;
+  right: 28px;
+  z-index: 0;
+  display: block;
+  width: clamp(176px, 25.6%, 264px);
+  margin: 0;
+  pointer-events: none;
 }
 
 .variant-ivf .result-title {
@@ -616,6 +692,16 @@ body[data-variant="ivf"] {
 .variant-ivf .insight-card .stibee-subscribe .stb_form_msg_error,
 .variant-ivf .insight-card .stibee-subscribe .stb_form_result {
   color: var(--ivf-green);
+}
+
+.variant-ivf .follow-card h2 {
+  color: #ffffff;
+}
+
+.variant-ivf .follow-action-button {
+  border: 0;
+  background: var(--surface);
+  color: var(--ink);
 }
 
 .variant-ivf .list-item,
@@ -1116,6 +1202,16 @@ body[data-variant="ivf"] {
   min-width: 0;
 }
 
+.nutrition-result-art {
+  display: none;
+}
+
+.nutrition-result-art img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
 .keyword-row {
   display: flex;
   flex-wrap: wrap;
@@ -1339,6 +1435,103 @@ body[data-variant="ivf"] {
   inset: 0;
   z-index: 1;
   background: rgba(5, 5, 5, 0.5);
+}
+
+.follow-card {
+  display: grid;
+  gap: 18px;
+}
+
+.follow-card h2 span {
+  display: block;
+}
+
+.follow-actions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.follow-action-button {
+  display: inline-flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 92px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid rgba(5, 5, 5, 0.16);
+  border-radius: 10px;
+  padding: 10px 12px;
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 850;
+  line-height: 1.25;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.follow-action-emoji {
+  font-size: 32px;
+  line-height: 1;
+}
+
+.subscribe-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+}
+
+.subscribe-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  background: rgba(0, 30, 43, 0.62);
+  cursor: pointer;
+}
+
+.subscribe-modal-panel {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 520px);
+  max-height: min(720px, calc(100svh - 36px));
+  overflow: auto;
+  border-radius: 18px;
+  padding: 22px;
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.28);
+}
+
+.subscribe-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.subscribe-modal-header h2 {
+  margin: 0;
+  font-size: 22px;
+  line-height: 1.25;
+}
+
+.subscribe-modal-close {
+  border: 1px solid rgba(5, 5, 5, 0.16);
+  border-radius: 999px;
+  padding: 8px 12px;
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 850;
 }
 
 .list-item {
@@ -1744,6 +1937,58 @@ body[data-variant="ivf"] {
   .variant-ivf .result-header {
     border-radius: 20px;
     padding: 28px 20px;
+  }
+
+  .variant-ivf .nutrition-result-header,
+  .variant-ivf .cbti-result-header {
+    padding: 28px 14px 26px;
+    overflow: hidden;
+  }
+
+  .variant-ivf .nutrition-result-header .result-hero-copy,
+  .variant-ivf .cbti-result-header .result-hero-copy {
+    z-index: 2;
+    max-width: none;
+  }
+
+  .variant-ivf .nutrition-result-header .result-type-label,
+  .variant-ivf .cbti-result-header .result-type-label {
+    font-size: clamp(14px, 4vw, 18px);
+  }
+
+  .variant-ivf .nutrition-result-header .result-title,
+  .variant-ivf .cbti-result-header .result-title {
+    margin-top: 18px;
+    font-size: clamp(30px, 9.2vw, 42px);
+  }
+
+  .variant-ivf .nutrition-result-art {
+    position: absolute;
+    top: 14px;
+    right: -12px;
+    z-index: 0;
+    width: clamp(96px, 29.6vw, 147px);
+    margin: 0;
+    opacity: 0.98;
+  }
+
+  .variant-ivf .nutrition-result-header .keyword-row,
+  .variant-ivf .cbti-result-header .keyword-row {
+    position: relative;
+    z-index: 2;
+    max-width: none;
+    gap: 6px;
+    margin-top: 46px;
+  }
+
+  .variant-ivf .nutrition-result-header .keyword,
+  .variant-ivf .cbti-result-header .keyword {
+    padding: 5px 12px;
+    font-size: 12px;
+  }
+
+  .nutrition-radar-chart {
+    width: min(60vw, 260px);
   }
 
   .variant-ivf .section.result-body {

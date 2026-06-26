@@ -70,6 +70,7 @@ src/app/
   api/
 
 src/components/
+  ChungeoramFollowCard.tsx
   NutritionRadarChart.tsx
   StibeeSubscribeForm.tsx
 
@@ -77,6 +78,7 @@ src/data/
   test.ts
 
 src/lib/
+  nutrition-assets.ts
   scoring.ts
   result-colors.ts
   result-url.ts
@@ -143,7 +145,8 @@ src/variants/
 
 영적 영양상태(`nutri`) 결과 화면의 현재 구조:
 
-- 결과 헤더에는 결과 타입과 결과 제목만 둔다.
+- 결과 헤더에는 결과 타입, 결과 제목, 키워드 태그를 둔다.
+- IVF 버전의 결과 헤더에는 `public/ivf/{carb,protein,vitamin,mineral,probiotics}.png` 이미지를 결과 key에 맞춰 배경 레이어처럼 표시한다. 이미지 경로 매핑은 `src/lib/nutrition-assets.ts`의 `nutritionImagePaths`가 담당한다.
 - 본문 첫 섹션은 `result-description-section`이며 다음 순서로 배치한다.
   - `내게 필요한 영양소` 태그 버튼
   - `NutritionRadarChart`
@@ -153,8 +156,16 @@ src/variants/
   - 구분선
   - `맞춤 처방` 태그 버튼과 `recommendation`
 - `맞춤 처방`은 더 이상 별도 `insight-card` 박스로 렌더링하지 않는다.
-- `뉴스레터 초대`는 `insight-card`로 유지하고, 내부에 `StibeeSubscribeForm`을 삽입한다.
+- 하단 CTA는 `ChungeoramFollowCard`를 사용한다. 제목은 `당신의 영적 영양소를 챙겨줄 / 청어람을 팔로우 해보세요`이고, `뉴스레터 구독`, `인스타 채널`, `한눈에 보기` 버튼을 가로 배치한다.
+- `뉴스레터 구독` 버튼은 `StibeeSubscribeForm`을 모달로 연다. `인스타 채널`은 `https://www.instagram.com/ichungeoram`, `한눈에 보기`는 `https://armc.cc`로 새 탭 연결한다.
 - 이 구조는 `src/app/HomeClient.tsx`와 `src/app/result/nutri/[type]/page.tsx` 양쪽에 모두 적용되어 있다.
+
+CBTI 결과 화면의 IVF 전용 확장:
+
+- IVF 버전의 CBTI 결과 헤더에도 nutri 결과 헤더와 비슷한 이미지 레이어/큰 타이틀/작은 키워드 태그 레이아웃을 적용한다.
+- CBTI 전용 이미지가 아직 없으므로 임시로 `nutritionImagePaths.CARB`(`/ivf/carb.png`)를 모든 CBTI 결과 헤더 이미지로 사용한다.
+- IVF 버전의 CBTI 결과 본문에도 `ChungeoramFollowCard`를 추가한다.
+- Pastor 버전 CBTI 결과에는 이 팔로우 카드가 렌더링되지 않도록 `variantId === "ivf"` 또는 `activeVariantId === "ivf"` 조건으로 제한한다.
 
 결과 헤더 색상은 `src/lib/result-colors.ts`에서 결과 key별로 관리한다.
 
@@ -183,6 +194,13 @@ src/variants/
 - 외부 Stibee CSS는 불러오지 않고, `src/app/globals.css`의 `.stibee-subscribe ...` 스타일로 앱 디자인에 맞춘다.
 - Stibee 검증/모달 스크립트는 `next/script`로 `https://resource.stibee.com/subscribe/stb_subscribe_form.js`를 `afterInteractive` 로드한다.
 - 폼은 새 탭(`target="_blank"`)으로 제출된다.
+
+청어람 팔로우 CTA:
+
+- `src/components/ChungeoramFollowCard.tsx`가 담당한다.
+- 클라이언트 컴포넌트이며 `useState`로 구독 모달 열림 상태를 관리한다.
+- 버튼은 이모지와 라벨을 세로 배치한 타일 형태다.
+- 구독 모달 안에서 `StibeeSubscribeForm`을 렌더링한다.
 
 ## 라우팅 규칙
 
@@ -292,17 +310,23 @@ IVF 전용 스타일은 `.variant-ivf ...` selector 아래에 둔다.
 - IVF의 `이전으로` 버튼(`.button.ghost`)은 예외적으로 `--surface` 배경과 `--ivf-hairline` 테두리를 유지한다.
 - IVF `insight-card`는 진한 초록 배경을 쓰므로 카드 제목/본문/구독폼 라벨은 흰색 계열로 override한다.
 - IVF 뉴스레터 폼 입력창은 흰 배경과 진한 텍스트를 유지해 가독성을 확보한다.
+- IVF 첫 화면은 `public/ivf/eoramc.png` 이미지를 제목과 설문 버튼 사이에 표시한다. 기존 `clay-hero.png` 장식은 사용하지 않는다.
+- IVF 첫 화면 모바일에서는 설문 카드 2개를 가로 배치하고, 카드 높이와 이미지 크기를 모바일용으로 별도 조정한다.
+- 전체 텍스트 줄바꿈은 전역에서 `word-break: keep-all`, `line-break: strict`, `overflow-wrap: break-word`를 사용해 단어 단위 줄바꿈을 우선한다.
 
 결과 화면 스타일 관련 주요 selector:
 
 - `.result-header`: 결과 상단 영역. `--result-color` CSS 변수를 받아 결과별 배경색을 표시한다.
-- `.nutrition-result-header`: 영적 영양상태 결과 헤더 보조 클래스. 현재는 `--result-color` fallback을 공유한다.
+- `.nutrition-result-header`: 영적 영양상태 결과 헤더 보조 클래스. IVF에서 이미지 레이어와 큰 타이틀 스타일을 적용한다.
+- `.cbti-result-header`: CBTI 결과 헤더 보조 클래스. IVF에서 nutri 결과 헤더와 유사한 이미지 레이어/타이포 스타일을 적용한다.
+- `.nutrition-result-art`: IVF 결과 헤더의 오른쪽 배경 이미지 레이어. Pastor 기본 화면에서는 `display: none`이다.
 - `.result-body`: 결과 본문 section. 헤더와 같은 폭, 헤더와의 간격을 담당한다.
 - `.result-description-section`: nutri 결과 본문 첫 설명 섹션. 태그 버튼, 차트, 상태/조언/처방 문구를 담는다.
 - `.result-status-tag`: 결과 설명 섹션에서 쓰는 작은 태그 버튼 스타일.
 - `.result-status-divider`: 상태/조언/처방 사이의 가로 구분선.
 - `.variant-ivf .section.result-body`: IVF 버전에서 결과 본문 폭을 IVF 결과 헤더 폭과 맞춘다.
 - `.stibee-subscribe ...`: 뉴스레터 구독폼 스타일.
+- `.follow-card`, `.follow-actions`, `.follow-action-button`, `.subscribe-modal ...`: 청어람 팔로우 CTA와 구독 모달 스타일.
 - `.nutrition-radar ...`: 영적 영양상태 레이더 차트 스타일.
 
 권장 기준:

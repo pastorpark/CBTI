@@ -1,10 +1,11 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { headers } from "next/headers";
+import { ChungeoramFollowCard } from "@/components/ChungeoramFollowCard";
 import { NutritionRadarChart } from "@/components/NutritionRadarChart";
-import { StibeeSubscribeForm } from "@/components/StibeeSubscribeForm";
 import { nutritionKeys, nutritionLabels, nutritionResults } from "@/data/test";
 import { getResultHeaderStyle } from "@/lib/result-colors";
+import { nutritionImagePaths } from "@/lib/nutrition-assets";
 import { createEmptyResultScores } from "@/lib/scoring";
 import type { NutritionKey } from "@/types/test";
 import { resolveSiteVariantId } from "@/variants";
@@ -84,6 +85,9 @@ export default async function NutritionResultPage({ params }: NutritionResultPag
             <span className="result-type-label">나에게 필요한 영양소는 - {result.key}</span>
             <h1 className="hero-title result-title">{result.title}</h1>
           </div>
+          <figure className="nutrition-result-art" aria-hidden="true">
+            <img src={nutritionImagePaths[type]} alt="" />
+          </figure>
           <div className="keyword-row">
             {result.keywords.map((keyword) => (
               <span className="keyword" key={keyword}>#{keyword}</span>
@@ -106,11 +110,7 @@ export default async function NutritionResultPage({ params }: NutritionResultPag
           </div>
           <div className="result-section">
             <div className="insight-grid">
-              <article className="insight-card">
-                <h2>뉴스레터 초대</h2>
-                <p>{result.cta}</p>
-                <StibeeSubscribeForm />
-              </article>
+              <ChungeoramFollowCard />
             </div>
           </div>
           <div className="actions">

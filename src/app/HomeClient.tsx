@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import { ChungeoramFollowCard } from "@/components/ChungeoramFollowCard";
 import { NutritionRadarChart } from "@/components/NutritionRadarChart";
-import { StibeeSubscribeForm } from "@/components/StibeeSubscribeForm";
 import {
   defaultSurveyId,
   nutritionResults,
@@ -16,6 +16,7 @@ import {
 } from "@/data/test";
 import { getResultHeaderStyle } from "@/lib/result-colors";
 import { getResultUrl } from "@/lib/result-url";
+import { nutritionImagePaths } from "@/lib/nutrition-assets";
 import { calculateScores, getClosePersonas, getSortedResultScores, resolvePrimaryResult } from "@/lib/scoring";
 import { submitResult } from "@/lib/submissions";
 import { getVisitorId } from "@/lib/visitor";
@@ -186,7 +187,7 @@ export function HomeClient({ initialVariantId }: HomeClientProps) {
 
         {stage === "result" && personaResult && (
           <>
-            <section className="result-header" style={getResultHeaderStyle(personaPrimary)}>
+            <section className="result-header cbti-result-header" style={getResultHeaderStyle(personaPrimary)}>
               <div className="result-hero-copy">
                 <span className="result-type-label">
                   나의 신앙 유형 - {personaEnglishLabels[personaPrimary]}
@@ -195,6 +196,9 @@ export function HomeClient({ initialVariantId }: HomeClientProps) {
                 <h1 className="hero-title result-title">{personaResult.title}</h1>
                 <p className="lead">{personaResult.subtitle}</p>
               </div>
+              <figure className="nutrition-result-art" aria-hidden="true">
+                <img src={nutritionImagePaths.CARB} alt="" />
+              </figure>
               <div className="keyword-row">
                 {personaResult.keywords.map((keyword) => (
                   <span className="keyword" key={keyword}>#{keyword}</span>
@@ -250,6 +254,13 @@ export function HomeClient({ initialVariantId }: HomeClientProps) {
                   ))}
                 </div>
               </div>
+              {activeVariantId === "ivf" && (
+                <div className="result-section">
+                  <div className="insight-grid">
+                    <ChungeoramFollowCard />
+                  </div>
+                </div>
+              )}
               <section className="share-panel">
                 <div className="share-box">
                   <h2>결과 공유하기</h2>
@@ -274,6 +285,9 @@ export function HomeClient({ initialVariantId }: HomeClientProps) {
                 <span className="result-type-label">나의 영적 영양상태 - {nutritionResult.key}</span>
                 <h1 className="hero-title result-title">{nutritionResult.title}</h1>
               </div>
+              <figure className="nutrition-result-art" aria-hidden="true">
+                <img src={nutritionImagePaths[nutritionPrimary]} alt="" />
+              </figure>
               <div className="keyword-row">
                 {nutritionResult.keywords.map((keyword) => (
                   <span className="keyword" key={keyword}>#{keyword}</span>
@@ -301,11 +315,7 @@ export function HomeClient({ initialVariantId }: HomeClientProps) {
               </div>
               <div className="result-section">
                 <div className="insight-grid">
-                  <article className="insight-card">
-                    <h2>뉴스레터 초대</h2>
-                    <p>{nutritionResult.cta}</p>
-                    <StibeeSubscribeForm />
-                  </article>
+                  <ChungeoramFollowCard />
                 </div>
               </div>
               <section className="share-panel">

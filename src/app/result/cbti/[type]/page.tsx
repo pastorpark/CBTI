@@ -1,8 +1,10 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { headers } from "next/headers";
+import { ChungeoramFollowCard } from "@/components/ChungeoramFollowCard";
 import { personaEnglishLabels, personaKeys, personaLabels, personaResults } from "@/data/test";
 import { getResultHeaderStyle } from "@/lib/result-colors";
+import { nutritionImagePaths } from "@/lib/nutrition-assets";
 import { createEmptyScores, getSortedScores, isPersonaKey } from "@/lib/scoring";
 import { resolveSiteVariantId } from "@/variants";
 
@@ -83,7 +85,7 @@ export default async function ResultPage({ params }: ResultPageProps) {
   return (
     <main className={`app-shell variant-${variantId}`}>
       <div className="panel">
-        <section className="result-header" style={getResultHeaderStyle(type)}>
+        <section className="result-header cbti-result-header" style={getResultHeaderStyle(type)}>
           <div className="result-hero-copy">
             <span className="result-type-label">
               나의 신앙 유형 - {personaEnglishLabels[type]}
@@ -92,6 +94,9 @@ export default async function ResultPage({ params }: ResultPageProps) {
             <h1 className="hero-title result-title"><img className="result-character-icon" src={result.characterImage} alt={`${personaLabels[type]} 캐릭터`} />{result.title}</h1>
             <p className="lead">{result.subtitle}</p>
           </div>
+          <figure className="nutrition-result-art" aria-hidden="true">
+            <img src={nutritionImagePaths.CARB} alt="" />
+          </figure>
           <div className="keyword-row">
             {result.keywords.map((keyword) => (
               <span className="keyword" key={keyword}>#{keyword}</span>
@@ -142,6 +147,13 @@ export default async function ResultPage({ params }: ResultPageProps) {
               ))}
             </div>
           </div>
+          {variantId === "ivf" && (
+            <div className="result-section">
+              <div className="insight-grid">
+                <ChungeoramFollowCard />
+              </div>
+            </div>
+          )}
           <div className="actions">
             <Link className="button" href="/">나도 테스트 해보기</Link>
           </div>
