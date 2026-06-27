@@ -177,14 +177,11 @@ body[data-variant="ivf"] {
   background: var(--surface);
 }
 
-.variant-ivf .survey-card:hover,
-.variant-ivf .survey-card.active,
-.variant-ivf .option:hover {
+.variant-ivf .survey-card.active {
   box-shadow: none;
 }
 
-.variant-ivf .button,
-.variant-ivf .button:hover {
+.variant-ivf .button {
   min-height: 48px;
   border-color: var(--ivf-green-dark);
   border-radius: 12px;
@@ -195,21 +192,8 @@ body[data-variant="ivf"] {
   box-shadow: none;
 }
 
-.variant-ivf .button:hover {
-  border-color: var(--ivf-green);
-  background: var(--ivf-green);
-  color: var(--ink);
-}
-
 .variant-ivf .button.secondary,
 .variant-ivf .button.ghost {
-  border-color: var(--ivf-hairline);
-  background: var(--surface);
-  color: var(--ink);
-}
-
-.variant-ivf .button.secondary:hover,
-.variant-ivf .button.ghost:hover {
   border-color: var(--ivf-hairline);
   background: var(--surface);
   color: var(--ink);
@@ -331,12 +315,6 @@ body[data-variant="ivf"] {
 
 .variant-ivf .survey-card:nth-child(2) {
   background: var(--ivf-green-dark);
-}
-
-.variant-ivf .survey-card:hover {
-  background: var(--ivf-green-dark);
-  box-shadow: none;
-  transform: translateY(-1px);
 }
 
 .variant-ivf .survey-card .survey-card-kicker {
@@ -536,13 +514,6 @@ body[data-variant="ivf"] {
   padding: 12px;
   justify-content: center;
   text-align: center;
-}
-
-.variant-ivf .option:hover {
-  background: var(--ivf-green);
-  color: var(--ink);
-  box-shadow: none;
-  transform: translateY(-1px);
 }
 
 .variant-ivf .option:active {
@@ -1012,11 +983,16 @@ body[data-variant="ivf"] {
     background 160ms ease;
 }
 
-.survey-card:hover,
 .survey-card.active {
   background: var(--orange-soft);
   box-shadow: 0 10px 24px rgba(255, 90, 31, 0.22);
   transform: translateY(-1px);
+}
+
+.survey-card:active {
+  background: var(--orange-soft);
+  box-shadow: 0 8px 18px rgba(255, 90, 31, 0.18);
+  transform: translateY(0);
 }
 
 .survey-card strong {
@@ -1065,12 +1041,6 @@ body[data-variant="ivf"] {
     background 160ms ease;
 }
 
-.button:hover {
-  background: #ff713f;
-  box-shadow: 0 8px 18px rgba(255, 90, 31, 0.24);
-  transform: translateY(-1px);
-}
-
 .button.secondary {
   background: var(--surface);
   color: var(--ink);
@@ -1089,6 +1059,12 @@ body[data-variant="ivf"] {
   padding-inline: 16px;
   box-shadow: none;
   white-space: nowrap;
+}
+
+.button:active {
+  background: #ff713f;
+  box-shadow: 0 6px 14px rgba(255, 90, 31, 0.18);
+  transform: translateY(0);
 }
 
 .progress-wrap {
@@ -1157,10 +1133,74 @@ body[data-variant="ivf"] {
     background 160ms ease;
 }
 
-.option:hover {
+.option:active {
   background: var(--orange-soft);
-  box-shadow: 0 10px 24px rgba(255, 90, 31, 0.22);
-  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(255, 90, 31, 0.18);
+  transform: translateY(0);
+}
+
+.variant-ivf .survey-card:active {
+  background: var(--ivf-green-dark);
+  box-shadow: none;
+  transform: translateY(0);
+}
+
+.variant-ivf .button:active,
+.variant-ivf .option:active {
+  border-color: var(--ivf-green);
+  background: var(--ivf-green);
+  color: var(--ink);
+  box-shadow: none;
+  transform: translateY(0);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .survey-card:hover {
+    background: var(--orange-soft);
+    box-shadow: 0 10px 24px rgba(255, 90, 31, 0.22);
+    transform: translateY(-1px);
+  }
+
+  .button:hover {
+    background: #ff713f;
+    box-shadow: 0 8px 18px rgba(255, 90, 31, 0.24);
+    transform: translateY(-1px);
+  }
+
+  .option:hover {
+    background: var(--orange-soft);
+    box-shadow: 0 10px 24px rgba(255, 90, 31, 0.22);
+    transform: translateY(-1px);
+  }
+
+  .variant-ivf .survey-card:hover,
+  .variant-ivf .option:hover {
+    box-shadow: none;
+  }
+
+  .variant-ivf .survey-card:hover {
+    background: var(--ivf-green-dark);
+    transform: translateY(-1px);
+  }
+
+  .variant-ivf .button:hover {
+    border-color: var(--ivf-green);
+    background: var(--ivf-green);
+    color: var(--ink);
+  }
+
+  .variant-ivf .button.secondary:hover,
+  .variant-ivf .button.ghost:hover {
+    border-color: var(--ivf-hairline);
+    background: var(--surface);
+    color: var(--ink);
+  }
+
+  .variant-ivf .option:hover {
+    background: var(--ivf-green);
+    color: var(--ink);
+    transform: translateY(-1px);
+  }
 }
 
 .loading-box {
