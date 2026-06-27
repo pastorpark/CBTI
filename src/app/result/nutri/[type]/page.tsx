@@ -5,11 +5,12 @@ import { redirect } from "next/navigation";
 import { ChungeoramFollowCard } from "@/components/ChungeoramFollowCard";
 import { NutritionRadarChart } from "@/components/NutritionRadarChart";
 import { nutritionKeys, nutritionLabels, nutritionResults } from "@/data/test";
+import { fillMetadataTemplate } from "@/lib/metadata-template";
 import { resolveNutritionResultKey } from "@/lib/result-aliases";
 import { getResultHeaderStyle } from "@/lib/result-colors";
 import { nutritionImagePaths } from "@/lib/nutrition-assets";
 import { createEmptyResultScores } from "@/lib/scoring";
-import { resolveSiteVariantId } from "@/variants";
+import { getSiteVariantById, resolveSiteVariantId } from "@/variants";
 
 type NutritionResultPageProps = {
   params: Promise<{ type: string }>;
@@ -21,6 +22,9 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: NutritionResultPageProps): Promise<Metadata> {
   const { type } = await params;
+  const variantId = resolveSiteVariantId((await headers()).get("host"));
+  const variantMetadata = getSiteVariantById(variantId).metadata;
+  const template = variantMetadata.results.nutri;
   const resolvedType = resolveNutritionResultKey(type);
 
   if (!resolvedType) {
@@ -31,23 +35,33 @@ export async function generateMetadata({ params }: NutritionResultPageProps): Pr
   }
 
   const result = nutritionResults[resolvedType];
+  const label = nutritionLabels[resolvedType];
+  const templateValues = {
+    key: result.key,
+    title: result.title,
+    label,
+    status: result.status,
+    description: result.description,
+    recommendation: result.recommendation
+  };
 
   return {
-    title: result.title,
-    description: `${nutritionLabels[resolvedType]}: ${result.status}`,
+    title: fillMetadataTemplate(template.title, templateValues),
+    description: fillMetadataTemplate(template.description, templateValues),
     alternates: {
       canonical: `/result/nutri/${resolvedType}`
     },
     openGraph: {
-      title: `${nutritionLabels[resolvedType]} - 영적 영양상태 진단 테스트`,
-      description: result.status,
+      title: fillMetadataTemplate(template.openGraphTitle, templateValues),
+      description: fillMetadataTemplate(template.openGraphDescription, templateValues),
       url: `/result/nutri/${resolvedType}`,
+      siteName: variantMetadata.siteName,
       type: "website"
     },
     twitter: {
       card: "summary_large_image",
-      title: `${nutritionLabels[resolvedType]} - 영적 영양상태 진단 테스트`,
-      description: result.status
+      title: fillMetadataTemplate(template.twitterTitle, templateValues),
+      description: fillMetadataTemplate(template.twitterDescription, templateValues)
     }
   };
 }

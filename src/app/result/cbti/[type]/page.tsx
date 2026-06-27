@@ -5,10 +5,11 @@ import { redirect } from "next/navigation";
 import { ChungeoramFollowCard } from "@/components/ChungeoramFollowCard";
 import { personaEnglishLabels, personaKeys, personaLabels, personaResults } from "@/data/test";
 import { cbtiImagePaths } from "@/lib/cbti-assets";
+import { fillMetadataTemplate } from "@/lib/metadata-template";
 import { resolvePersonaResultKey } from "@/lib/result-aliases";
 import { getResultHeaderStyle } from "@/lib/result-colors";
 import { createEmptyScores, getSortedScores } from "@/lib/scoring";
-import { resolveSiteVariantId } from "@/variants";
+import { getSiteVariantById, resolveSiteVariantId } from "@/variants";
 
 type ResultPageProps = {
   params: Promise<{ type: string }>;
@@ -20,6 +21,9 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: ResultPageProps): Promise<Metadata> {
   const { type } = await params;
+  const variantId = resolveSiteVariantId((await headers()).get("host"));
+  const variantMetadata = getSiteVariantById(variantId).metadata;
+  const template = variantMetadata.results.cbti;
   const resolvedType = resolvePersonaResultKey(type);
 
   if (!resolvedType) {
@@ -32,17 +36,24 @@ export async function generateMetadata({ params }: ResultPageProps): Promise<Met
   const label = personaLabels[resolvedType];
   const result = personaResults[resolvedType];
   const imageUrl = `/og/result-${resolvedType.toLowerCase()}.png`;
+  const templateValues = {
+    label,
+    englishLabel: personaEnglishLabels[resolvedType],
+    title: result.title,
+    subtitle: result.subtitle
+  };
 
   return {
-    title: label,
-    description: `나의 신앙 유형은 ${label}. ${result.subtitle}`,
+    title: fillMetadataTemplate(template.title, templateValues),
+    description: fillMetadataTemplate(template.description, templateValues),
     alternates: {
       canonical: `/result/cbti/${resolvedType}`
     },
     openGraph: {
-      title: `${label} - 나의 신앙 유형 찾기 CBTI`,
-      description: `나의 신앙 유형은 ${label}. ${result.subtitle}`,
+      title: fillMetadataTemplate(template.openGraphTitle, templateValues),
+      description: fillMetadataTemplate(template.openGraphDescription, templateValues),
       url: `/result/cbti/${resolvedType}`,
+      siteName: variantMetadata.siteName,
       type: "website",
       images: [
         {
@@ -55,8 +66,8 @@ export async function generateMetadata({ params }: ResultPageProps): Promise<Met
     },
     twitter: {
       card: "summary_large_image",
-      title: `${label} - 나의 신앙 유형 찾기 CBTI`,
-      description: `나의 신앙 유형은 ${label}. ${result.subtitle}`,
+      title: fillMetadataTemplate(template.twitterTitle, templateValues),
+      description: fillMetadataTemplate(template.twitterDescription, templateValues),
       images: [imageUrl]
     }
   };
