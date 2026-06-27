@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import { resolveNutritionResultKey } from "@/lib/result-aliases";
 
 type LegacyNutritionResultPageProps = {
   params: Promise<{ type: string }>;
@@ -6,5 +7,6 @@ type LegacyNutritionResultPageProps = {
 
 export default async function LegacyNutritionResultPage({ params }: LegacyNutritionResultPageProps) {
   const { type } = await params;
-  redirect(`/result/nutri/${encodeURIComponent(type)}`);
+  const resolvedType = resolveNutritionResultKey(type);
+  redirect(`/result/nutri/${encodeURIComponent(resolvedType || type)}`);
 }

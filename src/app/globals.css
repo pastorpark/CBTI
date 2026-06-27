@@ -554,6 +554,44 @@ body[data-variant="ivf"] {
   min-height: calc(100svh - 120px);
 }
 
+.variant-ivf .ivf-loading-box {
+  display: grid;
+  place-items: center;
+  text-align: center;
+}
+
+.variant-ivf .ivf-loading-box h2 {
+  margin: 18px 0 8px;
+  font-size: clamp(30px, 6vw, 48px);
+  font-weight: 500;
+  line-height: 1.08;
+}
+
+.variant-ivf .ivf-loading-box .small {
+  max-width: 32ch;
+  margin: 0 auto;
+  color: #2e3b42;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.55;
+}
+
+.ivf-loading-visual {
+  display: grid;
+  place-items: center;
+  width: clamp(120px, 28vw, 210px);
+  aspect-ratio: 1 / 1;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.ivf-loading-visual img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
 .variant-ivf .spinner {
   border-color: rgba(10, 10, 10, 0.12);
   border-top-color: var(--ivf-green);
@@ -1640,6 +1678,44 @@ body[data-variant="ivf"] {
   background: var(--orange);
 }
 
+.variant-ivf .cbti-ivf-score-list {
+  gap: 7px;
+}
+
+.variant-ivf .cbti-ivf-score-row {
+  grid-template-columns: 1fr 3fr;
+  gap: 10px;
+}
+
+.variant-ivf .cbti-ivf-score-row>span {
+  display: inline-block;
+  color: #001e2b;
+  font-size: 13px;
+  font-weight: 850;
+  white-space: nowrap;
+}
+
+.variant-ivf .cbti-denomination-section h2 {
+  margin-bottom: 8px;
+}
+
+.variant-ivf .cbti-denomination-note {
+  margin: 0 0 12px;
+}
+
+.variant-ivf .cbti-denomination-list {
+  gap: 6px;
+}
+
+.variant-ivf .cbti-denomination-list .list-item {
+  padding: 14px;
+}
+
+.variant-ivf .cbti-denomination-list .small {
+  color: #001e2b;
+  font-weight: 750;
+}
+
 .nutrition-radar {
   display: grid;
   gap: 0;
@@ -1831,9 +1907,25 @@ body[data-variant="ivf"] {
     min-height: auto;
   }
 
+  .variant-ivf .ivf-loading-box h2 {
+    font-size: clamp(27px, 8vw, 38px);
+  }
+
+  .variant-ivf .ivf-loading-box .small {
+    font-size: 14px;
+  }
+
+  .ivf-loading-visual {
+    width: clamp(104px, 34vw, 150px);
+  }
+
   .score-row {
     grid-template-columns: 1fr;
     gap: 7px;
+  }
+
+  .variant-ivf .cbti-ivf-score-row {
+    grid-template-columns: 1fr 2fr;
   }
 
   .variant-ivf.app-shell {

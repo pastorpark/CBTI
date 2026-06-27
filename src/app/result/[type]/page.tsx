@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import { resolvePersonaResultKey } from "@/lib/result-aliases";
 
 type LegacyResultPageProps = {
   params: Promise<{ type: string }>;
@@ -6,5 +7,6 @@ type LegacyResultPageProps = {
 
 export default async function LegacyResultPage({ params }: LegacyResultPageProps) {
   const { type } = await params;
-  redirect(`/result/cbti/${encodeURIComponent(type)}`);
+  const resolvedType = resolvePersonaResultKey(type);
+  redirect(`/result/cbti/${encodeURIComponent(resolvedType || type)}`);
 }

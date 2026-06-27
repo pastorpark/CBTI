@@ -1,22 +1,19 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 import { ChungeoramFollowCard } from "@/components/ChungeoramFollowCard";
 import { NutritionRadarChart } from "@/components/NutritionRadarChart";
 import { nutritionKeys, nutritionLabels, nutritionResults } from "@/data/test";
+import { resolveNutritionResultKey } from "@/lib/result-aliases";
 import { getResultHeaderStyle } from "@/lib/result-colors";
 import { nutritionImagePaths } from "@/lib/nutrition-assets";
 import { createEmptyResultScores } from "@/lib/scoring";
-import type { NutritionKey } from "@/types/test";
 import { resolveSiteVariantId } from "@/variants";
 
 type NutritionResultPageProps = {
   params: Promise<{ type: string }>;
 };
-
-function isNutritionKey(value: string | null): value is NutritionKey {
-  return nutritionKeys.includes(value as NutritionKey);
-}
 
 export function generateStaticParams() {
   return nutritionKeys.map((key) => ({ type: key }));
@@ -24,31 +21,32 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: NutritionResultPageProps): Promise<Metadata> {
   const { type } = await params;
+  const resolvedType = resolveNutritionResultKey(type);
 
-  if (!isNutritionKey(type)) {
+  if (!resolvedType) {
     return {
       title: "결과를 찾을 수 없어요",
       description: "공유 링크가 올바르지 않거나 만료된 결과입니다."
     };
   }
 
-  const result = nutritionResults[type];
+  const result = nutritionResults[resolvedType];
 
   return {
     title: result.title,
-    description: `${nutritionLabels[type]}: ${result.status}`,
+    description: `${nutritionLabels[resolvedType]}: ${result.status}`,
     alternates: {
-      canonical: `/result/nutri/${type}`
+      canonical: `/result/nutri/${resolvedType}`
     },
     openGraph: {
-      title: `${nutritionLabels[type]} - 영적 영양상태 진단 테스트`,
+      title: `${nutritionLabels[resolvedType]} - 영적 영양상태 진단 테스트`,
       description: result.status,
-      url: `/result/nutri/${type}`,
+      url: `/result/nutri/${resolvedType}`,
       type: "website"
     },
     twitter: {
       card: "summary_large_image",
-      title: `${nutritionLabels[type]} - 영적 영양상태 진단 테스트`,
+      title: `${nutritionLabels[resolvedType]} - 영적 영양상태 진단 테스트`,
       description: result.status
     }
   };
@@ -57,8 +55,9 @@ export async function generateMetadata({ params }: NutritionResultPageProps): Pr
 export default async function NutritionResultPage({ params }: NutritionResultPageProps) {
   const { type } = await params;
   const variantId = resolveSiteVariantId((await headers()).get("host"));
+  const resolvedType = resolveNutritionResultKey(type);
 
-  if (!isNutritionKey(type)) {
+  if (!resolvedType) {
     return (
       <main className={`app-shell variant-${variantId}`}>
         <section className="panel section">
@@ -73,20 +72,24 @@ export default async function NutritionResultPage({ params }: NutritionResultPag
     );
   }
 
-  const result = nutritionResults[type];
+  if (type !== resolvedType) {
+    redirect(`/result/nutri/${resolvedType}`);
+  }
+
+  const result = nutritionResults[resolvedType];
   const scores = createEmptyResultScores(nutritionKeys);
-  scores[type] = 6;
+  scores[resolvedType] = 6;
 
   return (
     <main className={`app-shell variant-${variantId}`}>
       <div className="panel">
-        <section className="result-header nutrition-result-header" style={getResultHeaderStyle(type)}>
+        <section className="result-header nutrition-result-header" style={getResultHeaderStyle(resolvedType)}>
           <div className="result-hero-copy">
             <span className="result-type-label">나에게 필요한 영양소는 - {result.key}</span>
             <h1 className="hero-title result-title">{result.title}</h1>
           </div>
           <figure className="nutrition-result-art" aria-hidden="true">
-            <img src={nutritionImagePaths[type]} alt="" />
+            <img src={nutritionImagePaths[resolvedType]} alt="" />
           </figure>
           <div className="keyword-row">
             {result.keywords.map((keyword) => (

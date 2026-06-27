@@ -23,6 +23,7 @@ import { getVisitorId } from "@/lib/visitor";
 import { submitVisit } from "@/lib/visits";
 import { resolveSiteVariantId } from "@/variants";
 import { getIntroView } from "@/variants/intro";
+import { getIvfLoadingView } from "@/variants/ivf/loading";
 import type { Answer, NutritionKey, PersonaKey, Question, ResultKey, SiteVariantId, SurveyId } from "@/types/test";
 
 type Stage = "intro" | "questions" | "loading" | "result";
@@ -38,6 +39,7 @@ export function HomeClient({ initialVariantId }: HomeClientProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState<Answer[]>([]);
   const [sessionQuestions, setSessionQuestions] = useState<Question[]>(() => shuffleQuestions(surveyMap[defaultSurveyId].questions));
+  const [loadingImageIndex, setLoadingImageIndex] = useState(0);
   const submittedRef = useRef(false);
 
   const activeSurvey = surveyMap[activeSurveyId];
@@ -50,6 +52,7 @@ export function HomeClient({ initialVariantId }: HomeClientProps) {
   const nutritionResult = activeSurveyId === "nutri" ? nutritionResults[nutritionPrimary] : null;
   const closePersonas = activeSurveyId === "cbti" ? getClosePersonas(scores as Record<PersonaKey, number>, personaPrimary) : [];
   const sortedScores = getSortedResultScores(scores, activeSurvey.resultKeys);
+  const ivfLoadingView = getIvfLoadingView(activeSurveyId);
 
   useEffect(() => {
     const variantId = resolveSiteVariantId(window.location.host);
@@ -70,10 +73,21 @@ export function HomeClient({ initialVariantId }: HomeClientProps) {
 
     const timer = window.setTimeout(() => {
       setStage("result");
-    }, 950);
+    }, 1800);
 
     return () => window.clearTimeout(timer);
   }, [stage]);
+
+  useEffect(() => {
+    if (stage !== "loading" || activeVariantId !== "ivf") return;
+
+    setLoadingImageIndex(0);
+    const interval = window.setInterval(() => {
+      setLoadingImageIndex((value) => value + 1);
+    }, 200);
+
+    return () => window.clearInterval(interval);
+  }, [activeSurveyId, activeVariantId, stage]);
 
   useEffect(() => {
     if (stage !== "result" || submittedRef.current || answers.length !== sessionQuestions.length) return;
@@ -121,6 +135,13 @@ export function HomeClient({ initialVariantId }: HomeClientProps) {
     }
 
     setCurrentIndex((value) => value - 1);
+  }
+
+  function returnToIntro() {
+    setAnswers([]);
+    setCurrentIndex(0);
+    submittedRef.current = false;
+    setStage("intro");
   }
 
   async function copyResultUrl() {
@@ -176,11 +197,19 @@ export function HomeClient({ initialVariantId }: HomeClientProps) {
         )}
 
         {stage === "loading" && (
-          <section className="section loading-box">
+          <section className={`section loading-box ${activeVariantId === "ivf" ? "ivf-loading-box" : ""}`}>
             <div>
-              <div className="spinner" />
-              <h2>당신은 이런 신앙을 갖고 있었군요!</h2>
-              <p className="small">당신과 비슷한 신앙을 가진 사람들을 만날 수 있을거에요</p>
+              {activeVariantId === "ivf" ? (
+                <figure className="ivf-loading-visual" aria-hidden="true">
+                  <img src={ivfLoadingView.imagePaths[loadingImageIndex % ivfLoadingView.imagePaths.length]} alt="" />
+                </figure>
+              ) : (
+                <div className="spinner" />
+              )}
+              <h2>{activeVariantId === "ivf" ? ivfLoadingView.title : "당신은 이런 신앙을 갖고 있었군요!"}</h2>
+              <p className="small">
+                {activeVariantId === "ivf" ? ivfLoadingView.description : "당신과 비슷한 신앙을 가진 사람들을 만날 수 있을거에요"}
+              </p>
             </div>
           </section>
         )}
@@ -206,60 +235,106 @@ export function HomeClient({ initialVariantId }: HomeClientProps) {
               </div>
             </section>
             <section className="section result-body">
-              <div className="result-section">
-                <p className="lead">{personaResult.description}</p>
-                {closePersonas.length > 0 && (
-                  <p className="small">
-                    함께 돋보인 성향: {closePersonas.map((key) => personaLabels[key]).join(", ")}
-                  </p>
-                )}
-              </div>
-              <div className="result-section">
-                <div className="insight-grid">
-                  <article className="insight-card">
-                    <h2>✨ 빛나는 나의 영적 강점</h2>
-                    <p>{personaResult.spiritualStrength}</p>
-                  </article>
-                  <article className="insight-card">
-                    <h2>🌱 영적 성장을 위한 추천 루틴</h2>
-                    <p>{personaResult.growthRoutine}</p>
-                  </article>
-                </div>
-              </div>
-              <div className="result-section">
-                <h2>이런 교파가 잘 맞을지도</h2>
-                <div className="denomination-list">
-                  {personaResult.denominations.map((item, index) => (
-                    <div className="list-item" key={item.name}>
-                      <strong>{index + 1}. {item.name}</strong>
-                      <span className="small">{item.description}</span>
+              {activeVariantId === "ivf" ? (
+                <>
+                  <div className="result-section result-description-section">
+                    <span className="result-status-tag">빛나는 나의 영적 감정</span>
+                    <p className="lead">{personaResult.description}</p>
+                    {closePersonas.length > 0 && (
+                      <p className="small">
+                        함께 돋보인 성향: {closePersonas.map((key) => personaLabels[key]).join(", ")}
+                      </p>
+                    )}
+                    <hr className="result-status-divider" />
+                    <span className="result-status-tag">대표 신앙 성향</span>
+                    <div className="score-list cbti-ivf-score-list">
+                      {sortedScores.map(({ key, score }) => (
+                        <div className="score-row cbti-ivf-score-row" key={key}>
+                          <span>{activeSurvey.resultLabels[key]}({score})</span>
+                          <div className="score-bar">
+                            <span style={{ width: `${Math.max(4, (score / scoreScaleMax) * 100)}%` }} />
+                          </div>
+                        </div>
+                      ))}
                     </div>
-                  ))}
-                </div>
-                <p className="disclaimer-note">
-                  위의 설명과 교파 추천은 생성형 AI로 작성되었습니다. 실제 교파의 입장이나 현실과 다를 수 있습니다
-                </p>
-              </div>
-              <div className="result-section">
-                <h2>나의 신앙 스탯</h2>
-                <div className="score-list">
-                  {sortedScores.map(({ key, score }) => (
-                    <div className="score-row" key={key}>
-                      <span>{activeSurvey.resultLabels[key]}</span>
-                      <div className="score-bar">
-                        <span style={{ width: `${Math.max(4, (score / scoreScaleMax) * 100)}%` }} />
-                      </div>
-                      <b>{score}</b>
-                    </div>
-                  ))}
-                </div>
-              </div>
-              {activeVariantId === "ivf" && (
-                <div className="result-section">
-                  <div className="insight-grid">
-                    <ChungeoramFollowCard />
+                    <hr className="result-status-divider" />
+                    <span className="result-status-tag">빛나는 나의 영적 강점</span>
+                    <p className="lead">{personaResult.spiritualStrength}</p>
+                    <hr className="result-status-divider" />
+                    <span className="result-status-tag">영적 성장을 위한 청어람의 추천</span>
+                    <p className="lead">{personaResult.growthRoutine}</p>
                   </div>
-                </div>
+                  <div className="result-section cbti-denomination-section">
+                    <h2>이런 교파가 잘 맞을지도</h2>
+                    <p className="disclaimer-note cbti-denomination-note">
+                      위의 설명과 교파 추천은 생성형 AI로 작성되었습니다. 실제 교파의 입장이나 현실과 다를 수 있습니다
+                    </p>
+                    <div className="denomination-list cbti-denomination-list">
+                      {personaResult.denominations.map((item, index) => (
+                        <div className="list-item" key={item.name}>
+                          <strong>{index + 1}. {item.name}</strong>
+                          <span className="small">{item.description}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="result-section">
+                    <div className="insight-grid">
+                      <ChungeoramFollowCard />
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="result-section">
+                    <p className="lead">{personaResult.description}</p>
+                    {closePersonas.length > 0 && (
+                      <p className="small">
+                        함께 돋보인 성향: {closePersonas.map((key) => personaLabels[key]).join(", ")}
+                      </p>
+                    )}
+                  </div>
+                  <div className="result-section">
+                    <div className="insight-grid">
+                      <article className="insight-card">
+                        <h2>✨ 빛나는 나의 영적 강점</h2>
+                        <p>{personaResult.spiritualStrength}</p>
+                      </article>
+                      <article className="insight-card">
+                        <h2>🌱 영적 성장을 위한 추천 루틴</h2>
+                        <p>{personaResult.growthRoutine}</p>
+                      </article>
+                    </div>
+                  </div>
+                  <div className="result-section">
+                    <h2>이런 교파가 잘 맞을지도</h2>
+                    <div className="denomination-list">
+                      {personaResult.denominations.map((item, index) => (
+                        <div className="list-item" key={item.name}>
+                          <strong>{index + 1}. {item.name}</strong>
+                          <span className="small">{item.description}</span>
+                        </div>
+                      ))}
+                    </div>
+                    <p className="disclaimer-note">
+                      위의 설명과 교파 추천은 생성형 AI로 작성되었습니다. 실제 교파의 입장이나 현실과 다를 수 있습니다
+                    </p>
+                  </div>
+                  <div className="result-section">
+                    <h2>나의 신앙 스탯</h2>
+                    <div className="score-list">
+                      {sortedScores.map(({ key, score }) => (
+                        <div className="score-row" key={key}>
+                          <span>{activeSurvey.resultLabels[key]}</span>
+                          <div className="score-bar">
+                            <span style={{ width: `${Math.max(4, (score / scoreScaleMax) * 100)}%` }} />
+                          </div>
+                          <b>{score}</b>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </>
               )}
               <section className="share-panel">
                 <div className="share-box">
@@ -272,7 +347,7 @@ export function HomeClient({ initialVariantId }: HomeClientProps) {
                 </div>
               </section>
               <div className="actions">
-                <button className="button secondary" onClick={() => start(activeSurvey.id)}>다시 테스트 하기</button>
+                <button className="button secondary" onClick={returnToIntro}>다시 테스트 하기</button>
               </div>
             </section>
           </>
@@ -329,7 +404,7 @@ export function HomeClient({ initialVariantId }: HomeClientProps) {
                 </div>
               </section>
               <div className="actions">
-                <button className="button secondary" onClick={() => start(activeSurvey.id)}>다시 테스트 하기</button>
+                <button className="button secondary" onClick={returnToIntro}>다시 테스트 하기</button>
               </div>
             </section>
           </>
