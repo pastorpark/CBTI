@@ -38,12 +38,14 @@ export async function generateMetadata({ params }: NutritionResultPageProps): Pr
   const label = nutritionLabels[resolvedType];
   const templateValues = {
     key: result.key,
+    keyLower: result.key.toLowerCase(),
     title: result.title,
     label,
     status: result.status,
     description: result.description,
     recommendation: result.recommendation
   };
+  const imageUrl = fillMetadataTemplate(template.openGraphImage, templateValues);
 
   return {
     title: fillMetadataTemplate(template.title, templateValues),
@@ -56,12 +58,21 @@ export async function generateMetadata({ params }: NutritionResultPageProps): Pr
       description: fillMetadataTemplate(template.openGraphDescription, templateValues),
       url: `/result/nutri/${resolvedType}`,
       siteName: variantMetadata.siteName,
-      type: "website"
+      type: "website",
+      images: [
+        {
+          url: imageUrl,
+          width: 1200,
+          height: 630,
+          alt: fillMetadataTemplate(template.openGraphImageAlt, templateValues)
+        }
+      ]
     },
     twitter: {
       card: "summary_large_image",
       title: fillMetadataTemplate(template.twitterTitle, templateValues),
-      description: fillMetadataTemplate(template.twitterDescription, templateValues)
+      description: fillMetadataTemplate(template.twitterDescription, templateValues),
+      images: [fillMetadataTemplate(template.twitterImage, templateValues)]
     }
   };
 }
@@ -125,11 +136,13 @@ export default async function NutritionResultPage({ params }: NutritionResultPag
             <span className="result-status-tag">맞춤 처방</span>
             <p className="lead">{result.recommendation}</p>
           </div>
-          <div className="result-section">
-            <div className="insight-grid">
-              <ChungeoramFollowCard />
+          {variantId === "ivf" && (
+            <div className="result-section">
+              <div className="insight-grid">
+                <ChungeoramFollowCard />
+              </div>
             </div>
-          </div>
+          )}
           <div className="actions">
             <Link className="button" href="/">나도 진단해보기</Link>
           </div>

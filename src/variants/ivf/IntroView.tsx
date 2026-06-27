@@ -15,7 +15,7 @@ export function IvfIntroView({ surveys, onStart }: IntroViewProps) {
         <p className="lead">{ivfVariant.introLead}</p>
       </div>
       <figure className="ivf-eoramc-figure" aria-label="청어람ARMC">
-        <img src="/ivf/thumbnails/main.png" alt="청어람ARMC" />
+        <img src="/ivf/eoramc.png" alt="청어람ARMC" />
       </figure>
       <div className="survey-picker" aria-label="설문 선택">
         {orderedSurveys.map((survey) => (

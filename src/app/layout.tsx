@@ -62,7 +62,7 @@ export async function generateMetadata(): Promise<Metadata> {
       locale: "ko_KR",
       images: [
         {
-          url: "/og/default.png",
+          url: variantMetadata.openGraph.image,
           width: 1200,
           height: 630,
           alt: variantMetadata.openGraph.imageAlt
@@ -73,7 +73,7 @@ export async function generateMetadata(): Promise<Metadata> {
       card: "summary_large_image",
       title: variantMetadata.twitter.title,
       description: variantMetadata.twitter.description,
-      images: ["/og/default.png"]
+      images: [variantMetadata.twitter.image]
     }
   };
 }

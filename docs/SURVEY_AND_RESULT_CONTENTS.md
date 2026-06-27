@@ -11,6 +11,57 @@
 - 특정 버전에서 질문 문구나 결과 문구까지 달라져야 한다면, 이 문서를 기준으로 먼저 콘텐츠를 확정한 뒤 variant별 데이터 분리 구조를 추가하는 것이 좋습니다.
 - 공식 설문 ID는 `cbti`, `nutri`입니다. nutri 결과 주소는 `/result/nutri/[type]`, cbti 결과 주소는 `/result/cbti/[type]`입니다.
 
+## 설문 시작 전 안내 문구
+
+첫 페이지에서 설문을 선택하면 바로 질문으로 들어가지 않고, 아래 안내 페이지가 먼저 표시됩니다. 실제 수정 위치는 각 variant config입니다.
+
+- Pastor 수정 위치: `src/variants/pastor/config.ts`의 `surveyIntros`
+- IVF 수정 위치: `src/variants/ivf/config.ts`의 `surveyIntros`
+
+### Pastor - CBTI
+
+- eyebrow: CBTI 안내
+- title: 나의 신앙 성향을 차분히 살펴봅니다
+- description: 15개의 질문을 통해 내가 중요하게 여기는 신앙의 기준과 예배, 공동체, 사회를 바라보는 관점을 정리해봅니다.
+- bullets:
+  - 정답이 있는 시험이 아니라 나의 현재 성향을 살피는 도구입니다.
+  - 각 질문에서 가장 자연스럽게 끌리는 답을 골라주세요.
+  - 결과에서는 대표 신앙 유형과 함께 어울릴 수 있는 교파 추천을 확인할 수 있습니다.
+- startLabel: CBTI 시작하기
+
+### Pastor - 영적 영양상태 분석
+
+- eyebrow: 영적 영양상태 안내
+- title: 지금 내 신앙에 필요한 영양소를 찾아봅니다
+- description: 최근의 신앙생활에서 부족하게 느끼는 배움, 관계, 실천, 쉼, 회복의 영역을 간단히 점검합니다.
+- bullets:
+  - 각 문항은 지금 나에게 필요한 정도를 묻습니다.
+  - 보기는 고정된 순서로 표시됩니다.
+  - 결과에서는 가장 필요한 영적 영양소와 추천 방향을 확인할 수 있습니다.
+- startLabel: 영양상태 진단 시작하기
+
+### IVF - CBTI
+
+- eyebrow: 신앙유형 워밍업
+- title: 내 안의 신앙 색깔을 가볍게 펼쳐볼게요
+- description: 예배, 성경, 공동체, 사회 이슈를 대하는 나의 감각을 따라가며 지금의 신앙 취향과 강점을 발견해봅니다.
+- bullets:
+  - 너무 오래 고민하지 말고 가장 먼저 마음이 가는 답을 골라주세요.
+  - 결과는 나를 규정하는 딱지가 아니라 대화를 시작하는 작은 힌트입니다.
+  - 친구들과 결과를 나누면 서로의 신앙 언어를 더 재미있게 발견할 수 있어요.
+- startLabel: 내 신앙 색깔 보기
+
+### IVF - 영적 영양상태 분석
+
+- eyebrow: 영적 영양 체크
+- title: 오늘 내 영혼에게 필요한 한 끼를 찾아볼까요?
+- description: 질문, 관계, 연대, 쉼, 회복 중 지금 나에게 가장 필요한 영적 영양소가 무엇인지 빠르게 점검합니다.
+- bullets:
+  - 보기는 필요해, 그냥 그래, 별로 필요없어 순서로 고정됩니다.
+  - 최근의 내 상태를 기준으로 솔직하게 눌러주세요.
+  - 결과에서는 청어람이 추천하는 영적 영양소와 다음 행동을 확인할 수 있어요.
+- startLabel: 영양소 찾으러 가기
+
 ## CBTI
 
 - 설문 ID: `cbti`
@@ -577,4 +628,3 @@
 - 결과 색상: `src/lib/result-colors.ts`
 - 결과 URL/별칭 처리: `src/lib/result-url.ts`, `src/lib/result-aliases.ts`
 - IVF nutri/CBTI 결과 헤더 이미지: `src/lib/nutrition-assets.ts`, `public/ivf/*`
-

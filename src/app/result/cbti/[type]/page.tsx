@@ -4,10 +4,10 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { ChungeoramFollowCard } from "@/components/ChungeoramFollowCard";
 import { personaEnglishLabels, personaKeys, personaLabels, personaResults } from "@/data/test";
-import { cbtiImagePaths } from "@/lib/cbti-assets";
 import { fillMetadataTemplate } from "@/lib/metadata-template";
 import { resolvePersonaResultKey } from "@/lib/result-aliases";
 import { getResultHeaderStyle } from "@/lib/result-colors";
+import { nutritionImagePaths } from "@/lib/nutrition-assets";
 import { createEmptyScores, getSortedScores } from "@/lib/scoring";
 import { getSiteVariantById, resolveSiteVariantId } from "@/variants";
 
@@ -35,13 +35,15 @@ export async function generateMetadata({ params }: ResultPageProps): Promise<Met
 
   const label = personaLabels[resolvedType];
   const result = personaResults[resolvedType];
-  const imageUrl = `/og/result-${resolvedType.toLowerCase()}.png`;
   const templateValues = {
+    key: resolvedType,
+    keyLower: resolvedType.toLowerCase(),
     label,
     englishLabel: personaEnglishLabels[resolvedType],
     title: result.title,
     subtitle: result.subtitle
   };
+  const imageUrl = fillMetadataTemplate(template.openGraphImage, templateValues);
 
   return {
     title: fillMetadataTemplate(template.title, templateValues),
@@ -60,7 +62,7 @@ export async function generateMetadata({ params }: ResultPageProps): Promise<Met
           url: imageUrl,
           width: 1200,
           height: 630,
-          alt: `${label} 결과 - 나의 신앙 유형 찾기 CBTI`
+          alt: fillMetadataTemplate(template.openGraphImageAlt, templateValues)
         }
       ]
     },
@@ -68,7 +70,7 @@ export async function generateMetadata({ params }: ResultPageProps): Promise<Met
       card: "summary_large_image",
       title: fillMetadataTemplate(template.twitterTitle, templateValues),
       description: fillMetadataTemplate(template.twitterDescription, templateValues),
-      images: [imageUrl]
+      images: [fillMetadataTemplate(template.twitterImage, templateValues)]
     }
   };
 }
@@ -114,7 +116,7 @@ export default async function ResultPage({ params }: ResultPageProps) {
             <p className="lead">{result.subtitle}</p>
           </div>
           <figure className="nutrition-result-art" aria-hidden="true">
-            <img src={cbtiImagePaths[resolvedType]} alt="" />
+            <img src={nutritionImagePaths.CARB} alt="" />
           </figure>
           <div className="keyword-row">
             {result.keywords.map((keyword) => (

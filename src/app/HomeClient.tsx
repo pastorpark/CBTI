@@ -14,7 +14,6 @@ import {
   surveyMap,
   tieBreakerOrder
 } from "@/data/test";
-import { cbtiImagePaths } from "@/lib/cbti-assets";
 import { getResultHeaderStyle } from "@/lib/result-colors";
 import { getResultUrl } from "@/lib/result-url";
 import { nutritionImagePaths } from "@/lib/nutrition-assets";
@@ -22,12 +21,12 @@ import { calculateScores, getClosePersonas, getSortedResultScores, resolvePrimar
 import { submitResult } from "@/lib/submissions";
 import { getVisitorId } from "@/lib/visitor";
 import { submitVisit } from "@/lib/visits";
-import { resolveSiteVariantId } from "@/variants";
+import { getSiteVariantById, resolveSiteVariantId } from "@/variants";
 import { getIntroView } from "@/variants/intro";
 import { getIvfLoadingView } from "@/variants/ivf/loading";
 import type { Answer, NutritionKey, PersonaKey, Question, ResultKey, SiteVariantId, SurveyId } from "@/types/test";
 
-type Stage = "intro" | "questions" | "loading" | "result";
+type Stage = "intro" | "surveyIntro" | "questions" | "loading" | "result";
 
 type HomeClientProps = {
   initialVariantId: SiteVariantId;
@@ -113,6 +112,10 @@ export function HomeClient({ initialVariantId }: HomeClientProps) {
     setCurrentIndex(0);
     setSessionQuestions(shuffleQuestions(survey.questions, { shuffleOptions: surveyId !== "nutri" }));
     submittedRef.current = false;
+    setStage("surveyIntro");
+  }
+
+  function beginQuestions() {
     setStage("questions");
   }
 
@@ -131,7 +134,7 @@ export function HomeClient({ initialVariantId }: HomeClientProps) {
 
   function goBack() {
     if (currentIndex === 0) {
-      setStage("intro");
+      setStage("surveyIntro");
       return;
     }
 
@@ -157,12 +160,35 @@ export function HomeClient({ initialVariantId }: HomeClientProps) {
   const resultUrl = getResultUrl(primary, activeSurveyId);
   const scoreScaleMax = activeSurveyId === "nutri" ? 6 : 5;
   const IntroView = getIntroView(activeVariantId);
+  const activeVariant = getSiteVariantById(activeVariantId);
+  const surveyIntro = activeVariant.surveyIntros[activeSurveyId];
 
   return (
     <main className={`app-shell variant-${activeVariantId}`}>
       <div className="panel">
         {stage === "intro" && (
           <IntroView surveys={surveys} onStart={start} />
+        )}
+
+        {stage === "surveyIntro" && (
+          <section className="section survey-intro-section">
+            <span className="survey-intro-eyebrow">{surveyIntro.eyebrow}</span>
+            <h1 className="hero-title survey-intro-title">{surveyIntro.title}</h1>
+            <p className="lead">{surveyIntro.description}</p>
+            <ul className="survey-intro-list">
+              {surveyIntro.bullets.map((bullet) => (
+                <li key={bullet}>{bullet}</li>
+              ))}
+            </ul>
+            <div className="actions">
+              <button className="button ghost" onClick={returnToIntro}>
+                다른 설문 고르기
+              </button>
+              <button className="button" onClick={beginQuestions}>
+                {surveyIntro.startLabel}
+              </button>
+            </div>
+          </section>
         )}
 
         {stage === "questions" && (
@@ -227,7 +253,7 @@ export function HomeClient({ initialVariantId }: HomeClientProps) {
                 <p className="lead">{personaResult.subtitle}</p>
               </div>
               <figure className="nutrition-result-art" aria-hidden="true">
-                <img src={cbtiImagePaths[personaPrimary]} alt="" />
+                <img src={nutritionImagePaths.CARB} alt="" />
               </figure>
               <div className="keyword-row">
                 {personaResult.keywords.map((keyword) => (
@@ -389,11 +415,13 @@ export function HomeClient({ initialVariantId }: HomeClientProps) {
                 <span className="result-status-tag">맞춤 처방</span>
                 <p className="lead">{nutritionResult.recommendation}</p>
               </div>
-              <div className="result-section">
-                <div className="insight-grid">
-                  <ChungeoramFollowCard />
+              {activeVariantId === "ivf" && (
+                <div className="result-section">
+                  <div className="insight-grid">
+                    <ChungeoramFollowCard />
+                  </div>
                 </div>
-              </div>
+              )}
               <section className="share-panel">
                 <div className="share-box">
                   <h2>결과 공유하기</h2>

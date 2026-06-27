@@ -9,7 +9,16 @@ export type SiteVariant = {
   brandFull: string;
   introTitle: string;
   introLead: string;
+  surveyIntros: Record<SurveyId, SurveyIntroContent>;
   metadata: SiteVariantMetadata;
+};
+
+export type SurveyIntroContent = {
+  eyebrow: string;
+  title: string;
+  description: string;
+  bullets: string[];
+  startLabel: string;
 };
 
 export type ResultMetadataTemplate = {
@@ -17,8 +26,11 @@ export type ResultMetadataTemplate = {
   description: string;
   openGraphTitle: string;
   openGraphDescription: string;
+  openGraphImage: string;
+  openGraphImageAlt: string;
   twitterTitle: string;
   twitterDescription: string;
+  twitterImage: string;
 };
 
 export type SiteVariantMetadata = {
@@ -31,11 +43,13 @@ export type SiteVariantMetadata = {
   openGraph: {
     title: string;
     description: string;
+    image: string;
     imageAlt: string;
   };
   twitter: {
     title: string;
     description: string;
+    image: string;
   };
   results: {
     cbti: ResultMetadataTemplate;

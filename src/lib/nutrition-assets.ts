@@ -1,9 +1,9 @@
 import type { NutritionKey } from "@/types/test";
 
 export const nutritionImagePaths: Record<NutritionKey, string> = {
-  CARB: "/ivf/thumbnails/nutri-carb.png",
-  PROTEIN: "/ivf/thumbnails/nutri-protein.png",
-  VITAMIN: "/ivf/thumbnails/nutri-vitamin.png",
-  MINERAL: "/ivf/thumbnails/nutri-mineral.png",
-  PROBIOTICS: "/ivf/thumbnails/nutri-probiotics.png"
+  CARB: "/ivf/carb.png",
+  PROTEIN: "/ivf/protein.png",
+  VITAMIN: "/ivf/vitamin.png",
+  MINERAL: "/ivf/mineral.png",
+  PROBIOTICS: "/ivf/probiotics.png"
 };
