@@ -14,6 +14,7 @@ import {
   surveyMap,
   tieBreakerOrder
 } from "@/data/test";
+import { cbtiImagePaths } from "@/lib/cbti-assets";
 import { getResultHeaderStyle } from "@/lib/result-colors";
 import { getResultUrl } from "@/lib/result-url";
 import { nutritionImagePaths } from "@/lib/nutrition-assets";
@@ -226,7 +227,7 @@ export function HomeClient({ initialVariantId }: HomeClientProps) {
                 <p className="lead">{personaResult.subtitle}</p>
               </div>
               <figure className="nutrition-result-art" aria-hidden="true">
-                <img src={nutritionImagePaths.CARB} alt="" />
+                <img src={cbtiImagePaths[personaPrimary]} alt="" />
               </figure>
               <div className="keyword-row">
                 {personaResult.keywords.map((keyword) => (

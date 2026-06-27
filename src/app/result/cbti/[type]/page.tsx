@@ -4,9 +4,9 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { ChungeoramFollowCard } from "@/components/ChungeoramFollowCard";
 import { personaEnglishLabels, personaKeys, personaLabels, personaResults } from "@/data/test";
+import { cbtiImagePaths } from "@/lib/cbti-assets";
 import { resolvePersonaResultKey } from "@/lib/result-aliases";
 import { getResultHeaderStyle } from "@/lib/result-colors";
-import { nutritionImagePaths } from "@/lib/nutrition-assets";
 import { createEmptyScores, getSortedScores } from "@/lib/scoring";
 import { resolveSiteVariantId } from "@/variants";
 
@@ -103,7 +103,7 @@ export default async function ResultPage({ params }: ResultPageProps) {
             <p className="lead">{result.subtitle}</p>
           </div>
           <figure className="nutrition-result-art" aria-hidden="true">
-            <img src={nutritionImagePaths.CARB} alt="" />
+            <img src={cbtiImagePaths[resolvedType]} alt="" />
           </figure>
           <div className="keyword-row">
             {result.keywords.map((keyword) => (
