@@ -1,12 +1,13 @@
 import { NextResponse } from "next/server";
-import { defaultSurveyId, getSurveyById, surveyMap } from "@/data/test";
+import { defaultSurveyId } from "@/data/test";
+import { getVariantTestContent } from "@/data/variant-content";
 import { sha256Hmac } from "@/lib/crypto";
 import { hasSupabaseConfig, insertSubmission } from "@/lib/supabase-rest";
-import type { Answer, ResultScores, SiteVariantId, SurveyId } from "@/types/test";
+import type { Answer, ResultScores, SiteVariantId, SurveyId, TestContent } from "@/types/test";
 import { defaultSiteVariantId, getStoredSurveyId } from "@/variants";
 
 function isValidSurveyId(value: unknown): value is SurveyId {
-  return typeof value === "string" && value in surveyMap;
+  return value === "cbti" || value === "nutri";
 }
 
 function normalizeSurveyId(value: unknown): SurveyId {
@@ -18,8 +19,8 @@ function isValidVariantId(value: unknown): value is SiteVariantId {
   return value === "pastor" || value === "ivf";
 }
 
-function isValidAnswers(value: unknown, surveyId: SurveyId): value is Answer[] {
-  const questions = getSurveyById(surveyId).questions;
+function isValidAnswers(value: unknown, surveyId: SurveyId, content: TestContent): value is Answer[] {
+  const questions = content.surveyMap[surveyId].questions;
   const validQuestionIds = new Set(questions.map((question) => question.id));
   const validOptionIds = new Set(questions.flatMap((question) => question.options.map((option) => option.id)));
 
@@ -40,8 +41,8 @@ function isValidScores(value: unknown): value is ResultScores {
   return typeof value === "object" && value !== null;
 }
 
-function isValidResultKey(value: unknown, surveyId: SurveyId) {
-  return typeof value === "string" && (getSurveyById(surveyId).resultKeys as string[]).includes(value);
+function isValidResultKey(value: unknown, surveyId: SurveyId, content: TestContent) {
+  return typeof value === "string" && (content.surveyMap[surveyId].resultKeys as string[]).includes(value);
 }
 
 export async function POST(request: Request) {
@@ -56,13 +57,14 @@ export async function POST(request: Request) {
     };
     const surveyId = normalizeSurveyId(body.surveyId);
     const variantId = isValidVariantId(body.variantId) ? body.variantId : defaultSiteVariantId;
+    const content = getVariantTestContent(variantId);
 
     if (
       typeof body.visitorId !== "string" ||
       typeof body.primaryPersona !== "string" ||
-      !isValidResultKey(body.primaryPersona, surveyId) ||
+      !isValidResultKey(body.primaryPersona, surveyId, content) ||
       !isValidScores(body.scores) ||
-      !isValidAnswers(body.answers, surveyId)
+      !isValidAnswers(body.answers, surveyId, content)
     ) {
       return NextResponse.json({ error: "Invalid submission" }, { status: 400 });
     }

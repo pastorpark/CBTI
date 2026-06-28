@@ -3,7 +3,8 @@ import type { Metadata } from "next";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { ChungeoramFollowCard } from "@/components/ChungeoramFollowCard";
-import { personaEnglishLabels, personaKeys, personaLabels, personaResults } from "@/data/test";
+import { personaKeys } from "@/data/test";
+import { getVariantTestContent } from "@/data/variant-content";
 import { fillMetadataTemplate } from "@/lib/metadata-template";
 import { resolvePersonaResultKey } from "@/lib/result-aliases";
 import { getResultHeaderStyle } from "@/lib/result-colors";
@@ -22,9 +23,10 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: ResultPageProps): Promise<Metadata> {
   const { type } = await params;
   const variantId = resolveSiteVariantId((await headers()).get("host"));
+  const content = getVariantTestContent(variantId);
   const variantMetadata = getSiteVariantById(variantId).metadata;
   const template = variantMetadata.results.cbti;
-  const resolvedType = resolvePersonaResultKey(type);
+  const resolvedType = resolvePersonaResultKey(type, content);
 
   if (!resolvedType) {
     return {
@@ -33,13 +35,13 @@ export async function generateMetadata({ params }: ResultPageProps): Promise<Met
     };
   }
 
-  const label = personaLabels[resolvedType];
-  const result = personaResults[resolvedType];
+  const label = content.personaLabels[resolvedType];
+  const result = content.personaResults[resolvedType];
   const templateValues = {
     key: resolvedType,
     keyLower: resolvedType.toLowerCase(),
     label,
-    englishLabel: personaEnglishLabels[resolvedType],
+    englishLabel: content.personaEnglishLabels[resolvedType],
     title: result.title,
     subtitle: result.subtitle
   };
@@ -78,7 +80,8 @@ export async function generateMetadata({ params }: ResultPageProps): Promise<Met
 export default async function ResultPage({ params }: ResultPageProps) {
   const { type } = await params;
   const variantId = resolveSiteVariantId((await headers()).get("host"));
-  const resolvedType = resolvePersonaResultKey(type);
+  const content = getVariantTestContent(variantId);
+  const resolvedType = resolvePersonaResultKey(type, content);
 
   if (!resolvedType) {
     return (
@@ -99,7 +102,7 @@ export default async function ResultPage({ params }: ResultPageProps) {
     redirect(`/result/cbti/${resolvedType}`);
   }
 
-  const result = personaResults[resolvedType];
+  const result = content.personaResults[resolvedType];
   const scores = createEmptyScores();
   scores[resolvedType] = 5;
 
@@ -109,10 +112,10 @@ export default async function ResultPage({ params }: ResultPageProps) {
         <section className="result-header cbti-result-header" style={getResultHeaderStyle(resolvedType)}>
           <div className="result-hero-copy">
             <span className="result-type-label">
-              나의 신앙 유형 - {personaEnglishLabels[resolvedType]}
+              나의 신앙 유형 - {content.personaEnglishLabels[resolvedType]}
 
             </span>
-            <h1 className="hero-title result-title"><img className="result-character-icon" src={result.characterImage} alt={`${personaLabels[resolvedType]} 캐릭터`} />{result.title}</h1>
+            <h1 className="hero-title result-title"><img className="result-character-icon" src={result.characterImage} alt={`${content.personaLabels[resolvedType]} 캐릭터`} />{result.title}</h1>
             <p className="lead">{result.subtitle}</p>
           </div>
           <figure className="nutrition-result-art" aria-hidden="true">
@@ -135,7 +138,7 @@ export default async function ResultPage({ params }: ResultPageProps) {
                 <div className="score-list cbti-ivf-score-list">
                   {getSortedScores(scores).map(({ key, score }) => (
                     <div className="score-row cbti-ivf-score-row" key={key}>
-                      <span>{personaLabels[key]}({score})</span>
+                      <span>{content.personaLabels[key]}({score})</span>
                       <div className="score-bar">
                         <span style={{ width: `${Math.max(4, score * 20)}%` }} />
                       </div>
@@ -205,7 +208,7 @@ export default async function ResultPage({ params }: ResultPageProps) {
                 <div className="score-list">
                   {getSortedScores(scores).slice(0, 1).map(({ key, score }) => (
                     <div className="score-row" key={key}>
-                      <span>{personaLabels[key]}</span>
+                      <span>{content.personaLabels[key]}</span>
                       <div className="score-bar">
                         <span style={{ width: `${score * 20}%` }} />
                       </div>

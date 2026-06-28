@@ -5,15 +5,10 @@ import { ChungeoramFollowCard } from "@/components/ChungeoramFollowCard";
 import { NutritionRadarChart } from "@/components/NutritionRadarChart";
 import {
   defaultSurveyId,
-  nutritionResults,
   nutritionTieBreakerOrder,
-  personaEnglishLabels,
-  personaLabels,
-  personaResults,
-  surveys,
-  surveyMap,
   tieBreakerOrder
 } from "@/data/test";
+import { getVariantTestContent } from "@/data/variant-content";
 import { getResultHeaderStyle } from "@/lib/result-colors";
 import { getResultUrl } from "@/lib/result-url";
 import { nutritionImagePaths } from "@/lib/nutrition-assets";
@@ -38,18 +33,21 @@ export function HomeClient({ initialVariantId }: HomeClientProps) {
   const [activeSurveyId, setActiveSurveyId] = useState<SurveyId>(defaultSurveyId);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState<Answer[]>([]);
-  const [sessionQuestions, setSessionQuestions] = useState<Question[]>(() => shuffleQuestions(surveyMap[defaultSurveyId].questions));
+  const [sessionQuestions, setSessionQuestions] = useState<Question[]>(() =>
+    shuffleQuestions(getVariantTestContent(initialVariantId).surveyMap[defaultSurveyId].questions)
+  );
   const [loadingImageIndex, setLoadingImageIndex] = useState(0);
   const submittedRef = useRef(false);
 
-  const activeSurvey = surveyMap[activeSurveyId];
+  const activeContent = getVariantTestContent(activeVariantId);
+  const activeSurvey = activeContent.surveyMap[activeSurveyId];
   const scores = useMemo(() => calculateScores(answers, sessionQuestions, activeSurvey.resultKeys), [activeSurvey.resultKeys, answers, sessionQuestions]);
   const tieBreakers = activeSurveyId === "nutri" ? nutritionTieBreakerOrder : tieBreakerOrder;
   const primary = useMemo(() => resolvePrimaryResult(scores, activeSurvey.resultKeys, tieBreakers), [activeSurvey.resultKeys, scores, tieBreakers]);
   const personaPrimary = primary as PersonaKey;
   const nutritionPrimary = primary as NutritionKey;
-  const personaResult = activeSurveyId === "cbti" ? personaResults[personaPrimary] : null;
-  const nutritionResult = activeSurveyId === "nutri" ? nutritionResults[nutritionPrimary] : null;
+  const personaResult = activeSurveyId === "cbti" ? activeContent.personaResults[personaPrimary] : null;
+  const nutritionResult = activeSurveyId === "nutri" ? activeContent.nutritionResults[nutritionPrimary] : null;
   const closePersonas = activeSurveyId === "cbti" ? getClosePersonas(scores as Record<PersonaKey, number>, personaPrimary) : [];
   const sortedScores = getSortedResultScores(scores, activeSurvey.resultKeys);
   const ivfLoadingView = getIvfLoadingView(activeSurveyId);
@@ -106,7 +104,7 @@ export function HomeClient({ initialVariantId }: HomeClientProps) {
   }, [activeSurveyId, answers, primary, scores, sessionQuestions.length, stage]);
 
   function start(surveyId: SurveyId = activeSurveyId) {
-    const survey = surveyMap[surveyId];
+    const survey = activeContent.surveyMap[surveyId];
     setActiveSurveyId(surveyId);
     setAnswers([]);
     setCurrentIndex(0);
@@ -167,7 +165,7 @@ export function HomeClient({ initialVariantId }: HomeClientProps) {
     <main className={`app-shell variant-${activeVariantId}`}>
       <div className="panel">
         {stage === "intro" && (
-          <IntroView surveys={surveys} onStart={start} />
+          <IntroView surveys={activeContent.surveys} onStart={start} />
         )}
 
         {stage === "surveyIntro" && (
@@ -246,8 +244,8 @@ export function HomeClient({ initialVariantId }: HomeClientProps) {
             <section className="result-header cbti-result-header" style={getResultHeaderStyle(personaPrimary)}>
               <div className="result-hero-copy">
                 <span className="result-type-label">
-                  나의 신앙 유형 - {personaEnglishLabels[personaPrimary]}
-                  <img className="result-character-icon" src={personaResult.characterImage} alt={`${personaLabels[personaPrimary]} 캐릭터`} />
+                  나의 신앙 유형 - {activeContent.personaEnglishLabels[personaPrimary]}
+                  <img className="result-character-icon" src={personaResult.characterImage} alt={`${activeContent.personaLabels[personaPrimary]} 캐릭터`} />
                 </span>
                 <h1 className="hero-title result-title">{personaResult.title}</h1>
                 <p className="lead">{personaResult.subtitle}</p>
@@ -269,7 +267,7 @@ export function HomeClient({ initialVariantId }: HomeClientProps) {
                     <p className="lead">{personaResult.description}</p>
                     {closePersonas.length > 0 && (
                       <p className="small">
-                        함께 돋보인 성향: {closePersonas.map((key) => personaLabels[key]).join(", ")}
+                        함께 돋보인 성향: {closePersonas.map((key) => activeContent.personaLabels[key]).join(", ")}
                       </p>
                     )}
                     <hr className="result-status-divider" />
@@ -317,7 +315,7 @@ export function HomeClient({ initialVariantId }: HomeClientProps) {
                     <p className="lead">{personaResult.description}</p>
                     {closePersonas.length > 0 && (
                       <p className="small">
-                        함께 돋보인 성향: {closePersonas.map((key) => personaLabels[key]).join(", ")}
+                        함께 돋보인 성향: {closePersonas.map((key) => activeContent.personaLabels[key]).join(", ")}
                       </p>
                     )}
                   </div>

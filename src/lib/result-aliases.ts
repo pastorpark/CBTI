@@ -1,13 +1,9 @@
 import {
+  baseTestContent,
   nutritionKeys,
-  nutritionLabels,
-  nutritionResults,
-  personaEnglishLabels,
   personaKeys,
-  personaLabels,
-  personaResults
 } from "@/data/test";
-import type { NutritionKey, PersonaKey } from "@/types/test";
+import type { NutritionKey, PersonaKey, TestContent } from "@/types/test";
 
 function normalizeAlias(value: string) {
   return value
@@ -25,16 +21,16 @@ function safeDecode(value: string) {
   }
 }
 
-function buildPersonaAliases() {
+function buildPersonaAliases(content: TestContent) {
   const aliases = new Map<string, PersonaKey>();
 
   for (const key of personaKeys) {
     const values = [
       key,
-      personaLabels[key],
-      personaEnglishLabels[key],
-      personaResults[key].title,
-      ...personaResults[key].keywords
+      content.personaLabels[key],
+      content.personaEnglishLabels[key],
+      content.personaResults[key].title,
+      ...content.personaResults[key].keywords
     ];
 
     for (const value of values) {
@@ -45,16 +41,16 @@ function buildPersonaAliases() {
   return aliases;
 }
 
-function buildNutritionAliases() {
+function buildNutritionAliases(content: TestContent) {
   const aliases = new Map<string, NutritionKey>();
 
   for (const key of nutritionKeys) {
     const values = [
       key,
-      nutritionLabels[key],
-      nutritionResults[key].key,
-      nutritionResults[key].title,
-      ...nutritionResults[key].keywords
+      content.nutritionLabels[key],
+      content.nutritionResults[key].key,
+      content.nutritionResults[key].title,
+      ...content.nutritionResults[key].keywords
     ];
 
     for (const value of values) {
@@ -65,8 +61,8 @@ function buildNutritionAliases() {
   return aliases;
 }
 
-const personaAliases = buildPersonaAliases();
-const nutritionAliases = buildNutritionAliases();
+const personaAliases = buildPersonaAliases(baseTestContent);
+const nutritionAliases = buildNutritionAliases(baseTestContent);
 
 const nutritionShortAliases: Record<string, NutritionKey> = {
   탄수화물: "CARB",
@@ -80,12 +76,14 @@ for (const [alias, key] of Object.entries(nutritionShortAliases)) {
   nutritionAliases.set(normalizeAlias(alias), key);
 }
 
-export function resolvePersonaResultKey(value: string | null | undefined): PersonaKey | null {
+export function resolvePersonaResultKey(value: string | null | undefined, content = baseTestContent): PersonaKey | null {
   if (!value) return null;
-  return personaAliases.get(normalizeAlias(safeDecode(value))) || null;
+  const normalized = normalizeAlias(safeDecode(value));
+  return buildPersonaAliases(content).get(normalized) || personaAliases.get(normalized) || null;
 }
 
-export function resolveNutritionResultKey(value: string | null | undefined): NutritionKey | null {
+export function resolveNutritionResultKey(value: string | null | undefined, content = baseTestContent): NutritionKey | null {
   if (!value) return null;
-  return nutritionAliases.get(normalizeAlias(safeDecode(value))) || null;
+  const normalized = normalizeAlias(safeDecode(value));
+  return buildNutritionAliases(content).get(normalized) || nutritionAliases.get(normalized) || null;
 }

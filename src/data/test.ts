@@ -1,4 +1,4 @@
-import type { NutritionKey, NutritionResult, PersonaKey, PersonaResult, Question, Survey, SurveyId } from "@/types/test";
+import type { NutritionKey, NutritionResult, PersonaKey, PersonaResult, Question, Survey, SurveyId, TestContent } from "@/types/test";
 
 export const personaKeys: PersonaKey[] = [
   "Orthodox",
@@ -515,3 +515,21 @@ export const personaResults: Record<PersonaKey, PersonaResult> = {
     ]
   }
 };
+
+export function createTestContent(overrides: Partial<TestContent> = {}): TestContent {
+  const mergedSurveys = overrides.surveys || surveys;
+  const content = {
+    personaLabels,
+    personaEnglishLabels,
+    nutritionLabels,
+    surveys: mergedSurveys,
+    surveyMap: overrides.surveyMap || (Object.fromEntries(mergedSurveys.map((survey) => [survey.id, survey])) as Record<SurveyId, Survey>),
+    personaResults,
+    nutritionResults,
+    ...overrides
+  };
+
+  return content;
+}
+
+export const baseTestContent = createTestContent();

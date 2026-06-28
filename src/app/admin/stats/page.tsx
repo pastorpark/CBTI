@@ -23,6 +23,14 @@ type StatsResponse = {
     questionTime: number;
     resultLabels: Record<string, string>;
   }[];
+  surveysByVariant: Record<SiteVariantId, {
+    id: SurveyId;
+    title: string;
+    description: string;
+    questionCount: number;
+    questionTime: number;
+    resultLabels: Record<string, string>;
+  }[]>;
   visits: {
     total: number;
     uniqueVisitors: number;
@@ -59,7 +67,8 @@ export default function AdminStatsPage() {
 
   const activeStats = useMemo(() => stats?.[mode][activeVariantId][activeSurveyId], [activeSurveyId, activeVariantId, mode, stats]);
   const activeVisitStats = useMemo(() => stats?.visitsByVariant[activeVariantId], [activeVariantId, stats]);
-  const activeSurvey = useMemo(() => stats?.surveys.find((survey) => survey.id === activeSurveyId), [activeSurveyId, stats]);
+  const activeSurveys = useMemo(() => stats?.surveysByVariant?.[activeVariantId] ?? stats?.surveys ?? [], [activeVariantId, stats]);
+  const activeSurvey = useMemo(() => activeSurveys.find((survey) => survey.id === activeSurveyId), [activeSurveyId, activeSurveys]);
   const personaScaleMax = useMemo(() => {
     const maxCount = Math.max(0, ...Object.values(activeStats?.byPersona ?? {}));
     return maxCount > 0 ? Math.ceil(maxCount / 100) * 100 : 100;
@@ -190,7 +199,7 @@ export default function AdminStatsPage() {
         </section>
 
         <section className="survey-admin-grid" style={{ marginTop: 14 }} aria-label="설문 선택">
-          {stats.surveys.map((survey) => (
+          {activeSurveys.map((survey) => (
             <button
               key={survey.id}
               className={`survey-card admin-survey-card ${activeSurveyId === survey.id ? "active" : ""}`}

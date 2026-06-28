@@ -4,7 +4,8 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { ChungeoramFollowCard } from "@/components/ChungeoramFollowCard";
 import { NutritionRadarChart } from "@/components/NutritionRadarChart";
-import { nutritionKeys, nutritionLabels, nutritionResults } from "@/data/test";
+import { nutritionKeys } from "@/data/test";
+import { getVariantTestContent } from "@/data/variant-content";
 import { fillMetadataTemplate } from "@/lib/metadata-template";
 import { resolveNutritionResultKey } from "@/lib/result-aliases";
 import { getResultHeaderStyle } from "@/lib/result-colors";
@@ -23,9 +24,10 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: NutritionResultPageProps): Promise<Metadata> {
   const { type } = await params;
   const variantId = resolveSiteVariantId((await headers()).get("host"));
+  const content = getVariantTestContent(variantId);
   const variantMetadata = getSiteVariantById(variantId).metadata;
   const template = variantMetadata.results.nutri;
-  const resolvedType = resolveNutritionResultKey(type);
+  const resolvedType = resolveNutritionResultKey(type, content);
 
   if (!resolvedType) {
     return {
@@ -34,8 +36,8 @@ export async function generateMetadata({ params }: NutritionResultPageProps): Pr
     };
   }
 
-  const result = nutritionResults[resolvedType];
-  const label = nutritionLabels[resolvedType];
+  const result = content.nutritionResults[resolvedType];
+  const label = content.nutritionLabels[resolvedType];
   const templateValues = {
     key: result.key,
     keyLower: result.key.toLowerCase(),
@@ -80,7 +82,8 @@ export async function generateMetadata({ params }: NutritionResultPageProps): Pr
 export default async function NutritionResultPage({ params }: NutritionResultPageProps) {
   const { type } = await params;
   const variantId = resolveSiteVariantId((await headers()).get("host"));
-  const resolvedType = resolveNutritionResultKey(type);
+  const content = getVariantTestContent(variantId);
+  const resolvedType = resolveNutritionResultKey(type, content);
 
   if (!resolvedType) {
     return (
@@ -101,7 +104,7 @@ export default async function NutritionResultPage({ params }: NutritionResultPag
     redirect(`/result/nutri/${resolvedType}`);
   }
 
-  const result = nutritionResults[resolvedType];
+  const result = content.nutritionResults[resolvedType];
   const scores = createEmptyResultScores(nutritionKeys);
   scores[resolvedType] = 6;
 
@@ -125,7 +128,7 @@ export default async function NutritionResultPage({ params }: NutritionResultPag
         <section className="section result-body">
           <div className="result-section result-description-section">
             <span className="result-status-tag">내게 필요한 영양소</span>
-            <NutritionRadarChart keys={nutritionKeys} labels={nutritionLabels} scores={scores} maxScore={6} />
+            <NutritionRadarChart keys={nutritionKeys} labels={content.nutritionLabels} scores={scores} maxScore={6} />
             <hr className="result-status-divider" />
             <span className="result-status-tag">당신의 상태</span>
             <p className="lead">{result.status}</p>

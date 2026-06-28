@@ -45,6 +45,16 @@ export type Survey = {
   resultLabels: Record<string, string>;
 };
 
+export type TestContent = {
+  personaLabels: Record<PersonaKey, string>;
+  personaEnglishLabels: Record<PersonaKey, string>;
+  nutritionLabels: Record<NutritionKey, string>;
+  surveys: Survey[];
+  surveyMap: Record<SurveyId, Survey>;
+  personaResults: Record<PersonaKey, PersonaResult>;
+  nutritionResults: Record<NutritionKey, NutritionResult>;
+};
+
 export type ResultScores = Record<string, number>;
 export type PersonaScores = Record<PersonaKey, number>;
 

@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
-import { defaultSurveyId, surveyMap, surveys } from "@/data/test";
+import { defaultSurveyId } from "@/data/test";
+import { getVariantTestContent } from "@/data/variant-content";
 import { isAdminAuthenticated } from "@/lib/admin-auth";
 import { fetchSubmissions, fetchVisits, hasSupabaseConfig } from "@/lib/supabase-rest";
 import type { SiteVariantId, Survey, SurveyId } from "@/types/test";
@@ -14,7 +15,7 @@ function startOfDay(value: Date) {
 
 function normalizeStoredSurvey(value: string | null | undefined) {
   const parsed = parseStoredSurveyId(value);
-  return parsed.surveyId in surveyMap ? parsed : { variantId: parsed.variantId, surveyId: defaultSurveyId };
+  return parsed.surveyId === "cbti" || parsed.surveyId === "nutri" ? parsed : { variantId: parsed.variantId, surveyId: defaultSurveyId };
 }
 
 function getDedupedRows(rows: SubmissionRow[]) {
@@ -107,8 +108,9 @@ function aggregate(rows: SubmissionRow[], survey: Survey) {
 }
 
 function aggregateBySurvey(rows: SubmissionRow[], variantId: SiteVariantId) {
+  const content = getVariantTestContent(variantId);
   return Object.fromEntries(
-    surveys.map((survey) => {
+    content.surveys.map((survey) => {
       const surveyRows = rows.filter((row) => {
         const parsed = normalizeStoredSurvey(row.survey_id);
         return parsed.variantId === variantId && parsed.surveyId === survey.id;
@@ -126,13 +128,30 @@ function aggregateByVariant(rows: SubmissionRow[]) {
 }
 
 function getSurveySummaries() {
-  return surveys.map((survey) => ({
+  return getVariantTestContent("pastor").surveys.map((survey) => ({
     id: survey.id,
     title: survey.title,
     description: survey.description,
     questionCount: survey.questions.length,
+    questionTime: survey.id === "nutri" ? 1 : 5,
     resultLabels: survey.resultLabels
   }));
+}
+
+function getSurveySummariesByVariant() {
+  return Object.fromEntries(
+    siteVariants.map((variant) => [
+      variant.id,
+      getVariantTestContent(variant.id).surveys.map((survey) => ({
+        id: survey.id,
+        title: survey.title,
+        description: survey.description,
+        questionCount: survey.questions.length,
+        questionTime: survey.id === "nutri" ? 1 : 5,
+        resultLabels: survey.resultLabels
+      }))
+    ])
+  ) as Record<SiteVariantId, ReturnType<typeof getSurveySummaries>>;
 }
 
 export async function GET() {
@@ -146,6 +165,7 @@ export async function GET() {
         configured: false,
         variants: siteVariants,
         surveys: getSurveySummaries(),
+        surveysByVariant: getSurveySummariesByVariant(),
         total: 0,
         uniqueVisitors: 0,
         duplicateRate: 0,
@@ -168,6 +188,7 @@ export async function GET() {
       configured: true,
       variants: siteVariants,
       surveys: getSurveySummaries(),
+      surveysByVariant: getSurveySummariesByVariant(),
       total: rows.length,
       uniqueVisitors: dedupedRows.length,
       duplicateRate,
