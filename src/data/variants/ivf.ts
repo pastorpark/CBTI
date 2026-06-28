@@ -1387,7 +1387,7 @@ const content = {
   personaResults: {
     Orthodox: {
       key: "Orthodox",
-      title: "정통 수호형 그리스도인",
+      title: "정통 수호형",
       subtitle: "절대 진리와 복음의 본질을 붙드는 사람",
       keywords: [
         "성경무오",
@@ -1417,7 +1417,7 @@ const content = {
     },
     Intellectual: {
       key: "Intellectual",
-      title: "합리적 지성형 그리스도인",
+      title: "합리적 지성형",
       subtitle: "말씀과 이성의 균형을 탐구하는 사람",
       keywords: [
         "말씀연구",
@@ -1447,7 +1447,7 @@ const content = {
     },
     Progressive: {
       key: "Progressive",
-      title: "진보적 포용형 그리스도인",
+      title: "진보적 포용형",
       subtitle: "다름을 환대하며 오늘의 언어로 신앙을 묻는 사람",
       keywords: [
         "포용성",
@@ -1477,7 +1477,7 @@ const content = {
     },
     Social: {
       key: "Social",
-      title: "사회 참여형 그리스도인",
+      title: "사회 참여형",
       subtitle: "신앙을 이웃 사랑과 정의의 실천으로 드러내는 사람",
       keywords: [
         "사회정의",
@@ -1507,7 +1507,7 @@ const content = {
     },
     Liturgical: {
       key: "Liturgical",
-      title: "예전 전통형 그리스도인",
+      title: "예전 전통형",
       subtitle: "전통의 리듬과 거룩한 예전 안에서 쉬는 사람",
       keywords: [
         "역사적정통성",
@@ -1537,7 +1537,7 @@ const content = {
     },
     Charismatic: {
       key: "Charismatic",
-      title: "영적 체험형 그리스도인",
+      title: "영적 체험형",
       subtitle: "성령의 임재와 살아 있는 예배를 갈망하는 사람",
       keywords: [
         "성령충만",
@@ -1567,7 +1567,7 @@ const content = {
     },
     Relational: {
       key: "Relational",
-      title: "관계 중심형 그리스도인",
+      title: "관계 중심형",
       subtitle: "공동체 안에서 사랑과 성장을 경험하는 사람",
       keywords: [
         "공동체성",

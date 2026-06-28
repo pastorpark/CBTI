@@ -155,7 +155,7 @@ export default async function ResultPage({ params }: ResultPageProps) {
               <div className="result-section cbti-denomination-section">
                 <h2>이런 교파가 잘 맞을지도</h2>
                 <p className="disclaimer-note cbti-denomination-note">
-                  위의 설명과 교파 추천은 생성형 AI로 작성되었습니다. 실제 교파의 입장이나 현실과 다를 수 있습니다
+                  아래  교파 추천은 생성형 AI로 작성되었습니다. 실제 교파의 입장이나 현실과 다를 수 있습니다
                 </p>
                 <div className="denomination-list cbti-denomination-list">
                   {result.denominations.map((item, index) => (
@@ -200,7 +200,7 @@ export default async function ResultPage({ params }: ResultPageProps) {
                   ))}
                 </div>
                 <p className="disclaimer-note">
-                  위의 설명과 교파 추천은 생성형 AI로 작성되었습니다. 실제 교파의 입장이나 현실과 다를 수 있습니다
+                  위의  교파 추천은 생성형 AI로 작성되었습니다. 실제 교파의 입장이나 현실과 다를 수 있습니다
                 </p>
               </div>
               <div className="result-section">
